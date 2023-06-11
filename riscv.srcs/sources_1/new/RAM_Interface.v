@@ -10,10 +10,10 @@ module RAM_Interface #(
     input wire clkA,
     input wire enaA,
     input wire [1:0] weA, // b01 - byte, b10 - half word, b11 - word
-    input wire [2:0] reA, // reA[2] sign extended, b01 - byte, b10 - half word, b11 - word
+    input wire [2:0] reA, // reA[2] sign extended, b01: byte, b10: half word, b11: word
     input wire [ADDR_WIDTH+1:0] addrA, // bytes addressable
-    input wire [DATA_WIDTH-1:0] dinA,
-    output reg [DATA_WIDTH-1:0] doutA
+    input wire [DATA_WIDTH-1:0] dinA, // sign extended byte, half word, word
+    output reg [DATA_WIDTH-1:0] doutA // data at 'addrA' according to 'reA'
     
     // port B: read word addressable ram (instruction memory)
 );
@@ -75,8 +75,8 @@ always @* begin
 end
 
 // read
-reg [2:0] reA_prev;
-reg [1:0] addr_lower_r;
+reg [2:0] reA_prev; // previous reA used in the cycle when data is available
+reg [1:0] addr_lower_r; // previous lower 2 bits of address to be used when data is available
 always @(posedge clkA) begin
     reA_prev <= reA;
     addr_lower_r <= addrA[1:0];

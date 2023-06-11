@@ -14,7 +14,7 @@ module SoC(
 );
 
 reg [31:0] addr = 0;
-reg [31:0] din = 0;
+reg [31:0] din = 32'h0000_007a;
 wire [31:0] dout;
 reg [2:0] weA = 2'b01; // write byte 
 reg [2:0] reA = 3'b000; // read none
