@@ -11,6 +11,7 @@ always #(clk_tk/2) clk = ~clk;
 
 reg enaA = 1;
 reg [1:0] weA = 0;
+reg [1:0] reA = 0;
 reg [20-1:0] addrA = 0;
 reg [31:0] dinA = 0;
 wire [31:0] doutA;
@@ -22,6 +23,7 @@ RAM_Interface #(
     .clkA(clk),
     .enaA(enaA),
     .weA(weA), // b01 - byte, b10 - half word, b11 - word
+    .reA(reA), // b01 - byte, b10 - half word, b11 - word
     .addrA(addrA), // bytes addressable
     .dinA(dinA),
     .doutA(doutA)
@@ -48,7 +50,8 @@ initial begin
 
     if (dut.ram.ram_block[0]==32'h78563412) $display("test 1 passed"); else $display("test 1 FAILED");
 
-    // read word        
+    // read word
+    reA = 2'b11;     
     weA = 0;
     addrA = 0;
     #clk_tk
@@ -69,12 +72,76 @@ initial begin
     if (dut.ram.ram_block[1]==32'h56781234) $display("test 3 passed"); else $display("test 3 FAILED");
 
     // read word
+    reA = 2'b11;     
     weA = 0;
     addrA = 4;
     #clk_tk
 
     if (doutA==32'h56781234) $display("test 4 passed"); else $display("test 4 FAILED");
-    
+
+    // read byte
+    reA = 2'b01;     
+    weA = 0;
+    addrA = 0;
+    #clk_tk
+
+//    $display("%h",doutA);
+    if (doutA==8'h12) $display("test 5 passed"); else $display("test 5 FAILED");
+
+    // read byte
+    reA = 2'b01;     
+    weA = 0;
+    addrA = 1;
+    #clk_tk
+
+//    $display("%h",doutA);
+    if (doutA==8'h34) $display("test 6 passed"); else $display("test 6 FAILED");
+
+    // read byte
+    reA = 2'b01;     
+    weA = 0;
+    addrA = 2;
+    #clk_tk
+
+//    $display("%h",doutA);
+    if (doutA==8'h56) $display("test 7 passed"); else $display("test 7 FAILED");
+
+    // read byte
+    reA = 2'b01;     
+    weA = 0;
+    addrA = 3;
+    #clk_tk
+
+//    $display("%h",doutA);
+    if (doutA==8'h78) $display("test 8 passed"); else $display("test 8 FAILED");
+
+    // read half word
+    reA = 2'b10;     
+    weA = 0;
+    addrA = 4;
+    #clk_tk
+
+//    $display("%h",doutA);
+    if (doutA==16'h1234) $display("test 9 passed"); else $display("test 9 FAILED");
+
+    // read half word
+    reA = 2'b10;     
+    weA = 0;
+    addrA = 6;
+    #clk_tk
+
+//    $display("%h",doutA);
+    if (doutA==16'h5678) $display("test 10 passed"); else $display("test 10 FAILED");
+
+    // read word
+    reA = 2'b11;     
+    weA = 0;
+    addrA = 4;
+    #clk_tk
+
+//    $display("%h",doutA);
+    if (doutA==32'h56781234) $display("test 11 passed"); else $display("test 11 FAILED");
+      
     $finish;
 end
 

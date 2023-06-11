@@ -9,22 +9,27 @@ module RAM_Interface #(
     input wire clkA,
     input wire enaA,
     input wire [1:0] weA, // b01 - byte, b10 - half word, b11 - word
+    input wire [1:0] reA, // b01 - byte, b10 - half word, b11 - word
     input wire [ADDR_WIDTH+1:0] addrA, // bytes addressable
     input wire [DATA_WIDTH-1:0] dinA,
-    output wire [DATA_WIDTH-1:0] doutA
+    output reg [DATA_WIDTH-1:0] doutA
 );
 
 wire [DATA_WIDTH-1:0] doutB;
 reg [ADDR_WIDTH-1:0] ram_addrA;
 reg [DATA_WIDTH-1:0] ram_dinA;
+wire [DATA_WIDTH-1:0] ram_doutA;
 reg [3:0] ram_weA;
 
 integer addr_lower;
+// write
 always @* begin
     ram_addrA = addrA >> 2;
     addr_lower = addrA & 2'b11;
     case(weA)
-    2'b00:; // no write
+    2'b00: begin
+        ram_weA = 4'b0000;
+    end
     2'b01: begin // byte
         case(addr_lower)
         2'b00: begin
@@ -66,6 +71,48 @@ always @* begin
     endcase
 end
 
+// read
+integer addr_lower_r;
+always @* begin
+    ram_addrA = addrA >> 2;
+    addr_lower_r = addrA & 2'b11;
+    case(reA) // read size
+    2'b00: begin // none
+    end
+    2'b01: begin // byte
+        case(addr_lower_r)
+        2'b00: begin
+            doutA = ram_doutA & 8'hff;
+        end
+        2'b01: begin
+            doutA = (ram_doutA >> 8) & 8'hff;
+        end
+        2'b10: begin
+            doutA = (ram_doutA >> 16) & 8'hff;
+        end
+        2'b11: begin
+            doutA = (ram_doutA >> 24) & 8'hff;
+        end
+        endcase
+    end
+    2'b10: begin // half word
+        case(addr_lower_r)
+        2'b00: begin
+            doutA = ram_doutA & 16'hffff;
+        end
+        2'b01: ; // exception
+        2'b10: begin
+            doutA = (ram_doutA >> 16) & 16'hffff;
+        end
+        2'b11: ; // exception
+        endcase    
+    end
+    2'b11: begin // word
+        doutA = ram_doutA;
+    end
+    endcase
+end
+
 RAM #(
     .ADDR_WIDTH(ADDR_WIDTH)
 ) ram (
@@ -74,7 +121,7 @@ RAM #(
     .weA(ram_weA),
     .addrA(ram_addrA),
     .dinA(ram_dinA),
-    .doutA(doutA),
+    .doutA(ram_doutA),
     .clkB(clkA),
     .enaB(0),
     .weB(0),
