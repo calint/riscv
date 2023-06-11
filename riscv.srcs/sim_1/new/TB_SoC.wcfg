@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="TB_SoC_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="TB_SoC" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="329,994 ps"></ZoomStartTime>
+      <ZoomEndTime time="330,002 ps"></ZoomEndTime>
+      <Cursor1Time time="330,000 ps"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="121"></NameColumnWidth>
+      <ValueColumnWidth column_width="95"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="14" />
+   <wvobject type="logic" fp_name="/TB_SoC/clk_in">
+      <obj_property name="ElementShortName">clk_in</obj_property>
+      <obj_property name="ObjectShortName">clk_in</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/TB_SoC/led">
+      <obj_property name="ElementShortName">led[3:0]</obj_property>
+      <obj_property name="ObjectShortName">led[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/TB_SoC/dut/ram/clkA">
+      <obj_property name="ElementShortName">clkA</obj_property>
+      <obj_property name="ObjectShortName">clkA</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/TB_SoC/dut/ram/enaA">
+      <obj_property name="ElementShortName">enaA</obj_property>
+      <obj_property name="ObjectShortName">enaA</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/TB_SoC/dut/ram/weA">
+      <obj_property name="ElementShortName">weA[3:0]</obj_property>
+      <obj_property name="ObjectShortName">weA[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/TB_SoC/dut/ram/addrA">
+      <obj_property name="ElementShortName">addrA[17:0]</obj_property>
+      <obj_property name="ObjectShortName">addrA[17:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/TB_SoC/dut/ram/dinA">
+      <obj_property name="ElementShortName">dinA[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dinA[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/TB_SoC/dut/ram/doutA">
+      <obj_property name="ElementShortName">doutA[31:0]</obj_property>
+      <obj_property name="ObjectShortName">doutA[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/TB_SoC/dut/ram/clkB">
+      <obj_property name="ElementShortName">clkB</obj_property>
+      <obj_property name="ObjectShortName">clkB</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/TB_SoC/dut/ram/enaB">
+      <obj_property name="ElementShortName">enaB</obj_property>
+      <obj_property name="ObjectShortName">enaB</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/TB_SoC/dut/ram/weB">
+      <obj_property name="ElementShortName">weB[3:0]</obj_property>
+      <obj_property name="ObjectShortName">weB[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/TB_SoC/dut/ram/addrB">
+      <obj_property name="ElementShortName">addrB[17:0]</obj_property>
+      <obj_property name="ObjectShortName">addrB[17:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/TB_SoC/dut/ram/dinB">
+      <obj_property name="ElementShortName">dinB[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dinB[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/TB_SoC/dut/ram/doutB">
+      <obj_property name="ElementShortName">doutB[31:0]</obj_property>
+      <obj_property name="ObjectShortName">doutB[31:0]</obj_property>
+   </wvobject>
+</wave_config>
