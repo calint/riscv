@@ -6,13 +6,16 @@ module RAM_Interface #(
     parameter ADDR_WIDTH = 18, // 2**18 = RAM depth in words
     parameter DATA_WIDTH = 32
 )(
+    // port A: read / write byte addressable ram (data memory)
     input wire clkA,
     input wire enaA,
     input wire [1:0] weA, // b01 - byte, b10 - half word, b11 - word
-    input wire [1:0] reA, // b01 - byte, b10 - half word, b11 - word
+    input wire [2:0] reA, // reA[2] sign extended, b01 - byte, b10 - half word, b11 - word
     input wire [ADDR_WIDTH+1:0] addrA, // bytes addressable
     input wire [DATA_WIDTH-1:0] dinA,
     output reg [DATA_WIDTH-1:0] doutA
+    
+    // port B: read word addressable ram (instruction memory)
 );
 
 wire [DATA_WIDTH-1:0] doutB;
@@ -21,17 +24,17 @@ reg [DATA_WIDTH-1:0] ram_dinA;
 wire [DATA_WIDTH-1:0] ram_doutA;
 reg [3:0] ram_weA;
 
-integer addr_lower;
+integer addr_lower_w;
 // write
 always @* begin
     ram_addrA = addrA >> 2;
-    addr_lower = addrA & 2'b11;
+    addr_lower_w = addrA & 2'b11;
     case(weA)
     2'b00: begin
         ram_weA = 4'b0000;
     end
     2'b01: begin // byte
-        case(addr_lower)
+        case(addr_lower_w)
         2'b00: begin
             ram_weA = 4'b0001;
             ram_dinA = dinA;
@@ -51,7 +54,7 @@ always @* begin
         endcase
     end
     2'b10: begin // half word
-        case(addr_lower)
+        case(addr_lower_w)
         2'b00: begin
             ram_weA = 4'b0011;
             ram_dinA = dinA;
@@ -76,38 +79,38 @@ integer addr_lower_r;
 always @* begin
     ram_addrA = addrA >> 2;
     addr_lower_r = addrA & 2'b11;
-    case(reA) // read size
-    2'b00: begin // none
+    casex(reA) // read size
+    3'bx00: begin // none
     end
-    2'b01: begin // byte
+    3'bx01: begin // byte
         case(addr_lower_r)
         2'b00: begin
-            doutA = ram_doutA & 8'hff;
+            doutA = reA[2] ? {{24{ram_doutA[7]}}, ram_doutA[7:0]} : {{24{1'b0}}, ram_doutA[7:0]};
         end
         2'b01: begin
-            doutA = (ram_doutA >> 8) & 8'hff;
+            doutA = reA[2] ? {{24{ram_doutA[15]}}, ram_doutA[15:8]} : {{24{1'b0}}, ram_doutA[15:8]};
         end
         2'b10: begin
-            doutA = (ram_doutA >> 16) & 8'hff;
+            doutA = reA[2] ? {{24{ram_doutA[23]}}, ram_doutA[23:16]} : {{24{1'b0}}, ram_doutA[23:16]};
         end
         2'b11: begin
-            doutA = (ram_doutA >> 24) & 8'hff;
+            doutA = reA[2] ? {{24{ram_doutA[31]}}, ram_doutA[31:24]} : {{24{1'b0}}, ram_doutA[31:24]};
         end
         endcase
     end
-    2'b10: begin // half word
+    3'bx10: begin // half word
         case(addr_lower_r)
         2'b00: begin
-            doutA = ram_doutA & 16'hffff;
+            doutA = reA[2] ? {{16{ram_doutA[15]}}, ram_doutA[15:0]} : {{24{1'b0}}, ram_doutA[15:0]};
         end
         2'b01: ; // exception
         2'b10: begin
-            doutA = (ram_doutA >> 16) & 16'hffff;
+            doutA = reA[2] ? {{16{ram_doutA[31]}}, ram_doutA[31:16]} : {{24{1'b0}}, ram_doutA[31:16]};
         end
         2'b11: ; // exception
         endcase    
     end
-    2'b11: begin // word
+    3'b111: begin // word
         doutA = ram_doutA;
     end
     endcase

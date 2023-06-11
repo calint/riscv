@@ -1,0 +1,36 @@
+-------------------------------------------------------------
+TAG=2023-06-11--1--checkpoint && git tag $TAG && git push origin $TAG
+-------------------------------------------------------------
+overwrites current workspace with HEAD
+    git reset --hard HEAD
+-------------------------------------------------------------
+overwrites HEAD with current workspace
+    git push --force origin HEAD
+-------------------------------------------------------------
+`timescale 1ns / 1ps
+`default_nettype none
+//`define DBG
+
+module Mod ();
+
+endmodule
+
+`undef DBG
+`default_nettype wire
+-------------------------------------------------------------
+(* rom_style = "block" *)
+(* ram_style = "block" *)
+-------------------------------------------------------------
+write_cfgmem -format mcs -size 4 -interface SPIx4 -loadbit {up 0x00000000 "/home/c/w/zen-x/zen-x.runs/impl_1/Sys.bit" } -file "/home/c/w/zen-x/zen-x.runs/impl_1/zenx"
+-------------------------------------------------------------
+cat w/zen-x/todo.txt | socat - /dev/ttyUSB1,cs8,b4800,raw
+-------------------------------------------------------------
+stty -F /dev/ttyUSB1 9600 cs8 -cstopb -parenb
+-------------------------------------------------------------
+java -jar ~/Downloads/google-java-format-1.17.0-all-deps.jar -i zasm.java
+-------------------------------------------------------------
+vivado install cable drivers:
+    ./Vivado/2022.2/data/xicom/cable_drivers/lin64/install_script/install_drivers/install_drivers
+-------------------------------------------------------------
+hexdump -C /dev/ttyUSB1
+-------------------------------------------------------------

@@ -1,0 +1,13 @@
+{
+    "tasks": [
+        {
+            "label": "Build and run all tests using iverilog",
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "run-iverilog-all.sh"
+            ],
+            "group": "build"
+        }
+    ]
+}
