@@ -35,9 +35,9 @@ RAM_Interface #(
     .clk(clk_in),
     .weA(weA), // b01 - byte, b10 - half word, b11 - word
     .reA(reA), // reA[2] sign extended, b01 - byte, b10 - half word, b11 - word
-    .addrA(addr), // bytes addressable
-    .dinA(din),
-    .doutA(dout),
+    .addrA(addr), // byte addressable
+    .dinA(din), // data to write depending on 'weA'
+    .doutA(dout), // data out depending on 'reA' one cycle later
     
     // port B: read word addressable ram (instruction memory)
     .addrB(18'h0),
