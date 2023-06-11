@@ -24,7 +24,7 @@ reg [DATA_WIDTH-1:0] ram_dinA;
 wire [DATA_WIDTH-1:0] ram_doutA;
 reg [3:0] ram_weA;
 
-integer addr_lower_w;
+reg [1:0] addr_lower_w;
 // write
 always @* begin
     ram_addrA = addrA >> 2;
@@ -75,12 +75,17 @@ always @* begin
 end
 
 // read
-integer addr_lower_r;
+reg [2:0] reA_prev;
+reg [1:0] addr_lower_r;
+always @(posedge clkA) begin
+    reA_prev <= reA;
+    addr_lower_r <= addrA[1:0];
+end
+
 always @* begin
-    ram_addrA = addrA >> 2;
-    addr_lower_r = addrA & 2'b11;
-    casex(reA) // read size
-    3'bx00: begin // none
+    casex(reA_prev) // read size
+    3'b000: begin // none
+        doutA = 0;
     end
     3'bx01: begin // byte
         case(addr_lower_r)
@@ -126,13 +131,12 @@ RAM #(
     .dinA(ram_dinA),
     .doutA(ram_doutA),
     .clkB(clkA),
-    .enaB(0),
-    .weB(0),
-    .addrB(0),
+    .enaB(1'b0),
+    .weB(4'b0000),
+    .addrB(18'b0),
     .dinB(0),
     .doutB(doutB)
 );
-
 
 endmodule
 

@@ -14,25 +14,25 @@ module SoC(
 );
 
 reg [31:0] addr = 0;
-reg [31:0] data = 32'h1234abcd;
-wire [31:0] dob;
-reg [3:0] weA = 0; 
+reg [31:0] din = 0;
+wire [31:0] dout;
+reg [2:0] weA = 2'b01; // write byte 
+reg [2:0] reA = 3'b000; // read none
 
-RAM #(
-    .ADDR_WIDTH(18)
+RAM_Interface #(
+    .ADDR_WIDTH(18), // 2**18 = RAM depth in words
+    .DATA_WIDTH(32)
 ) ram (
+    // port A: read / write byte addressable ram (data memory)
     .clkA(clk_in),
     .enaA(1),
-    .weA(weA),
-    .addrA(addr),
-    .dinA(data),
-    .doutA(led),
-    .clkB(clk_in),
-    .enaB(0),
-    .weB(0),
-    .addrB(0),
-    .dinB(0),
-    .doutB(dob)
+    .weA(weA), // b01 - byte, b10 - half word, b11 - word
+    .reA(reA), // reA[2] sign extended, b01 - byte, b10 - half word, b11 - word
+    .addrA(addr), // bytes addressable
+    .dinA(din),
+    .doutA(dout)
+    
+    // port B: read word addressable ram (instruction memory)
 );
 
 reg stp = 0;
@@ -40,13 +40,12 @@ reg stp = 0;
 always @(posedge clk_in) begin
     if (stp == 0) begin
         addr <= addr + 1;
-        //data <= data + 1;
+        din <= din + 1;
         if (addr == 15) begin
             weA <= 0;
-            stp <= 1;
+            reA <= 3'b101; // read sign extended byte
             addr <= 0;
-        end else begin
-            weA <= weA + 1;
+            stp <= 1;
         end
     end else if (stp == 1) begin
         addr <= addr + 1;

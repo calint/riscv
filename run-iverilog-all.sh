@@ -2,5 +2,5 @@
 set -e
 
 echo "-------------------------------------------------------------------------"
-./run-iverilog.sh sim_2 TB_RAM_Interface # | grep -v passed
+./run-iverilog.sh sim_2 TB_RAM_Interface | grep -v passed
 echo "-------------------------------------------------------------------------"
