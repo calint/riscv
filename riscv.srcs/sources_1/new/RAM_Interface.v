@@ -29,6 +29,8 @@ reg [1:0] addr_lower_w;
 always @* begin
     ram_addrA = addrA >> 2;
     addr_lower_w = addrA & 2'b11;
+    ram_weA = 0;
+    ram_dinA = 0;
     case(weA)
     2'b00: begin
         ram_weA = 4'b0000;
@@ -83,9 +85,9 @@ always @(posedge clkA) begin
 end
 
 always @* begin
+    doutA = 0;
     casex(reA_prev) // read size
-    3'b000: begin // none
-        doutA = 0;
+    3'b000: begin // not a read
     end
     3'bx01: begin // byte
         case(addr_lower_r)

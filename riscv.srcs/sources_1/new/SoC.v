@@ -16,16 +16,22 @@ module SoC(
 reg [31:0] addr = 0;
 reg [31:0] din = 32'h0000_007a;
 wire [31:0] dout;
-reg [2:0] weA = 2'b01; // write byte 
+assign led = dout[3:0];
+assign led0_b = 1;
+assign led0_g = ~btn;
+assign led0_r = uart_rx;
+assign uart_tx = 1;
+
+reg [1:0] weA = 2'b01; // write byte 
 reg [2:0] reA = 3'b000; // read none
 
 RAM_Interface #(
-    .ADDR_WIDTH(18), // 2**18 = RAM depth in words
+    .ADDR_WIDTH(16), // 2**16 = RAM depth in words
     .DATA_WIDTH(32)
 ) ram (
     // port A: read / write byte addressable ram (data memory)
     .clkA(clk_in),
-    .enaA(1),
+    .enaA(1'b1),
     .weA(weA), // b01 - byte, b10 - half word, b11 - word
     .reA(reA), // reA[2] sign extended, b01 - byte, b10 - half word, b11 - word
     .addrA(addr), // bytes addressable
