@@ -3,22 +3,22 @@
 //`define DBG
 
 module RAM_Interface #(
-    parameter ADDR_WIDTH = 18, // 2**18 = RAM depth in words
+    parameter ADDR_WIDTH = 16, // 2**16 = RAM depth in words
     parameter DATA_WIDTH = 32
 )(
     // port A: read / write byte addressable ram (data memory)
-    input wire clkA,
-    input wire enaA,
+    input wire clk,
     input wire [1:0] weA, // b01 - byte, b10 - half word, b11 - word
     input wire [2:0] reA, // reA[2] sign extended, b01: byte, b10: half word, b11: word
-    input wire [ADDR_WIDTH+1:0] addrA, // bytes addressable
+    input wire [ADDR_WIDTH+1:0] addrA, // byte addressable
     input wire [DATA_WIDTH-1:0] dinA, // sign extended byte, half word, word
-    output reg [DATA_WIDTH-1:0] doutA // data at 'addrA' according to 'reA'
+    output reg [DATA_WIDTH-1:0] doutA, // data at 'addrA' according to 'reA'
     
     // port B: read word addressable ram (instruction memory)
+    input wire [ADDR_WIDTH+1:0] addrB, // the lower 2 bits are ignored and only word aligned data returned
+    output wire [DATA_WIDTH-1:0] doutB
 );
 
-wire [DATA_WIDTH-1:0] doutB;
 reg [ADDR_WIDTH-1:0] ram_addrA;
 reg [DATA_WIDTH-1:0] ram_dinA;
 wire [DATA_WIDTH-1:0] ram_doutA;
@@ -79,7 +79,7 @@ end
 // read
 reg [2:0] reA_prev; // previous reA used in the cycle when data is available
 reg [1:0] addr_lower_r; // previous lower 2 bits of address to be used when data is available
-always @(posedge clkA) begin
+always @(posedge clk) begin
     reA_prev <= reA;
     addr_lower_r <= addrA[1:0];
 end
@@ -126,16 +126,16 @@ end
 RAM #(
     .ADDR_WIDTH(ADDR_WIDTH)
 ) ram (
-    .clkA(clkA),
-    .enaA(enaA),
+    .clkA(clk),
+    .enaA(1'b1),
     .weA(ram_weA),
     .addrA(ram_addrA),
     .dinA(ram_dinA),
     .doutA(ram_doutA),
-    .clkB(clkA),
-    .enaB(1'b0),
+    .clkB(clk),
+    .enaB(1'b1),
     .weB(4'b0000),
-    .addrB(18'b0),
+    .addrB(addrB[ADDR_WIDTH+1:2]),
     .dinB(0),
     .doutB(doutB)
 );

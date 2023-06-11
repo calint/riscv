@@ -22,6 +22,8 @@ assign led0_g = ~btn;
 assign led0_r = uart_rx;
 assign uart_tx = 1;
 
+wire [31:0] doutB;
+
 reg [1:0] weA = 2'b01; // write byte 
 reg [2:0] reA = 3'b000; // read none
 
@@ -30,15 +32,16 @@ RAM_Interface #(
     .DATA_WIDTH(32)
 ) ram (
     // port A: read / write byte addressable ram (data memory)
-    .clkA(clk_in),
-    .enaA(1'b1),
+    .clk(clk_in),
     .weA(weA), // b01 - byte, b10 - half word, b11 - word
     .reA(reA), // reA[2] sign extended, b01 - byte, b10 - half word, b11 - word
     .addrA(addr), // bytes addressable
     .dinA(din),
-    .doutA(dout)
+    .doutA(dout),
     
     // port B: read word addressable ram (instruction memory)
+    .addrB(18'h0),
+    .doutB(doutB)
 );
 
 reg stp = 0;

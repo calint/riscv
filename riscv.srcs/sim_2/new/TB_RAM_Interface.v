@@ -9,24 +9,26 @@ localparam clk_tk = 10;
 reg clk = 0;
 always #(clk_tk/2) clk = ~clk;
 
-reg enaA = 1;
 reg [1:0] weA = 0;
 reg [2:0] reA = 0;
-reg [20-1:0] addrA = 0;
+reg [18-1:0] addrA = 0;
 reg [31:0] dinA = 0;
 wire [31:0] doutA;
+reg [18-1:0] addrB = 0;
+wire [31:0] doutB;
 
 RAM_Interface #(
-    .ADDR_WIDTH(18), // 2**18 = RAM depth in words
+    .ADDR_WIDTH(16), // 2**16 = RAM depth in words
     .DATA_WIDTH(32)
 ) dut (
-    .clkA(clk),
-    .enaA(enaA),
+    .clk(clk),
     .weA(weA), // b01 - byte, b10 - half word, b11 - word
     .reA(reA), // b01 - byte, b10 - half word, b11 - word
     .addrA(addrA), // bytes addressable
     .dinA(dinA),
-    .doutA(doutA)
+    .doutA(doutA),
+    .addrB(addrB),
+    .doutB(doutB)
 );
 
 initial begin
