@@ -8,7 +8,8 @@ module RAM #(
     parameter NUM_COL = 4,
     parameter COL_WIDTH = 8,
     parameter ADDR_WIDTH = 10, // 2**10 = RAM depth
-    parameter DATA_WIDTH = NUM_COL*COL_WIDTH // data width in bits
+    parameter DATA_WIDTH = NUM_COL*COL_WIDTH, // data width in bits
+    parameter DATA_FILE = "RAM.mem"
 )(
     input wire clkA,
     input wire enaA,
@@ -25,6 +26,10 @@ module RAM #(
 );
 
 reg [DATA_WIDTH-1:0] ram_block[(2**ADDR_WIDTH)-1:0];
+
+initial begin
+    $readmemh(DATA_FILE, ram_block);
+end
 
 integer i;
 

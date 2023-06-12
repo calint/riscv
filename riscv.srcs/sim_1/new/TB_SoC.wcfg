@@ -12,32 +12,28 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="198.022 ns"></ZoomEndTime>
-      <Cursor1Time time="330.000 ns"></Cursor1Time>
+      <ZoomEndTime time="254.373 ns"></ZoomEndTime>
+      <Cursor1Time time="100.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="121"></NameColumnWidth>
-      <ValueColumnWidth column_width="83"></ValueColumnWidth>
+      <ValueColumnWidth column_width="79"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="5" />
-   <wvobject type="logic" fp_name="/TB_SoC/dut/clk_in">
-      <obj_property name="ElementShortName">clk_in</obj_property>
-      <obj_property name="ObjectShortName">clk_in</obj_property>
+   <WVObjectSize size="4" />
+   <wvobject type="logic" fp_name="/TB_SoC/dut/rst">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/addr">
-      <obj_property name="ElementShortName">addr[31:0]</obj_property>
-      <obj_property name="ObjectShortName">addr[31:0]</obj_property>
+   <wvobject type="logic" fp_name="/TB_SoC/dut/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/din">
-      <obj_property name="ElementShortName">din[31:0]</obj_property>
-      <obj_property name="ObjectShortName">din[31:0]</obj_property>
+   <wvobject type="array" fp_name="/TB_SoC/dut/pc">
+      <obj_property name="ElementShortName">pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pc[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/doutB">
-      <obj_property name="ElementShortName">doutB[31:0]</obj_property>
-      <obj_property name="ObjectShortName">doutB[31:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/dout">
-      <obj_property name="ElementShortName">dout[31:0]</obj_property>
-      <obj_property name="ObjectShortName">dout[31:0]</obj_property>
+   <wvobject type="array" fp_name="/TB_SoC/dut/ir">
+      <obj_property name="ElementShortName">ir[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ir[31:0]</obj_property>
    </wvobject>
 </wave_config>

@@ -4,7 +4,8 @@
 
 module RAM_Interface #(
     parameter ADDR_WIDTH = 16, // 2**16 = RAM depth in words
-    parameter DATA_WIDTH = 32
+    parameter DATA_WIDTH = 32,
+    parameter DATA_FILE = "RAM.mem"
 )(
     // port A: data memory, read / write byte addressable ram
     input wire clk,
@@ -124,7 +125,8 @@ always @* begin
 end
 
 RAM #(
-    .ADDR_WIDTH(ADDR_WIDTH)
+    .ADDR_WIDTH(ADDR_WIDTH),
+    .DATA_FILE(DATA_FILE)
 ) ram (
     .clkA(clk),
     .enaA(1'b1),

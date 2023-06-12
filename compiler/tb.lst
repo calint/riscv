@@ -1,0 +1,10 @@
+
+tb:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+   0:	00000013          	addi	x0,x0,0
+   4:	12345537          	lui	x10,0x12345
+   8:	67850513          	addi	x10,x10,1656 # 12345678 <__global_pointer$+0x12343e6c>

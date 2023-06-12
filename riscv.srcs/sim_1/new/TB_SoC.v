@@ -4,23 +4,31 @@
 
 module TB_SoC;
 
-reg clk_in = 0;
-wire [3:0] led;
+localparam clk_tk = 10;
+reg clk = 0;
+always #(clk_tk/2) clk = ~clk;
 
-SoC dut (
-    .clk_in(clk_in),
-    .led(led),
-    .uart_rx(1'b1)
+reg rst = 1;
+
+SoC #(
+    .RAM_FILE("RAM.mem")
+) dut (
+    .clk(clk),
+    .rst(rst)
 );
 
-always #5 clk_in = ~clk_in;
-
 initial begin
-    repeat (34) begin
-        #10;
+    // reset
+    #clk_tk
+    #clk_tk
+    
+    rst = 0;
+    // run
+    repeat (8) begin
+        #clk_tk;
     end
     
-    $finish;  // End simulation
+    $finish;
 end
 
 endmodule
