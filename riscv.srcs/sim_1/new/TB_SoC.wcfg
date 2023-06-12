@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="291.600 ns"></ZoomStartTime>
-      <ZoomEndTime time="448.501 ns"></ZoomEndTime>
-      <Cursor1Time time="385.000 ns"></Cursor1Time>
+      <ZoomStartTime time="273.250 ns"></ZoomStartTime>
+      <ZoomEndTime time="379.551 ns"></ZoomEndTime>
+      <Cursor1Time time="395.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="170"></NameColumnWidth>
+      <NameColumnWidth column_width="158"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="13" />
+   <WVObjectSize size="16" />
    <wvobject type="logic" fp_name="/TB_SoC/dut/rst">
       <obj_property name="ElementShortName">rst</obj_property>
       <obj_property name="ObjectShortName">rst</obj_property>
@@ -32,9 +32,21 @@
       <obj_property name="ElementShortName">pc[31:0]</obj_property>
       <obj_property name="ObjectShortName">pc[31:0]</obj_property>
    </wvobject>
+   <wvobject type="array" fp_name="/TB_SoC/dut/pc_nxt">
+      <obj_property name="ElementShortName">pc_nxt[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pc_nxt[31:0]</obj_property>
+   </wvobject>
    <wvobject type="array" fp_name="/TB_SoC/dut/ir">
       <obj_property name="ElementShortName">ir[31:0]</obj_property>
       <obj_property name="ObjectShortName">ir[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/TB_SoC/dut/is_bubble">
+      <obj_property name="ElementShortName">is_bubble</obj_property>
+      <obj_property name="ObjectShortName">is_bubble</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/TB_SoC/dut/bubble">
+      <obj_property name="ElementShortName">bubble</obj_property>
+      <obj_property name="ObjectShortName">bubble</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/TB_SoC/dut/I_imm12">
       <obj_property name="ElementShortName">I_imm12[31:0]</obj_property>
@@ -131,8 +143,8 @@
          <obj_property name="ObjectShortName">weA[1:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/TB_SoC/dut/ram/addrA">
-         <obj_property name="ElementShortName">addrA[17:0]</obj_property>
-         <obj_property name="ObjectShortName">addrA[17:0]</obj_property>
+         <obj_property name="ElementShortName">addrA[16:0]</obj_property>
+         <obj_property name="ObjectShortName">addrA[16:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/TB_SoC/dut/ram/dinA">
          <obj_property name="ElementShortName">dinA[31:0]</obj_property>

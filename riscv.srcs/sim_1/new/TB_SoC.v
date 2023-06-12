@@ -181,6 +181,19 @@ initial begin
     // check that addi used the retrieved x20
     if (dut.regs.mem[22]==32'h0001_0000) $display("test 36 passed"); else $display("test 36 FAILED"); 
     
+    // 94: 36c000ef jal x1,400 <lbl_jal>
+    #clk_tk
+    #clk_tk // bubble
+
+    // 400: 00008067 jalr x0,0(x1)
+    // note. pc is a step ahead thus pc + 4
+    if (dut.pc==32'h0000_0404) $display("test 37 passed"); else $display("test 37 FAILED"); 
+    #clk_tk
+    #clk_tk // bubble
+
+    // note. pc is a step ahead thus pc + 4
+    if (dut.pc==32'h0000_009c) $display("test 38 passed"); else $display("test 38 FAILED"); 
+    
     $finish;
 end
 

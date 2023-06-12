@@ -40,4 +40,8 @@ _start:
 	lbu x21, 0(x20)			# x21 = ram[0x1000] == 0xff
 	lhu x21, 2(x20)			# x21 = ram[0x1000 + 2] == 0xffff
 	addi x22, x21, 1        # x22 = 0xffff + 1 == 0x1_0000
+	jal x1, lbl_jal
 
+.org 0x400
+lbl_jal:
+	jalr x0, 0(x1)

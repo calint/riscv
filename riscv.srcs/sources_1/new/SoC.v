@@ -55,6 +55,9 @@ reg regs_we3;
 wire signed [31:0] rs1_dat = regs_we3 && rs1 == ld_rd ? ram_doutA : regs_rd1;
 wire signed [31:0] rs2_dat = regs_we3 && rs2 == ld_rd ? ram_doutA : regs_rd2;
 
+reg bubble;
+reg is_bubble;
+
 assign led = ir[3:0];
 assign led0_b = 1;
 assign led0_g = ~btn;
@@ -72,8 +75,9 @@ always @* begin
     pc_nxt = pc + 4;
     
     if (rst) begin
-        ld_rd = 0;    
-    end else begin    
+        ld_rd = 0;
+        bubble = 0;    
+    end else if (!is_bubble) begin    
         case(opcode)
         7'b0110111: begin // LUI
             regs_rd_wd = U_imm20;
@@ -178,59 +182,78 @@ always @* begin
             regs_rd_wd = pc + U_imm20;
             regs_rd_we = 1;
         end
+        // note. jumps and branches
+        //       pc is ahead one instruction
+        //       thus -4 when branching
+        //       and no +4 when storing return address
         7'b1101111: begin // JAL
-            regs_rd_wd = pc + 4;
+            regs_rd_wd = pc; 
             regs_rd_we = 1;
-            pc_nxt = pc + J_imm20;
+            pc_nxt = pc + J_imm20 - 4;
+            bubble = 1;
         end
         7'b1100111: begin // JALR
-            regs_rd_wd = pc + 4;
+            regs_rd_wd = pc;
             regs_rd_we = 1;
             pc_nxt = rs1_dat + I_imm12;
+            bubble = 1;
         end
         7'b1100111: begin // branches
             case(funct3)
             3'b000: begin // BEQ
                 if (rs1 == rs2) begin
-                    pc_nxt = pc + B_imm12;
+                    pc_nxt = pc + B_imm12 - 4;
+                    bubble = 1;                    
                 end
             end
             3'b001: begin // BNE
                 if (rs1 != rs2) begin
-                    pc_nxt = pc + B_imm12;
+                    pc_nxt = pc + B_imm12 - 4;
+                    bubble = 1;
                 end
             end
             3'b100: begin // BLT
                 if (rs1 < rs2) begin
-                    pc_nxt = pc + B_imm12;
+                    pc_nxt = pc + B_imm12 - 4;
+                    bubble = 1;
                 end
             end
             3'b101: begin // BGE
                 if (rs1 >= rs2) begin
-                    pc_nxt = pc + B_imm12;
+                    pc_nxt = pc + B_imm12 - 4;
+                    bubble = 1;
                 end
             end
             3'b110: begin // BLTU
                 if ($unsigned(rs1) < $unsigned(rs2)) begin
-                    pc_nxt = pc + B_imm12;
+                    pc_nxt = pc + B_imm12 - 4;
+                    bubble = 1;
                 end
             end
             3'b111: begin // BGEU
                 if ($unsigned(rs1) >= $unsigned(rs2)) begin
-                    pc_nxt = pc + B_imm12;
+                    pc_nxt = pc + B_imm12 - 4;
+                    bubble = 1;
                 end
             end
             endcase
         end
-        endcase
+        endcase // case(opcode)
+//        if (!bubble) begin
+//            pc_nxt = pc + 4;
+//        end
+    end else begin // else if (!is_bubble)
+        bubble = 0;
     end
 end
 
 always @(posedge clk) begin
     if (rst) begin
         pc <= 0;
+        is_bubble <= 0;
     end else begin
         regs_we3 <= ld_do ? 1 : 0;
+        is_bubble <= bubble;
         pc <= pc_nxt;
     end
 end
