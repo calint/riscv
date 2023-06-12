@@ -79,6 +79,10 @@ always @* begin
             regs_rd_wd = $unsigned(rs1_dat) < $unsigned(I_imm12) ? 1 : 0;
             regs_rd_we = 1;            
         end
+        3'b100: begin // XORI
+            regs_rd_wd = rs1_dat ^ I_imm12;
+            regs_rd_we = 1;        
+        end
         endcase
     end
     endcase

@@ -58,6 +58,10 @@ initial begin
     #clk_tk
     if (dut.regs.mem[12]==32'h1) $display("test 7 passed"); else $display("test 7 FAILED"); 
 
+    // 20: fff64693 xori x13,x12,-1
+    #clk_tk
+    if (dut.regs.mem[13]==32'hffff_fffe) $display("test 8 passed"); else $display("test 8 FAILED"); 
+   
     $finish;
 end
 
