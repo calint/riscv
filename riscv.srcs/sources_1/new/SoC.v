@@ -40,14 +40,15 @@ reg [31:0] regs_rd_wd;
 reg regs_rd_we;
 wire signed [31:0] regs_rd1;
 wire signed [31:0] regs_rd2;
-reg [4:0] regs_ra3;
-reg [31:0] regs_wd3;
-reg regs_we3;
 reg [1:0] ram_weA;
 reg [2:0] ram_reA;
 reg [31:0] ram_addrA;
 reg [31:0] ram_dinA;
 wire [31:0] ram_doutA;
+
+reg ld_do; // previous instruction was ld
+reg [4:0] ld_rd; // previous instruction rd
+reg regs_we3;
 
 wire signed [31:0] rs1_dat = regs_rd1;
 wire signed [31:0] rs2_dat = regs_rd2;
@@ -61,6 +62,7 @@ assign uart_tx = 1;
 always @* begin
     regs_rd_we = 0;
     ram_weA = 0;
+    ram_reA = 0;
     case(opcode)
     7'b0110111: begin // LUI
         regs_rd_wd = U_imm20;
@@ -139,6 +141,28 @@ always @* begin
         end
         endcase
     end
+    7'b0000011: begin // load
+        ram_addrA = rs1_dat + I_imm12;
+        ld_do = 1;
+        ld_rd = rd;
+        case(funct3)
+        3'b000: begin // LB
+            ram_reA = 3'b101;
+        end
+        3'b001: begin // LH
+            ram_reA = 3'b110;
+        end
+        3'b010: begin // LW
+            ram_reA = 3'b111;
+        end
+        3'b100: begin // LBU
+            ram_reA = 3'b001;
+        end
+        3'b101: begin // LHU
+            ram_reA = 3'b010;
+        end
+        endcase
+    end
     endcase
 end
 
@@ -146,10 +170,15 @@ always @(posedge clk) begin
     if (rst) begin
         pc <= 0;
         regs_rd_we <= 0;
-        regs_we3 <= 0;
         ram_weA <= 0;
         ram_reA <= 0;
+        ld_do <= 0;
     end else begin
+        regs_we3 <= 0;
+        if (ld_do) begin
+            regs_we3 <= 1;
+            ld_do <= 0;
+        end
         pc <= pc + 4;
     end
 end
@@ -163,8 +192,8 @@ Registers regs (
     .rd_we(regs_rd_we),
     .rd1(regs_rd1), // value of register 'rs1'
     .rd2(regs_rd2), // value of register 'rs2'
-    .ra3(regs_ra3), // register address 3
-    .wd3(regs_wd3), // data to write to register 'ra3' when 'we3' is enabled
+    .ra3(ld_rd), // register to write from ram out (load instructions)
+    .wd3(ram_doutA), // data to write to register 'ra3' when 'we3' is enabled
     .we3(regs_we3)
 );
 

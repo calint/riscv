@@ -146,6 +146,23 @@ initial begin
     #clk_tk
     if (dut.ram.ram.ram_block[32'h0000_1004>>2]==32'h0101_0001) $display("test 29 passed"); else $display("test 29 FAILED"); 
 
+    // 78: 004a0a83 lb x21,4(x20)
+    #clk_tk // x21 write is in the next cycle
+   
+    // 7c: 006a1a83 lh x21,6(x20)
+    #clk_tk
+    // check previous cycle (78) lb
+    if (dut.regs.mem[21]==32'h0000_0001) $display("test 30 passed"); else $display("test 30 FAILED"); 
+
+    // 80: 004a2a83 lw x21,4(x20)
+    #clk_tk
+    // check previous cycle (7c) lh
+    if (dut.regs.mem[21]==32'h0000_0101) $display("test 31 passed"); else $display("test 31 FAILED"); 
+
+    #clk_tk
+    // check previous cycle (80) lw
+    if (dut.regs.mem[21]==32'h0101_0001) $display("test 32 passed"); else $display("test 32 FAILED"); 
+
     $finish;
 end
 
