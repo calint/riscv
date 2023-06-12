@@ -191,7 +191,7 @@ always @* begin
             regs_rd_we = 1;
             pc_nxt = pc + J_imm20 - 4;
             bubble = 1;
-            $display("*** jal_rd_wd=%h  pc_nxt=%h", regs_rd_wd, pc_nxt); 
+            //$display("*** jal_rd_wd=%h  pc_nxt=%h", regs_rd_wd, pc_nxt); 
         end
         7'b1100111: begin // JALR
             regs_rd_wd = pc;
@@ -243,7 +243,7 @@ always @* begin
     end else begin // else if (!is_bubble)
         bubble = 0;
     end
-    $display("*** %t, pc_nxt=%h bubble=%d", $time, pc_nxt, bubble); 
+    //$display("*** %t, pc_nxt=%h bubble=%d", $time, pc_nxt, bubble); 
   end
 
 always @(posedge clk) begin
@@ -253,7 +253,7 @@ always @(posedge clk) begin
     end else begin
         regs_we3 <= ld_do ? 1 : 0;
         is_bubble <= bubble;
-        $display(">>> clk: pc=%h, pc_nxt=%h", pc, pc_nxt);
+        //$display(">>> clk: pc=%h, pc_nxt=%h", pc, pc_nxt);
         pc <= pc_nxt;
     end
 end
