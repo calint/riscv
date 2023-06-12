@@ -40,8 +40,23 @@ _start:
 	lbu x21, 0(x20)			# x21 = ram[0x1000] == 0xff
 	lhu x21, 2(x20)			# x21 = ram[0x1000 + 2] == 0xffff
 	addi x22, x21, 1        # x22 = 0xffff + 1 == 0x1_0000
-	jal x1, lbl_jal
+	jal x1, lbl_jal			#
+	beq x22, x22, lbl_beq	# x22 == x22 -> branch taken
+lbl1:
+	bne x22, x21, lbl_bne	# x22 != x21 -> branch taken
+lbl2:
+	nop
+	nop
+	nop
 
 .org 0x400
 lbl_jal:
 	jalr x0, 0(x1)
+
+.org 0x408
+lbl_beq:
+	jal x0, lbl1
+
+.org 0x410
+lbl_bne:
+	jal x0, lbl2

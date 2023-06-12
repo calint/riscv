@@ -193,6 +193,29 @@ initial begin
 
     // note. pc is a step ahead thus pc + 4
     if (dut.pc==32'h0000_009c) $display("test 38 passed"); else $display("test 38 FAILED"); 
+    // 98: 376b0863 beq x22,x22,408 <lbl_beq>
+    #clk_tk
+    #clk_tk // bubble
+    // note. pc is a step ahead thus pc + 4
+    if (dut.pc==32'h0000_040c) $display("test 39 passed"); else $display("test 39 FAILED"); 
+    
+    // 408:	c95ff06f jal x0,9c <lbl1>
+    #clk_tk
+    #clk_tk // bubble
+    // note. pc is a step ahead thus pc + 4
+    if (dut.pc==32'h0000_00a0) $display("test 40 passed"); else $display("test 40 FAILED"); 
+    
+    // 9c: 375b1a63 bne x22,x21,410 <lbl_bne>
+    #clk_tk
+    #clk_tk // bubble
+    // note. pc is a step ahead thus pc + 4
+    if (dut.pc==32'h0000_0414) $display("test 41 passed"); else $display("test 41 FAILED"); 
+    
+    // 410: c91ff06f jal x0,a0 <lbl2>
+    #clk_tk
+    #clk_tk // bubble
+    // note. pc is a step ahead thus pc + 4
+    if (dut.pc==32'h0000_00a4) $display("test 42 passed"); else $display("test 42 FAILED"); 
     
     $finish;
 end

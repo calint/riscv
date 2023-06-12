@@ -34,7 +34,7 @@ wire [6:0] funct7 = ir[31:25];
 wire signed [31:0] I_imm12 = {{20{ir[31]}}, ir[31:20]};
 wire [31:0] U_imm20 = {ir[31:12], {12{1'b0}}};
 wire signed [31:0] S_imm12 = {{20{ir[31]}}, ir[31:25], ir[11:7]};
-wire signed [31:0] B_imm12 = {{20{ir[31]}}, ir[31], ir[7], ir[30:25], ir[11:8]};
+wire signed [31:0] B_imm12 = {{20{ir[31]}}, ir[31], ir[7], ir[30:25], ir[11:8], 1'b0};
 wire signed [31:0] J_imm20 = {{20{ir[31]}}, ir[31], ir[19:12], ir[20], ir[30:21], 1'b0};
 
 reg [31:0] regs_rd_wd;
@@ -198,40 +198,40 @@ always @* begin
             pc_nxt = rs1_dat + I_imm12;
             bubble = 1;
         end
-        7'b1100111: begin // branches
+        7'b1100011: begin // branches
             case(funct3)
             3'b000: begin // BEQ
-                if (rs1 == rs2) begin
+                if (rs1_dat == rs2_dat) begin
                     pc_nxt = pc + B_imm12 - 4;
                     bubble = 1;                    
                 end
             end
             3'b001: begin // BNE
-                if (rs1 != rs2) begin
+                if (rs1_dat != rs2_dat) begin
                     pc_nxt = pc + B_imm12 - 4;
                     bubble = 1;
                 end
             end
             3'b100: begin // BLT
-                if (rs1 < rs2) begin
+                if (rs1_dat < rs2_dat) begin
                     pc_nxt = pc + B_imm12 - 4;
                     bubble = 1;
                 end
             end
             3'b101: begin // BGE
-                if (rs1 >= rs2) begin
+                if (rs1_dat >= rs2_dat) begin
                     pc_nxt = pc + B_imm12 - 4;
                     bubble = 1;
                 end
             end
             3'b110: begin // BLTU
-                if ($unsigned(rs1) < $unsigned(rs2)) begin
+                if ($unsigned(rs1_dat) < $unsigned(rs2_dat)) begin
                     pc_nxt = pc + B_imm12 - 4;
                     bubble = 1;
                 end
             end
             3'b111: begin // BGEU
-                if ($unsigned(rs1) >= $unsigned(rs2)) begin
+                if ($unsigned(rs1_dat) >= $unsigned(rs2_dat)) begin
                     pc_nxt = pc + B_imm12 - 4;
                     bubble = 1;
                 end

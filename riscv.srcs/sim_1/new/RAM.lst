@@ -7,7 +7,7 @@ Disassembly of section .text:
 00000000 <_start>:
    0:	00000013          	addi	x0,x0,0
    4:	12345537          	lui	x10,0x12345
-   8:	67850513          	addi	x10,x10,1656 # 12345678 <__global_pointer$+0x12343a74>
+   8:	67850513          	addi	x10,x10,1656 # 12345678 <__global_pointer$+0x12343a64>
    c:	00300593          	addi	x11,x0,3
   10:	0045a613          	slti	x12,x11,4
   14:	fff5a613          	slti	x12,x11,-1
@@ -32,7 +32,7 @@ Disassembly of section .text:
   60:	00b869b3          	or	x19,x16,x11
   64:	0109f9b3          	and	x19,x19,x16
   68:	00001a37          	lui	x20,0x1
-  6c:	013a2223          	sw	x19,4(x20) # 1004 <lbl_jal+0xc04>
+  6c:	013a2223          	sw	x19,4(x20) # 1004 <lbl_bne+0xbf4>
   70:	013a1323          	sh	x19,6(x20)
   74:	013a03a3          	sb	x19,7(x20)
   78:	004a0a83          	lb	x21,4(x20)
@@ -43,7 +43,26 @@ Disassembly of section .text:
   8c:	002a5a83          	lhu	x21,2(x20)
   90:	001a8b13          	addi	x22,x21,1
   94:	36c000ef          	jal	x1,400 <lbl_jal>
+  98:	376b0863          	beq	x22,x22,408 <lbl_beq>
+
+0000009c <lbl1>:
+  9c:	375b1a63          	bne	x22,x21,410 <lbl_bne>
+
+000000a0 <lbl2>:
+  a0:	00000013          	addi	x0,x0,0
+  a4:	00000013          	addi	x0,x0,0
+  a8:	00000013          	addi	x0,x0,0
 	...
 
 00000400 <lbl_jal>:
  400:	00008067          	jalr	x0,0(x1)
+ 404:	0000                	.2byte	0x0
+	...
+
+00000408 <lbl_beq>:
+ 408:	c95ff06f          	jal	x0,9c <lbl1>
+ 40c:	0000                	.2byte	0x0
+	...
+
+00000410 <lbl_bne>:
+ 410:	c91ff06f          	jal	x0,a0 <lbl2>
