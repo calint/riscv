@@ -15,4 +15,7 @@ _start:
 	ori x13, x13, 1			# x13 = 0xffff_ffff
 	andi x13, x13, 2		# x13 = 2
 	slli x13, x13, 3		# x13 = 16
+	srli x13, x13, 3		# x13 = 2
+	xori x13, x13, -1       # x13 = 0xffff_fffd == -3
+	srai x13, x13, 1		# x13 = 0xffff_fffe == -2
 

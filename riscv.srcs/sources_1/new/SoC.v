@@ -66,22 +66,31 @@ always @* begin
         regs_rd_we = 1;
     end
     6'b0010011: begin // immediate
+        regs_rd_we = 1;
         case(funct3)
         3'b000: begin // ADDI
             regs_rd_wd = rs1_dat + I_imm12;
-            regs_rd_we = 1;
         end
         3'b010: begin // SLTI
             regs_rd_wd = rs1_dat < I_imm12 ? 1 : 0;
-            regs_rd_we = 1;
         end
         3'b011: begin // SLTIU
             regs_rd_wd = $unsigned(rs1_dat) < $unsigned(I_imm12) ? 1 : 0;
-            regs_rd_we = 1;            
         end
         3'b100: begin // XORI
             regs_rd_wd = rs1_dat ^ I_imm12;
-            regs_rd_we = 1;        
+        end
+        3'b110: begin // ORI
+            regs_rd_wd = rs1_dat | I_imm12;
+        end
+        3'b111: begin // ANDI
+            regs_rd_wd = rs1_dat & I_imm12;
+        end
+        3'b001: begin // SLLI
+            regs_rd_wd = rs1_dat << rs2;
+        end
+        3'b101: begin // SRLI and SRAI
+            regs_rd_wd = ir[30] ? rs1_dat >>> rs2 : rs1_dat >> rs2;
         end
         endcase
     end

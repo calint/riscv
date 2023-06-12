@@ -62,6 +62,30 @@ initial begin
     #clk_tk
     if (dut.regs.mem[13]==32'hffff_fffe) $display("test 8 passed"); else $display("test 8 FAILED"); 
    
+   // 24: 0016e693 ori x13,x13,1
+    #clk_tk
+    if (dut.regs.mem[13]==32'hffff_ffff) $display("test 9 passed"); else $display("test 9 FAILED"); 
+
+    // 28: 0026f693 andi x13,x13,2
+    #clk_tk
+    if (dut.regs.mem[13]==32'h2) $display("test 10 passed"); else $display("test 10 FAILED"); 
+
+    // 2c: 00369693 slli x13,x13,0x3
+    #clk_tk
+    if (dut.regs.mem[13]==16) $display("test 11 passed"); else $display("test 11 FAILED"); 
+
+    // 30: 0036d693 srli x13,x13,0x3
+    #clk_tk
+    if (dut.regs.mem[13]==2) $display("test 12 passed"); else $display("test 12 FAILED"); 
+
+    // 34: fff6c693 xori x13,x13,-1
+    #clk_tk
+    if (dut.regs.mem[13]==-3) $display("test 13 passed"); else $display("test 13 FAILED"); 
+    
+    // 38: 4016d693 srai x13,x13,0x1
+    #clk_tk
+    if (dut.regs.mem[13]==-2) $display("test 14 passed"); else $display("test 14 FAILED"); 
+
     $finish;
 end
 
