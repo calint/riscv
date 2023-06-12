@@ -94,6 +94,35 @@ always @* begin
         end
         endcase
     end
+    6'b0110011: begin // arithmetic
+        regs_rd_we = 1;
+        case(funct3)
+        3'b000: begin // ADD and SUB
+            regs_rd_wd = ir[30] ? rs1_dat - rs2_dat : rs1_dat + rs2_dat;        
+        end
+        3'b001: begin // SLL
+            regs_rd_wd = rs1_dat << (rs2_dat & 5'b11111);
+        end
+        3'b010: begin // SLT
+            regs_rd_wd = rs1_dat < rs2_dat ? 1 : 0;
+        end
+        3'b011: begin // SLTU
+            regs_rd_wd = $unsigned(rs1_dat) < $unsigned(rs2_dat) ? 1 : 0;
+        end
+        3'b100: begin // XOR
+            regs_rd_wd = rs1_dat ^ rs2_dat;
+        end
+        3'b101: begin // SRL and SRA
+            regs_rd_wd = ir[30] ? rs1_dat >>> (rs2_dat & 5'b11111) : rs1_dat >> (rs2_dat & 5'b11111);
+        end
+        3'b110: begin // OR
+            regs_rd_wd = rs1_dat | rs2_dat;
+        end
+        3'b111: begin // AND
+            regs_rd_wd = rs1_dat & rs2_dat;
+        end
+        endcase
+    end
     endcase
 end
 

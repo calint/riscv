@@ -7,7 +7,7 @@ Disassembly of section .text:
 00000000 <_start>:
    0:	00000013          	addi	x0,x0,0
    4:	12345537          	lui	x10,0x12345
-   8:	67850513          	addi	x10,x10,1656 # 12345678 <__global_pointer$+0x12343e3c>
+   8:	67850513          	addi	x10,x10,1656 # 12345678 <__global_pointer$+0x12343e10>
    c:	00300593          	addi	x11,x0,3
   10:	0045a613          	slti	x12,x11,4
   14:	fff5a613          	slti	x12,x11,-1
@@ -20,3 +20,14 @@ Disassembly of section .text:
   30:	0036d693          	srli	x13,x13,0x3
   34:	fff6c693          	xori	x13,x13,-1
   38:	4016d693          	srai	x13,x13,0x1
+  3c:	00c68733          	add	x14,x13,x12
+  40:	40c70733          	sub	x14,x14,x12
+  44:	00c617b3          	sll	x15,x12,x12
+  48:	00f62833          	slt	x16,x12,x15
+  4c:	00c62833          	slt	x16,x12,x12
+  50:	00d83833          	sltu	x16,x16,x13
+  54:	00d848b3          	xor	x17,x16,x13
+  58:	0105d933          	srl	x18,x11,x16
+  5c:	4108d933          	sra	x18,x17,x16
+  60:	00b869b3          	or	x19,x16,x11
+  64:	0109f9b3          	and	x19,x19,x16

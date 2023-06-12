@@ -1,0 +1,1 @@
+[ ] SoC: alu op with register or immediate instead of cases

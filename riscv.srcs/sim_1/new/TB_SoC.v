@@ -86,6 +86,50 @@ initial begin
     #clk_tk
     if (dut.regs.mem[13]==-2) $display("test 14 passed"); else $display("test 14 FAILED"); 
 
+    // 3c: 00c68733 add x14,x13,x12
+    #clk_tk
+    if (dut.regs.mem[14]==-1) $display("test 15 passed"); else $display("test 15 FAILED"); 
+
+    // 40: 40c70733 sub x14,x14,x12
+    #clk_tk
+    if (dut.regs.mem[14]==-2) $display("test 16 passed"); else $display("test 16 FAILED"); 
+    
+    // 44: 00c617b3 sll x15,x12,x12
+    #clk_tk
+    if (dut.regs.mem[15]==2) $display("test 17 passed"); else $display("test 17 FAILED"); 
+
+    // 48: 00f62833 slt x16,x12,x15
+    #clk_tk
+    if (dut.regs.mem[16]==1) $display("test 18 passed"); else $display("test 18 FAILED"); 
+    
+    // 4c: 00c62833 slt x16,x12,x12
+    #clk_tk
+    if (dut.regs.mem[16]==0) $display("test 19 passed"); else $display("test 19 FAILED"); 
+
+    // 50: 00d83833 sltu x16,x16,x13
+    #clk_tk
+    if (dut.regs.mem[16]==1) $display("test 20 passed"); else $display("test 20 FAILED"); 
+
+    // 54: 00d84833 xor x17,x16,x13
+    #clk_tk
+    if (dut.regs.mem[17]==-1) $display("test 21 passed"); else $display("test 21 FAILED"); 
+
+    // 58: 0105d933 srl x18,x11,x16
+    #clk_tk
+    if (dut.regs.mem[18]==1) $display("test 22 passed"); else $display("test 22 FAILED"); 
+
+    // 5c: 4108d933 sra x18,x17,x16
+    #clk_tk
+    if (dut.regs.mem[18]==-1) $display("test 23 passed"); else $display("test 23 FAILED"); 
+
+    // 60: 00b869b3 or x19,x16,x11
+    #clk_tk
+    if (dut.regs.mem[19]==3) $display("test 24 passed"); else $display("test 24 FAILED"); 
+
+    // 64: 0109f9b3 and x19,x19,x16
+    #clk_tk
+    if (dut.regs.mem[19]==1) $display("test 25 passed"); else $display("test 25 FAILED"); 
+
     $finish;
 end
 
