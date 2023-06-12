@@ -17,6 +17,7 @@ module SoC #(
 );
 
 reg [31:0] pc; // program counter, byte addressed
+reg [31:0] pc_nxt;
 wire [31:0] ir; // instruction register
 wire [6:0] opcode = ir[6:0];
 wire [4:0] rd = ir[11:7];
@@ -62,125 +63,175 @@ assign uart_tx = 1;
 
 always @* begin
     regs_rd_we = 0;
+    regs_rd_wd = 0;
+    ram_addrA = 0;
+    ram_dinA = 0;
     ram_weA = 0;
     ram_reA = 0;
-    case(opcode)
-    7'b0110111: begin // LUI
-        regs_rd_wd = U_imm20;
-        regs_rd_we = 1;
-    end
-    7'b0010011: begin // immediate
-        regs_rd_we = 1;
-        case(funct3)
-        3'b000: begin // ADDI
-            regs_rd_wd = rs1_dat + I_imm12;
+    ld_do = 0;
+    pc_nxt = pc + 4;
+    
+    if (rst) begin
+        ld_rd = 0;    
+    end else begin    
+        case(opcode)
+        7'b0110111: begin // LUI
+            regs_rd_wd = U_imm20;
+            regs_rd_we = 1;
         end
-        3'b010: begin // SLTI
-            regs_rd_wd = rs1_dat < I_imm12 ? 1 : 0;
+        7'b0010011: begin // logical ops immediate
+            regs_rd_we = 1;
+            case(funct3)
+            3'b000: begin // ADDI
+                regs_rd_wd = rs1_dat + I_imm12;
+            end
+            3'b010: begin // SLTI
+                regs_rd_wd = rs1_dat < I_imm12 ? 1 : 0;
+            end
+            3'b011: begin // SLTIU
+                regs_rd_wd = $unsigned(rs1_dat) < $unsigned(I_imm12) ? 1 : 0;
+            end
+            3'b100: begin // XORI
+                regs_rd_wd = rs1_dat ^ I_imm12;
+            end
+            3'b110: begin // ORI
+                regs_rd_wd = rs1_dat | I_imm12;
+            end
+            3'b111: begin // ANDI
+                regs_rd_wd = rs1_dat & I_imm12;
+            end
+            3'b001: begin // SLLI
+                regs_rd_wd = rs1_dat << rs2;
+            end
+            3'b101: begin // SRLI and SRAI
+                regs_rd_wd = ir[30] ? rs1_dat >>> rs2 : rs1_dat >> rs2;
+            end
+            endcase
         end
-        3'b011: begin // SLTIU
-            regs_rd_wd = $unsigned(rs1_dat) < $unsigned(I_imm12) ? 1 : 0;
+        7'b0110011: begin // logical ops
+            regs_rd_we = 1;
+            case(funct3)
+            3'b000: begin // ADD and SUB
+                regs_rd_wd = ir[30] ? rs1_dat - rs2_dat : rs1_dat + rs2_dat;        
+            end
+            3'b001: begin // SLL
+                regs_rd_wd = rs1_dat << (rs2_dat & 5'b11111);
+            end
+            3'b010: begin // SLT
+                regs_rd_wd = rs1_dat < rs2_dat ? 1 : 0;
+            end
+            3'b011: begin // SLTU
+                regs_rd_wd = $unsigned(rs1_dat) < $unsigned(rs2_dat) ? 1 : 0;
+            end
+            3'b100: begin // XOR
+                regs_rd_wd = rs1_dat ^ rs2_dat;
+            end
+            3'b101: begin // SRL and SRA
+                regs_rd_wd = ir[30] ? rs1_dat >>> (rs2_dat & 5'b11111) : rs1_dat >> (rs2_dat & 5'b11111);
+            end
+            3'b110: begin // OR
+                regs_rd_wd = rs1_dat | rs2_dat;
+            end
+            3'b111: begin // AND
+                regs_rd_wd = rs1_dat & rs2_dat;
+            end
+            endcase
         end
-        3'b100: begin // XORI
-            regs_rd_wd = rs1_dat ^ I_imm12;
+        7'b0100011: begin // store
+            ram_addrA = rs1_dat + S_imm12;
+            ram_dinA = rs2_dat;
+            case(funct3)
+            3'b000: begin // SB
+                ram_weA = 2'b01; // write byte
+            end
+            3'b001: begin // SH
+                ram_weA = 2'b10; // write half word
+            end
+            3'b010: begin // SW
+                ram_weA = 2'b11; // write word
+            end
+            endcase
         end
-        3'b110: begin // ORI
-            regs_rd_wd = rs1_dat | I_imm12;
+        7'b0000011: begin // load
+            ram_addrA = rs1_dat + I_imm12;
+            ld_do = 1;
+            ld_rd = rd;
+            case(funct3)
+            3'b000: begin // LB
+                ram_reA = 3'b101;
+            end
+            3'b001: begin // LH
+                ram_reA = 3'b110;
+            end
+            3'b010: begin // LW
+                ram_reA = 3'b111;
+            end
+            3'b100: begin // LBU
+                ram_reA = 3'b001;
+            end
+            3'b101: begin // LHU
+                ram_reA = 3'b010;
+            end
+            endcase
         end
-        3'b111: begin // ANDI
-            regs_rd_wd = rs1_dat & I_imm12;
+        7'b0010111: begin // AUIPC
+            regs_rd_wd = pc + U_imm20;
+            regs_rd_we = 1;
         end
-        3'b001: begin // SLLI
-            regs_rd_wd = rs1_dat << rs2;
+        7'b1101111: begin // JAL
+            regs_rd_wd = pc + 4;
+            regs_rd_we = 1;
+            pc_nxt = pc + J_imm20;
         end
-        3'b101: begin // SRLI and SRAI
-            regs_rd_wd = ir[30] ? rs1_dat >>> rs2 : rs1_dat >> rs2;
+        7'b1100111: begin // JALR
+            regs_rd_wd = pc + 4;
+            regs_rd_we = 1;
+            pc_nxt = rs1_dat + I_imm12;
+        end
+        7'b1100111: begin // branches
+            case(funct3)
+            3'b000: begin // BEQ
+                if (rs1 == rs2) begin
+                    pc_nxt = pc + B_imm12;
+                end
+            end
+            3'b001: begin // BNE
+                if (rs1 != rs2) begin
+                    pc_nxt = pc + B_imm12;
+                end
+            end
+            3'b100: begin // BLT
+                if (rs1 < rs2) begin
+                    pc_nxt = pc + B_imm12;
+                end
+            end
+            3'b101: begin // BGE
+                if (rs1 >= rs2) begin
+                    pc_nxt = pc + B_imm12;
+                end
+            end
+            3'b110: begin // BLTU
+                if ($unsigned(rs1) < $unsigned(rs2)) begin
+                    pc_nxt = pc + B_imm12;
+                end
+            end
+            3'b111: begin // BGEU
+                if ($unsigned(rs1) >= $unsigned(rs2)) begin
+                    pc_nxt = pc + B_imm12;
+                end
+            end
+            endcase
         end
         endcase
     end
-    7'b0110011: begin // arithmetic
-        regs_rd_we = 1;
-        case(funct3)
-        3'b000: begin // ADD and SUB
-            regs_rd_wd = ir[30] ? rs1_dat - rs2_dat : rs1_dat + rs2_dat;        
-        end
-        3'b001: begin // SLL
-            regs_rd_wd = rs1_dat << (rs2_dat & 5'b11111);
-        end
-        3'b010: begin // SLT
-            regs_rd_wd = rs1_dat < rs2_dat ? 1 : 0;
-        end
-        3'b011: begin // SLTU
-            regs_rd_wd = $unsigned(rs1_dat) < $unsigned(rs2_dat) ? 1 : 0;
-        end
-        3'b100: begin // XOR
-            regs_rd_wd = rs1_dat ^ rs2_dat;
-        end
-        3'b101: begin // SRL and SRA
-            regs_rd_wd = ir[30] ? rs1_dat >>> (rs2_dat & 5'b11111) : rs1_dat >> (rs2_dat & 5'b11111);
-        end
-        3'b110: begin // OR
-            regs_rd_wd = rs1_dat | rs2_dat;
-        end
-        3'b111: begin // AND
-            regs_rd_wd = rs1_dat & rs2_dat;
-        end
-        endcase
-    end
-    7'b0100011: begin // store
-        ram_addrA = rs1_dat + S_imm12;
-        ram_dinA = rs2_dat;
-        case(funct3)
-        3'b000: begin // SB
-            ram_weA = 2'b01; // write byte
-        end
-        3'b001: begin // SH
-            ram_weA = 2'b10; // write half word
-        end
-        3'b010: begin // SW
-            ram_weA = 2'b11; // write word
-        end
-        endcase
-    end
-    7'b0000011: begin // load
-        ram_addrA = rs1_dat + I_imm12;
-        ld_do = 1;
-        ld_rd = rd;
-        case(funct3)
-        3'b000: begin // LB
-            ram_reA = 3'b101;
-        end
-        3'b001: begin // LH
-            ram_reA = 3'b110;
-        end
-        3'b010: begin // LW
-            ram_reA = 3'b111;
-        end
-        3'b100: begin // LBU
-            ram_reA = 3'b001;
-        end
-        3'b101: begin // LHU
-            ram_reA = 3'b010;
-        end
-        endcase
-    end
-    endcase
 end
 
 always @(posedge clk) begin
     if (rst) begin
         pc <= 0;
-        regs_rd_we <= 0;
-        ram_weA <= 0;
-        ram_reA <= 0;
-        ld_do <= 0;
     end else begin
-        regs_we3 <= 0;
-        if (ld_do) begin
-            regs_we3 <= 1;
-            ld_do <= 0;
-        end
-        pc <= pc + 4;
+        regs_we3 <= ld_do ? 1 : 0;
+        pc <= pc_nxt;
     end
 end
 
@@ -199,7 +250,7 @@ Registers regs (
 );
 
 RAM_Interface #(
-    .ADDR_WIDTH(16), // 2**16 = RAM depth in words
+    .ADDR_WIDTH(15), // 2**15 = RAM depth in words
     .DATA_FILE(RAM_FILE)
 ) ram (
     // port A: data memory, read / write byte addressable ram
