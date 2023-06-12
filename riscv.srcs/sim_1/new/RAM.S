@@ -43,9 +43,23 @@ _start:
 	jal x1, lbl_jal			#
 	beq x22, x22, lbl_beq	# x22 == x22 -> branch taken
 lbl1:
-	bne x22, x21, lbl_bne	# x22 != x21 -> branch taken
+	bne x22, x21, lbl_bne	# 0x1_0000 != 0xffff -> branch taken
 lbl2:
-	nop
+	blt x21, x22, lbl_blt   # 0xffff < 0x1_0000 -> branch taken
+lbl3:
+	bge x22, x21, lbl_bge	# 0x1_0000 >= 0xffff -> branch taken
+lbl4:
+	bltu x19, x18, lbl_bltu	# 1 < 0xffff_ffff -> branch taken
+lbl5:
+	bgeu x18, x19, lbl_bgeu	# 0xffff_ffff > 1 -> branch taken
+lbl6:
+	beq x22, x21, lbl_beq	# 0x1_0000 != 0xffff -> branch not taken 
+	bne x21, x21, lbl_beq	# 0xffff == 0xffff -> branch not taken 
+	blt x22, x21, lbl_blt   # 0x1_0000 > 0xffff -> branch not taken
+	bge x21, x22, lbl_bge	# 0xffff < 0x1_0000 -> branch not taken
+	bltu x18, x19, lbl_bltu	# 0xffff_ffff > 1 -> branch not taken
+	bgeu x19, x18, lbl_bgeu	# 1 < 0xffff_ffff -> branch not taken
+	jal x1, lbl_auipc
 	nop
 	nop
 
@@ -60,3 +74,24 @@ lbl_beq:
 .org 0x410
 lbl_bne:
 	jal x0, lbl2
+
+.org 0x418
+lbl_blt:
+	jal x0, lbl3
+
+.org 0x420
+lbl_bge:
+	jal x0, lbl4
+
+.org 0x428
+lbl_bltu:
+	jal x0, lbl5
+
+.org 0x430
+lbl_bgeu:
+	jal x0, lbl6
+
+.org 0x438
+lbl_auipc:
+	auipc x2, 0xfffff	# 0x0438 + 0xffff_f0000 (-4096) == -3016
+	jalr x0, 0(x1)

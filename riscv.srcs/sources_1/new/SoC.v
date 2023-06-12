@@ -178,14 +178,14 @@ always @* begin
             end
             endcase
         end
+        // note. auipc, jumps and branches:
+        //       pc is ahead one instruction (+4)
+        //       thus -4 when branching
+        //       and no +4 to return address
         7'b0010111: begin // AUIPC
-            regs_rd_wd = pc + U_imm20;
+            regs_rd_wd = pc + U_imm20 - 4;
             regs_rd_we = 1;
         end
-        // note. jumps and branches
-        //       pc is ahead one instruction
-        //       thus -4 when branching
-        //       and no +4 when storing return address
         7'b1101111: begin // JAL
             regs_rd_wd = pc; 
             regs_rd_we = 1;
