@@ -60,12 +60,13 @@ assign uart_tx = 1;
 
 always @* begin
     regs_rd_we = 0;
+    ram_weA = 0;
     case(opcode)
-    6'b0110111: begin // LUI
+    7'b0110111: begin // LUI
         regs_rd_wd = U_imm20;
         regs_rd_we = 1;
     end
-    6'b0010011: begin // immediate
+    7'b0010011: begin // immediate
         regs_rd_we = 1;
         case(funct3)
         3'b000: begin // ADDI
@@ -94,7 +95,7 @@ always @* begin
         end
         endcase
     end
-    6'b0110011: begin // arithmetic
+    7'b0110011: begin // arithmetic
         regs_rd_we = 1;
         case(funct3)
         3'b000: begin // ADD and SUB
@@ -120,6 +121,15 @@ always @* begin
         end
         3'b111: begin // AND
             regs_rd_wd = rs1_dat & rs2_dat;
+        end
+        endcase
+    end
+    7'b0100011: begin // store
+        case(funct3)
+        3'b010: begin // SW
+            ram_addrA = rs1_dat + S_imm12;
+            ram_dinA = rs2_dat;
+            ram_weA = 2'b11; // write word
         end
         endcase
     end

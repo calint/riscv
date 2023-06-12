@@ -14,7 +14,10 @@ pwd
 iverilog -o iverilog.out \
     $TB \
     $SRCPTH/RAM.v \
-    $SRCPTH/RAM_Interface.v
+    $SRCPTH/RAM_Interface.v \
+    $SRCPTH/Registers.v \
+    $SRCPTH/SoC.v
+
 
 vvp iverilog.out
 rm iverilog.out
