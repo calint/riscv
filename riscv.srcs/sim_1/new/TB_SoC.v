@@ -159,10 +159,28 @@ initial begin
     // check previous cycle (7c) lh
     if (dut.regs.mem[21]==32'h0000_0101) $display("test 31 passed"); else $display("test 31 FAILED"); 
 
+    // 84: 011a2023 sw x17,0(x20)
     #clk_tk
+    if (dut.ram.ram.ram_block[32'h0000_1000>>2]==32'hffff_ffff) $display("test 32 passed"); else $display("test 32 FAILED"); 
     // check previous cycle (80) lw
-    if (dut.regs.mem[21]==32'h0101_0001) $display("test 32 passed"); else $display("test 32 FAILED"); 
+    if (dut.regs.mem[21]==32'h0101_0001) $display("test 33 passed"); else $display("test 33 FAILED"); 
 
+    
+    // 88: 000a4a83 lbu x21,0(x20)
+    #clk_tk // the restult is writting to x21 in the next cycle
+
+    // 8c: 002a5a83 lhu x21,2(x20)
+    #clk_tk // the restult is writting to x21 in the next cycle
+    // check previous cycle (88) lbu
+    if (dut.regs.mem[21]==32'h0000_00ff) $display("test 34 passed"); else $display("test 34 FAILED"); 
+    
+    // 90: 001a8b13 addi x22,x21,1
+    #clk_tk
+    // check previous cycle (8c) lhu
+    if (dut.regs.mem[21]==32'h0000_ffff) $display("test 35 passed"); else $display("test 35 FAILED"); 
+    // check that addi used the retrieved x20
+    if (dut.regs.mem[22]==32'h0001_0000) $display("test 36 passed"); else $display("test 36 FAILED"); 
+    
     $finish;
 end
 

@@ -50,8 +50,9 @@ reg ld_do; // previous instruction was ld
 reg [4:0] ld_rd; // previous instruction rd
 reg regs_we3;
 
-wire signed [31:0] rs1_dat = regs_rd1;
-wire signed [31:0] rs2_dat = regs_rd2;
+// if last instruction was a load to register that is used in this instruction 
+wire signed [31:0] rs1_dat = regs_we3 && rs1 == ld_rd ? ram_doutA : regs_rd1;
+wire signed [31:0] rs2_dat = regs_we3 && rs2 == ld_rd ? ram_doutA : regs_rd2;
 
 assign led = ir[3:0];
 assign led0_b = 1;
