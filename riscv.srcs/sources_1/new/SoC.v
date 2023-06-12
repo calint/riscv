@@ -30,16 +30,16 @@ wire [6:0] funct7 = ir[31:25];
 //wire [11:0] B_imm12 = {ir[31], ir[7], ir[30:25], ir[11:8]};
 //wire [20:0] J_imm20 = {ir[31], ir[19:12], ir[20], ir[30:21], 1'b0};
 
-wire [31:0] I_imm12 = {{20{ir[31]}}, ir[31:20]};
+wire signed [31:0] I_imm12 = {{20{ir[31]}}, ir[31:20]};
 wire [31:0] U_imm20 = {ir[31:12], {12{1'b0}}};
-wire [31:0] S_imm12 = {{20{ir[31]}}, ir[31:25], ir[11:7]};
-wire [31:0] B_imm12 = {{20{ir[31]}}, ir[31], ir[7], ir[30:25], ir[11:8]};
-wire [31:0] J_imm20 = {{20{ir[31]}}, ir[31], ir[19:12], ir[20], ir[30:21], 1'b0};
+wire signed [31:0] S_imm12 = {{20{ir[31]}}, ir[31:25], ir[11:7]};
+wire signed [31:0] B_imm12 = {{20{ir[31]}}, ir[31], ir[7], ir[30:25], ir[11:8]};
+wire signed [31:0] J_imm20 = {{20{ir[31]}}, ir[31], ir[19:12], ir[20], ir[30:21], 1'b0};
 
 reg [31:0] regs_rd_wd;
 reg regs_rd_we;
-wire [31:0] regs_rd1;
-wire [31:0] regs_rd2;
+wire signed [31:0] regs_rd1;
+wire signed [31:0] regs_rd2;
 reg [4:0] regs_ra3;
 reg [31:0] regs_wd3;
 reg regs_we3;
@@ -48,6 +48,9 @@ reg [2:0] ram_reA;
 reg [31:0] ram_addrA;
 reg [31:0] ram_dinA;
 wire [31:0] ram_doutA;
+
+wire signed [31:0] rs1_dat = regs_rd1;
+wire signed [31:0] rs2_dat = regs_rd2;
 
 assign led = ir[3:0];
 assign led0_b = 1;
@@ -65,8 +68,16 @@ always @* begin
     6'b0010011: begin // immediate
         case(funct3)
         3'b000: begin // ADDI
-            regs_rd_wd = regs_rd1 + I_imm12;
+            regs_rd_wd = rs1_dat + I_imm12;
             regs_rd_we = 1;
+        end
+        3'b010: begin // SLTI
+            regs_rd_wd = rs1_dat < I_imm12 ? 1 : 0;
+            regs_rd_we = 1;
+        end
+        3'b011: begin // SLTIU
+            regs_rd_wd = $unsigned(rs1_dat) < $unsigned(I_imm12) ? 1 : 0;
+            regs_rd_we = 1;            
         end
         endcase
     end

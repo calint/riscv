@@ -24,20 +24,40 @@ initial begin
     
     rst = 0;
     
-    // first stage in pipeline
+    // start pipeline
     #clk_tk
     
-    // 0:	00000013 addi x0,x0,0
+    // 0: 00000013 addi x0,x0,0
     #clk_tk
     
-    // 4:	12345537 lui x10,0x12345
+    // 4: 12345537 lui x10,0x12345
     #clk_tk
     if (dut.regs.mem[10]==32'h1234_5000) $display("test 1 passed"); else $display("test 1 FAILED"); 
     
-    // 8:	67850513 addi x10,x10,1656 # 12345678
+    // 8: 67850513 addi x10,x10,1656 # 12345678
     #clk_tk
     if (dut.regs.mem[10]==32'h1234_5678) $display("test 2 passed"); else $display("test 2 FAILED"); 
         
+    // c: 00300593 addi x11,x0,3
+    #clk_tk
+    if (dut.regs.mem[11]==32'h3) $display("test 3 passed"); else $display("test 3 FAILED"); 
+
+    // 10: 0045a613 slti x12,x11,4
+    #clk_tk
+    if (dut.regs.mem[12]==32'h1) $display("test 4 passed"); else $display("test 4 FAILED"); 
+
+    // 14: fff5a613 slti x12,x11,-1
+    #clk_tk
+    if (dut.regs.mem[12]==32'h0) $display("test 5 passed"); else $display("test 5 FAILED"); 
+
+    // 18: 0045b613 sltiu x12,x11,4
+    #clk_tk
+    if (dut.regs.mem[12]==32'h1) $display("test 6 passed"); else $display("test 6 FAILED"); 
+    
+    // 1c: fff5b613 sltiu x12,x11,-1
+    #clk_tk
+    if (dut.regs.mem[12]==32'h1) $display("test 7 passed"); else $display("test 7 FAILED"); 
+
     $finish;
 end
 
