@@ -23,11 +23,21 @@ initial begin
     #clk_tk
     
     rst = 0;
-    // run
-    repeat (8) begin
-        #clk_tk;
-    end
     
+    // first stage in pipeline
+    #clk_tk
+    
+    // 0:	00000013 addi x0,x0,0
+    #clk_tk
+    
+    // 4:	12345537 lui x10,0x12345
+    #clk_tk
+    if (dut.regs.mem[10]==32'h1234_5000) $display("test 1 passed"); else $display("test 1 FAILED"); 
+    
+    // 8:	67850513 addi x10,x10,1656 # 12345678
+    #clk_tk
+    if (dut.regs.mem[10]==32'h1234_5678) $display("test 2 passed"); else $display("test 2 FAILED"); 
+        
     $finish;
 end
 

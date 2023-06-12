@@ -21,8 +21,8 @@ module Registers #(
 
 reg signed [WIDTH-1:0] mem [0:2**ADDR_WIDTH-1];
 
-assign rd1 = mem[rs1];
-assign rd2 = mem[rs2];
+assign rd1 = rs1 == 0 ? 0 : mem[rs1];
+assign rd2 = rs2 == 0 ? 0 : mem[rs2];
 
 integer i;
 initial begin
@@ -39,9 +39,9 @@ always @(posedge clk) begin
     // write first the 'wd3' which is from a 'ld'
     // then the 'wd2' which might overwrite the 'wd3'
     //   example: ld r1 r7 ; add r7 r7
-    if (we3) 
+    if (we3 && ra3 != 0) 
         mem[ra3] <= wd3;
-    if (rd_we)
+    if (rd_we && rd !=0)
         mem[rd] <= rd_wd;
 end
 

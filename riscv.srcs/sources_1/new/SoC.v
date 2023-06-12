@@ -55,6 +55,24 @@ assign led0_g = ~btn;
 assign led0_r = uart_rx;
 assign uart_tx = 1;
 
+always @* begin
+    regs_rd_we = 0;
+    case(opcode)
+    6'b0110111: begin // LUI
+        regs_rd_wd = U_imm20;
+        regs_rd_we = 1;
+    end
+    6'b0010011: begin // immediate
+        case(funct3)
+        3'b000: begin // ADDI
+            regs_rd_wd = regs_rd1 + I_imm12;
+            regs_rd_we = 1;
+        end
+        endcase
+    end
+    endcase
+end
+
 always @(posedge clk) begin
     if (rst) begin
         pc <= 0;
