@@ -12,11 +12,11 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="150.844 ns"></ZoomEndTime>
+      <ZoomEndTime time="249.045 ns"></ZoomEndTime>
       <Cursor1Time time="100.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="160"></NameColumnWidth>
+      <NameColumnWidth column_width="156"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="9" />
@@ -36,24 +36,24 @@
       <obj_property name="ElementShortName">ir[31:0]</obj_property>
       <obj_property name="ObjectShortName">ir[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/imm12">
-      <obj_property name="ElementShortName">imm12[11:0]</obj_property>
-      <obj_property name="ObjectShortName">imm12[11:0]</obj_property>
+   <wvobject type="array" fp_name="/TB_SoC/dut/I_imm12">
+      <obj_property name="ElementShortName">I_imm12[11:0]</obj_property>
+      <obj_property name="ObjectShortName">I_imm12[11:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/upper_imm20">
-      <obj_property name="ElementShortName">upper_imm20[19:0]</obj_property>
-      <obj_property name="ObjectShortName">upper_imm20[19:0]</obj_property>
+   <wvobject type="array" fp_name="/TB_SoC/dut/U_imm20">
+      <obj_property name="ElementShortName">U_imm20[19:0]</obj_property>
+      <obj_property name="ObjectShortName">U_imm20[19:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/store_imm12">
-      <obj_property name="ElementShortName">store_imm12[11:0]</obj_property>
-      <obj_property name="ObjectShortName">store_imm12[11:0]</obj_property>
+   <wvobject type="array" fp_name="/TB_SoC/dut/S_imm12">
+      <obj_property name="ElementShortName">S_imm12[11:0]</obj_property>
+      <obj_property name="ObjectShortName">S_imm12[11:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/branch_imm12">
-      <obj_property name="ElementShortName">branch_imm12[11:0]</obj_property>
-      <obj_property name="ObjectShortName">branch_imm12[11:0]</obj_property>
+   <wvobject type="array" fp_name="/TB_SoC/dut/B_imm12">
+      <obj_property name="ElementShortName">B_imm12[11:0]</obj_property>
+      <obj_property name="ObjectShortName">B_imm12[11:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/jump_imm20">
-      <obj_property name="ElementShortName">jump_imm20[20:0]</obj_property>
-      <obj_property name="ObjectShortName">jump_imm20[20:0]</obj_property>
+   <wvobject type="array" fp_name="/TB_SoC/dut/J_imm20">
+      <obj_property name="ElementShortName">J_imm20[20:0]</obj_property>
+      <obj_property name="ObjectShortName">J_imm20[20:0]</obj_property>
    </wvobject>
 </wave_config>

@@ -24,11 +24,17 @@ wire [2:0] funct3 = ir[14:12];
 wire [4:0] rs1 = ir[19:15];
 wire [4:0] rs2 = ir[24:20];
 wire [6:0] funct7 = ir[31:25];
-wire [11:0] imm12 = ir[31:20];
-wire [19:0] upper_imm20 = ir[31:12];
-wire [11:0] store_imm12 = {ir[31:25], ir[11:7]};
-wire [11:0] branch_imm12 = {ir[31], ir[7], ir[30:25], ir[11:8]};
-wire [20:0] jump_imm20 = {ir[31], ir[19:12], ir[20], ir[30:21], 1'b0};
+//wire [11:0] I_imm12 = ir[31:20];
+//wire [19:0] U_imm20 = ir[31:12];
+//wire [11:0] S_imm12 = {ir[31:25], ir[11:7]};
+//wire [11:0] B_imm12 = {ir[31], ir[7], ir[30:25], ir[11:8]};
+//wire [20:0] J_imm20 = {ir[31], ir[19:12], ir[20], ir[30:21], 1'b0};
+
+wire [31:0] I_imm12 = {{20{ir[31]}}, ir[31:20]};
+wire [31:0] U_imm20 = {ir[31:12], {12{1'b0}}};
+wire [31:0] S_imm12 = {{20{ir[31]}}, ir[31:25], ir[11:7]};
+wire [31:0] B_imm12 = {{20{ir[31]}}, ir[31], ir[7], ir[30:25], ir[11:8]};
+wire [31:0] J_imm20 = {{20{ir[31]}}, ir[31], ir[19:12], ir[20], ir[30:21], 1'b0};
 
 reg [31:0] regs_rd_wd;
 reg regs_rd_we;
