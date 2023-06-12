@@ -1,5 +1,5 @@
 
-tb:     file format elf32-littleriscv
+RAM:     file format elf32-littleriscv
 
 
 Disassembly of section .text:
