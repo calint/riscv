@@ -31,7 +31,7 @@ RAM_Interface #(
     .ADDR_WIDTH(16), // 2**16 = RAM depth in words
     .DATA_WIDTH(32)
 ) ram (
-    // port A: read / write byte addressable ram (data memory)
+    // port A: data memory, read / write byte addressable ram
     .clk(clk_in),
     .weA(weA), // b01 - byte, b10 - half word, b11 - word
     .reA(reA), // reA[2] sign extended, b01 - byte, b10 - half word, b11 - word
@@ -39,8 +39,8 @@ RAM_Interface #(
     .dinA(din), // data to write depending on 'weA'
     .doutA(dout), // data out depending on 'reA' one cycle later
     
-    // port B: read word addressable ram (instruction memory)
-    .addrB(18'h0),
+    // port B: instruction memory, byte addressed, bottom 2 bits ignored, word aligned
+    .addrB(addr),
     .doutB(doutB)
 );
 

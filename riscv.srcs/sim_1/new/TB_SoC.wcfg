@@ -11,73 +11,33 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="55.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="385.001 ns"></ZoomEndTime>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="198.022 ns"></ZoomEndTime>
       <Cursor1Time time="330.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="121"></NameColumnWidth>
-      <ValueColumnWidth column_width="87"></ValueColumnWidth>
+      <ValueColumnWidth column_width="83"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="15" />
-   <wvobject type="logic" fp_name="/TB_SoC/dut/ram/clkA">
-      <obj_property name="ElementShortName">clkA</obj_property>
-      <obj_property name="ObjectShortName">clkA</obj_property>
+   <WVObjectSize size="5" />
+   <wvobject type="logic" fp_name="/TB_SoC/dut/clk_in">
+      <obj_property name="ElementShortName">clk_in</obj_property>
+      <obj_property name="ObjectShortName">clk_in</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/ram/addrA">
-      <obj_property name="ElementShortName">addrA[19:0]</obj_property>
-      <obj_property name="ObjectShortName">addrA[19:0]</obj_property>
+   <wvobject type="array" fp_name="/TB_SoC/dut/addr">
+      <obj_property name="ElementShortName">addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/TB_SoC/dut/din">
+      <obj_property name="ElementShortName">din[31:0]</obj_property>
+      <obj_property name="ObjectShortName">din[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/TB_SoC/dut/doutB">
+      <obj_property name="ElementShortName">doutB[31:0]</obj_property>
+      <obj_property name="ObjectShortName">doutB[31:0]</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/TB_SoC/dut/dout">
       <obj_property name="ElementShortName">dout[31:0]</obj_property>
       <obj_property name="ObjectShortName">dout[31:0]</obj_property>
-   </wvobject>
-   <wvobject type="logic" fp_name="/TB_SoC/dut/ram/enaA">
-      <obj_property name="ElementShortName">enaA</obj_property>
-      <obj_property name="ObjectShortName">enaA</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/ram/weA">
-      <obj_property name="ElementShortName">weA[1:0]</obj_property>
-      <obj_property name="ObjectShortName">weA[1:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/ram/reA">
-      <obj_property name="ElementShortName">reA[2:0]</obj_property>
-      <obj_property name="ObjectShortName">reA[2:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/ram/dinA">
-      <obj_property name="ElementShortName">dinA[31:0]</obj_property>
-      <obj_property name="ObjectShortName">dinA[31:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/ram/doutA">
-      <obj_property name="ElementShortName">doutA[31:0]</obj_property>
-      <obj_property name="ObjectShortName">doutA[31:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/ram/doutB">
-      <obj_property name="ElementShortName">doutB[31:0]</obj_property>
-      <obj_property name="ObjectShortName">doutB[31:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/ram/ram_addrA">
-      <obj_property name="ElementShortName">ram_addrA[17:0]</obj_property>
-      <obj_property name="ObjectShortName">ram_addrA[17:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/ram/ram_dinA">
-      <obj_property name="ElementShortName">ram_dinA[31:0]</obj_property>
-      <obj_property name="ObjectShortName">ram_dinA[31:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/ram/ram_doutA">
-      <obj_property name="ElementShortName">ram_doutA[31:0]</obj_property>
-      <obj_property name="ObjectShortName">ram_doutA[31:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/ram/ram_weA">
-      <obj_property name="ElementShortName">ram_weA[3:0]</obj_property>
-      <obj_property name="ObjectShortName">ram_weA[3:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/ram/addr_lower_w">
-      <obj_property name="ElementShortName">addr_lower_w[31:0]</obj_property>
-      <obj_property name="ObjectShortName">addr_lower_w[31:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/TB_SoC/dut/ram/addr_lower_r">
-      <obj_property name="ElementShortName">addr_lower_r[31:0]</obj_property>
-      <obj_property name="ObjectShortName">addr_lower_r[31:0]</obj_property>
    </wvobject>
 </wave_config>
