@@ -130,6 +130,22 @@ initial begin
     #clk_tk
     if (dut.regs.mem[19]==1) $display("test 25 passed"); else $display("test 25 FAILED"); 
 
+    // 68: 00001a37 lui x20,0x1
+    #clk_tk
+    if (dut.regs.mem[20]==32'h0000_1000) $display("test 26 passed"); else $display("test 26 FAILED"); 
+
+    // 6c: 013a2223 sw x19,4(x20) # 1004
+    #clk_tk
+    if (dut.ram.ram.ram_block[32'h0000_1004>>2]==32'h0000_0001) $display("test 27 passed"); else $display("test 27 FAILED"); 
+    
+    // 70: 013a1323 sh x19,6(x20)
+    #clk_tk
+    if (dut.ram.ram.ram_block[32'h0000_1004>>2]==32'h0001_0001) $display("test 28 passed"); else $display("test 28 FAILED"); 
+
+    // 74: 013a03a3 sb x19,7(x20)
+    #clk_tk
+    if (dut.ram.ram.ram_block[32'h0000_1004>>2]==32'h0101_0001) $display("test 29 passed"); else $display("test 29 FAILED"); 
+
     $finish;
 end
 

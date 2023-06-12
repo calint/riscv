@@ -125,10 +125,16 @@ always @* begin
         endcase
     end
     7'b0100011: begin // store
+        ram_addrA = rs1_dat + S_imm12;
+        ram_dinA = rs2_dat;
         case(funct3)
+        3'b000: begin // SB
+            ram_weA = 2'b01; // write byte
+        end
+        3'b001: begin // SH
+            ram_weA = 2'b10; // write half word
+        end
         3'b010: begin // SW
-            ram_addrA = rs1_dat + S_imm12;
-            ram_dinA = rs2_dat;
             ram_weA = 2'b11; // write word
         end
         endcase
