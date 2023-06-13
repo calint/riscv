@@ -4,9 +4,6 @@ TAG=2023-06-12--1--checkpoint && git tag $TAG && git push origin $TAG
 overwrites current workspace with HEAD
     git reset --hard HEAD
 -------------------------------------------------------------
-overwrites HEAD with current workspace
-    git push --force origin HEAD
--------------------------------------------------------------
 `timescale 1ns / 1ps
 `default_nettype none
 //`define DBG
@@ -33,4 +30,7 @@ vivado install cable drivers:
     ./Vivado/2022.2/data/xicom/cable_drivers/lin64/install_script/install_drivers/install_drivers
 -------------------------------------------------------------
 hexdump -C /dev/ttyUSB1
+-------------------------------------------------------------
+overwrites HEAD with current workspace
+    git push --force origin HEAD
 -------------------------------------------------------------
