@@ -307,7 +307,23 @@ initial begin
     #clk_tk
     if (dut.regs.mem[2]==-3016) $display("test 58 passed"); else $display("test 58 FAILED"); 
     
+    // 43c: 00008067 jalr x0,0(x1)
+    #clk_tk
+    #clk_tk // bubble
+    // note. pc is a step ahead thus pc + 4
+    if (dut.pc==32'h0000_00d0) $display("test 59 passed"); else $display("test 59 FAILED"); 
+
+    // cc: fffc6c13 ori x24,x24,-1
+    #clk_tk
+    //$display("%h", dut.regs.mem[24]);
     
+    // d0: 05500b93 addi x23,x0,85
+    #clk_tk
+    
+    // d4: 017c0023 sb x23,0(x24)
+    #clk_tk
+    if (dut.ram.leds == 7'b101_0101) $display("test 60 passed"); else $display("test 60 FAILED"); 
+
     $finish;
 end
 

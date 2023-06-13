@@ -68,8 +68,12 @@ Disassembly of section .text:
   c0:	37396463          	bltu	x18,x19,428 <lbl_bltu>
   c4:	3729f663          	bgeu	x19,x18,430 <lbl_bgeu>
   c8:	370000ef          	jal	x1,438 <lbl_auipc>
-  cc:	00000013          	addi	x0,x0,0
-  d0:	00000013          	addi	x0,x0,0
+  cc:	fffc6c13          	ori	x24,x24,-1
+  d0:	05500b93          	addi	x23,x0,85
+  d4:	017c0023          	sb	x23,0(x24)
+
+000000d8 <lbl_done>:
+  d8:	0000006f          	jal	x0,d8 <lbl_done>
 	...
 
 00000400 <lbl_jal>:

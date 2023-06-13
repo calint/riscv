@@ -60,8 +60,13 @@ lbl6:
 	bltu x18, x19, lbl_bltu	# 0xffff_ffff > 1 -> branch not taken
 	bgeu x19, x18, lbl_bgeu	# 1 < 0xffff_ffff -> branch not taken
 	jal x1, lbl_auipc
-	nop
-	nop
+	# test the leds
+	ori x24, x24, -1		# x24 = 0xffff_ffff
+	addi x23, x0, 0b1010101
+#	addi x23, x0, 0b0000000
+	sb x23, 0(x24)			#  write to memory mapped I/O ram[0xffff_ffff] = 0b111_1111
+lbl_done:
+	jal x0, lbl_done
 
 .org 0x400
 lbl_jal:

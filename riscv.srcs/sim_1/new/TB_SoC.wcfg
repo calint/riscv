@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="273.250 ns"></ZoomStartTime>
-      <ZoomEndTime time="379.551 ns"></ZoomEndTime>
-      <Cursor1Time time="395.000 ns"></Cursor1Time>
+      <ZoomStartTime time="702.040 ns"></ZoomStartTime>
+      <ZoomEndTime time="843.593 ns"></ZoomEndTime>
+      <Cursor1Time time="820.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="158"></NameColumnWidth>
+      <NameColumnWidth column_width="154"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="16" />
+   <WVObjectSize size="20" />
    <wvobject type="logic" fp_name="/TB_SoC/dut/rst">
       <obj_property name="ElementShortName">rst</obj_property>
       <obj_property name="ObjectShortName">rst</obj_property>
@@ -88,7 +88,6 @@
    <wvobject type="group" fp_name="group492">
       <obj_property name="label">rs</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject type="array" fp_name="/TB_SoC/dut/rs1">
          <obj_property name="ElementShortName">rs1[4:0]</obj_property>
          <obj_property name="ObjectShortName">rs1[4:0]</obj_property>
@@ -117,7 +116,6 @@
    <wvobject type="group" fp_name="group1445">
       <obj_property name="label">ramA</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject type="array" fp_name="/TB_SoC/dut/ram_weA">
          <obj_property name="ElementShortName">ram_weA[1:0]</obj_property>
          <obj_property name="ObjectShortName">ram_weA[1:0]</obj_property>
@@ -154,7 +152,6 @@
    <wvobject type="group" fp_name="group1879">
       <obj_property name="label">ld</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject type="logic" fp_name="/TB_SoC/dut/ld_do">
          <obj_property name="ElementShortName">ld_do</obj_property>
          <obj_property name="ObjectShortName">ld_do</obj_property>
@@ -171,5 +168,21 @@
          <obj_property name="ElementShortName">ram_doutA[31:0]</obj_property>
          <obj_property name="ObjectShortName">ram_doutA[31:0]</obj_property>
       </wvobject>
+   </wvobject>
+   <wvobject type="array" fp_name="/TB_SoC/dut/led">
+      <obj_property name="ElementShortName">led[3:0]</obj_property>
+      <obj_property name="ObjectShortName">led[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/TB_SoC/dut/led0_b">
+      <obj_property name="ElementShortName">led0_b</obj_property>
+      <obj_property name="ObjectShortName">led0_b</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/TB_SoC/dut/led0_g">
+      <obj_property name="ElementShortName">led0_g</obj_property>
+      <obj_property name="ObjectShortName">led0_g</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/TB_SoC/dut/led0_r">
+      <obj_property name="ElementShortName">led0_r</obj_property>
+      <obj_property name="ObjectShortName">led0_r</obj_property>
    </wvobject>
 </wave_config>

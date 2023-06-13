@@ -7,6 +7,7 @@ module RAM_Interface #(
     parameter DATA_WIDTH = 32,
     parameter DATA_FILE = "RAM.mem"
 )(
+    input wire rst,
     // port A: data memory, read / write byte addressable ram
     input wire clk,
     input wire [1:0] weA, // b01 - byte, b10 - half word, b11 - word
@@ -17,7 +18,10 @@ module RAM_Interface #(
     
     // port B: instruction memory, byte addressed, bottom 2 bits ignored, word aligned
     input wire [ADDR_WIDTH+1:0] addrB,
-    output wire [DATA_WIDTH-1:0] doutB
+    output wire [DATA_WIDTH-1:0] doutB,
+
+    // I/O mapping of leds
+    output reg [6:0] leds
 );
 
 reg [ADDR_WIDTH-1:0] ram_addrA;
@@ -78,11 +82,20 @@ always @* begin
 end
 
 // read
-reg [2:0] reA_prev; // previous reA used in the cycle when data is available
-reg [1:0] addr_lower_r; // previous lower 2 bits of address to be used when data is available
+reg [2:0] reA_prev; // reA at read used in the next cycle when data is ready
+reg [1:0] addr_lower_r; // lower 2 bits of address used in the next cycle when data is ready
+
 always @(posedge clk) begin
-    reA_prev <= reA;
-    addr_lower_r <= addrA[1:0];
+    if (rst) begin
+        leds <= 7'b111_0000; // turn of all leds
+    end else begin
+        reA_prev <= reA;
+        addr_lower_r <= addrA[1:0];
+        if (addrA == {(ADDR_WIDTH+2){1'b1}} && weA == 2'b01) begin
+            leds = dinA[6:0];
+//            $display("leds: %b", leds);
+        end
+    end
 end
 
 always @* begin

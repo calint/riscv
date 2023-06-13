@@ -52,12 +52,6 @@ wire signed [31:0] rs2_dat = regs_we3 && rs2 == ld_rd ? ram_doutA : regs_rd2;
 reg bubble;
 reg is_bubble;
 
-assign led = ir[3:0];
-assign led0_b = 1;
-assign led0_g = ~btn;
-assign led0_r = uart_rx;
-assign uart_tx = 1;
-
 always @* begin
     regs_rd_we = 0;
     regs_rd_wd = 0;
@@ -271,6 +265,7 @@ RAM_Interface #(
     .ADDR_WIDTH(15), // 2**15 = RAM depth in words
     .DATA_FILE(RAM_FILE)
 ) ram (
+    .rst(rst),
     // port A: data memory, read / write byte addressable ram
     .clk(clk),
     .weA(ram_weA), // b01 - byte, b10 - half word, b11 - word
@@ -281,7 +276,9 @@ RAM_Interface #(
     
     // port B: instruction memory, byte addressed, bottom 2 bits ignored, word aligned
     .addrB(pc),
-    .doutB(ir)
+    .doutB(ir),
+
+    .leds({led0_b, led0_g, led0_r, led[3:0]})
 );
 
 endmodule
