@@ -27,6 +27,8 @@ initial begin
     // start pipeline
     #clk_tk
     
+//    $display("*** start ***");
+
     // 0: 00000013 addi x0,x0,0
     #clk_tk
     
@@ -295,13 +297,9 @@ initial begin
     // note. pc is a step ahead thus pc + 4
     if (dut.pc==32'h0000_00cc) $display("test 56 passed"); else $display("test 56 FAILED"); 
 
-//    $display("pc=%h  pc_nxt=%h",dut.pc,dut.pc_nxt);
     // c8: 370000ef jal x1,438 <lbl_auipc>
-//    $display("pc=%h  pc_nxt=%h",dut.pc,dut.pc_nxt);
     #clk_tk
-//    $display("pc=%h  pc_nxt=%h",dut.pc,dut.pc_nxt);
     #clk_tk // bubble
-//    $display("pc=%h  pc_nxt=%h",dut.pc,dut.pc_nxt);
     // note. pc is a step ahead thus pc + 4
     if (dut.pc==32'h0000_043c) $display("test 57 passed"); else $display("test 57 FAILED"); 
 

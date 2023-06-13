@@ -25,12 +25,6 @@ wire [2:0] funct3 = ir[14:12];
 wire [4:0] rs1 = ir[19:15];
 wire [4:0] rs2 = ir[24:20];
 wire [6:0] funct7 = ir[31:25];
-//wire [11:0] I_imm12 = ir[31:20];
-//wire [19:0] U_imm20 = ir[31:12];
-//wire [11:0] S_imm12 = {ir[31:25], ir[11:7]};
-//wire [11:0] B_imm12 = {ir[31], ir[7], ir[30:25], ir[11:8]};
-//wire [20:0] J_imm20 = {ir[31], ir[19:12], ir[20], ir[30:21], 1'b0};
-
 wire signed [31:0] I_imm12 = {{20{ir[31]}}, ir[31:20]};
 wire [31:0] U_imm20 = {ir[31:12], {12{1'b0}}};
 wire signed [31:0] S_imm12 = {{20{ir[31]}}, ir[31:25], ir[11:7]};
@@ -73,7 +67,8 @@ always @* begin
     ram_reA = 0;
     ld_do = 0;
     pc_nxt = pc + 4;
-    
+    bubble = 0;
+//    $display("%0t: ir=%h, pc=%0d, pc_nxt=%0d, is_bubble=%0d rst=%0d, opcode=%0b", $time, ir, pc, pc_nxt, is_bubble, rst, opcode);    
     if (rst) begin
         ld_rd = 0;
         bubble = 0;    
@@ -82,12 +77,14 @@ always @* begin
         7'b0110111: begin // LUI
             regs_rd_wd = U_imm20;
             regs_rd_we = 1;
+//            $display("%0t: ir=%h, LUI %0h", $time, ir, U_imm20);
         end
         7'b0010011: begin // logical ops immediate
             regs_rd_we = 1;
             case(funct3)
             3'b000: begin // ADDI
                 regs_rd_wd = rs1_dat + I_imm12;
+//                $display("%0t: ir=%h, ADDI x%0d = %0h + %0h", $time, ir, rd, rs1_dat, I_imm12);
             end
             3'b010: begin // SLTI
                 regs_rd_wd = rs1_dat < I_imm12 ? 1 : 0;
@@ -191,7 +188,7 @@ always @* begin
             regs_rd_we = 1;
             pc_nxt = pc + J_imm20 - 4;
             bubble = 1;
-            //$display("*** jal_rd_wd=%h  pc_nxt=%h", regs_rd_wd, pc_nxt); 
+//            $display("%0t: ir=%h, opcode=%0b JAL pc_nxt=%0h", $time, ir, opcode, pc_nxt);
         end
         7'b1100111: begin // JALR
             regs_rd_wd = pc;
@@ -232,6 +229,7 @@ always @* begin
                 end
             end
             3'b111: begin // BGEU
+//                $display("%0t: ir=%h, BGEU %0h >= %0h", $time, ir, rs1_dat, rs2_dat);
                 if ($unsigned(rs1_dat) >= $unsigned(rs2_dat)) begin
                     pc_nxt = pc + B_imm12 - 4;
                     bubble = 1;
@@ -243,17 +241,17 @@ always @* begin
     end else begin // else if (!is_bubble)
         bubble = 0;
     end
-    //$display("*** %t, pc_nxt=%h bubble=%d", $time, pc_nxt, bubble); 
-  end
+end
 
 always @(posedge clk) begin
     if (rst) begin
         pc <= 0;
         is_bubble <= 0;
     end else begin
+//        $display("**********************************************");
+//        $display("*** %0t: ir=%0h, pc=%0d, pc_nxt=%0d", $time, ir, pc, pc_nxt);
         regs_we3 <= ld_do ? 1 : 0;
         is_bubble <= bubble;
-        //$display(">>> clk: pc=%h, pc_nxt=%h", pc, pc_nxt);
         pc <= pc_nxt;
     end
 end
