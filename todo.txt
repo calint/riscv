@@ -1,4 +1,5 @@
 [ ] SoC: alu op with mux of register and immediate instead of cases
+[ ] Led and rgb at one byte 0xffff_fffd {r,g,b,led[3:0]}
 [ ] UartTx and UartRx mapped to upper memory,
 [ ]   e.g. byte at 0xffff_ffff for UartTx. UartTx writes zero after transmission of a byte.
 [ ]   e.g. byte at 0xffff_fffe for UartRx. cpu writes 0 to for UartRx to receive next.
