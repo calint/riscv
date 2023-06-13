@@ -1,0 +1,10 @@
+
+os:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+   0:	ffa00793          	addi	x15,x0,-6
+   4:	fef00fa3          	sb	x15,-1(x0) # ffffffff <__global_pointer$+0xffffe7f3>
+   8:	0000006f          	jal	x0,8 <_start+0x8>

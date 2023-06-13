@@ -8,6 +8,7 @@ BIN=${SRC%.*}
 #	-mstrict-align \
 
 riscv32-unknown-elf-gcc \
+	-O3 \
 	-ffreestanding \
 	-fno-pic \
 	-march=rv32i \
