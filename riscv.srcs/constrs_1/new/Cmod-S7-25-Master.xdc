@@ -11,7 +11,7 @@ set_property -dict {PACKAGE_PIN E1 IOSTANDARD LVCMOS33} [get_ports {led[3]}]
 
 # Push Buttons
 # btn[0]: reset
-set_property -dict { PACKAGE_PIN D2    IOSTANDARD LVCMOS33 } [get_ports { rst }]; #IO_L6P_T0_34 Sch=btn[0]
+#set_property -dict { PACKAGE_PIN D2    IOSTANDARD LVCMOS33 } [get_ports { rst }]; #IO_L6P_T0_34 Sch=btn[0]
 # btn[1]
 set_property -dict { PACKAGE_PIN D1    IOSTANDARD LVCMOS33 } [get_ports { btn }]; #IO_L6N_T0_VREF_34 Sch=btn[1]
 
@@ -26,8 +26,8 @@ set_property -dict { PACKAGE_PIN L12   IOSTANDARD LVCMOS33 } [get_ports { uart_t
 set_property -dict { PACKAGE_PIN K15   IOSTANDARD LVCMOS33 } [get_ports { uart_rx }]; #IO_L5N_T0_D07_14 Sch=uart_txd_in
 
 ## 12 MHz System Clock
-set_property -dict { PACKAGE_PIN M9    IOSTANDARD LVCMOS33 } [get_ports { clk }]; #IO_L13P_T2_MRCC_14 Sch=gclk
-create_clock -add -name sys_clk_pin -period 83.33 -waveform {0 41.66} [get_ports { clk }];
+#set_property -dict { PACKAGE_PIN M9    IOSTANDARD LVCMOS33 } [get_ports { clk }]; #IO_L13P_T2_MRCC_14 Sch=gclk
+#create_clock -add -name sys_clk_pin -period 83.33 -waveform {0 41.66} [get_ports { clk }];
 
 
 

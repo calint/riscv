@@ -66,14 +66,11 @@ always @* begin
     ram_weA = 0;
     ram_reA = 0;
     ld_do = 0;
-    pc_nxt = pc + 4;
     bubble = 0;
+    pc_nxt = pc + 4;
 //    $display("%0t: ir=%h, pc=%0d, pc_nxt=%0d, is_bubble=%0d rst=%0d, opcode=%0b", $time, ir, pc, pc_nxt, is_bubble, rst, opcode);    
-    if (rst) begin
-        ld_rd = 0;
-        bubble = 0;    
-    end else if (!is_bubble) begin    
-        case(opcode)
+    if (!is_bubble) begin    
+        case (opcode)
         7'b0110111: begin // LUI
             regs_rd_wd = U_imm20;
             regs_rd_we = 1;
@@ -81,7 +78,7 @@ always @* begin
         end
         7'b0010011: begin // logical ops immediate
             regs_rd_we = 1;
-            case(funct3)
+            case (funct3)
             3'b000: begin // ADDI
                 regs_rd_wd = rs1_dat + I_imm12;
 //                $display("%0t: ir=%h, ADDI x%0d = %0h + %0h", $time, ir, rd, rs1_dat, I_imm12);
@@ -111,7 +108,7 @@ always @* begin
         end
         7'b0110011: begin // logical ops
             regs_rd_we = 1;
-            case(funct3)
+            case (funct3)
             3'b000: begin // ADD and SUB
                 regs_rd_wd = ir[30] ? rs1_dat - rs2_dat : rs1_dat + rs2_dat;        
             end
@@ -141,7 +138,7 @@ always @* begin
         7'b0100011: begin // store
             ram_addrA = rs1_dat + S_imm12;
             ram_dinA = rs2_dat;
-            case(funct3)
+            case (funct3)
             3'b000: begin // SB
                 ram_weA = 2'b01; // write byte
             end
@@ -156,8 +153,7 @@ always @* begin
         7'b0000011: begin // load
             ram_addrA = rs1_dat + I_imm12;
             ld_do = 1;
-            ld_rd = rd;
-            case(funct3)
+            case (funct3)
             3'b000: begin // LB
                 ram_reA = 3'b101;
             end
@@ -197,7 +193,7 @@ always @* begin
             bubble = 1;
         end
         7'b1100011: begin // branches
-            case(funct3)
+            case (funct3)
             3'b000: begin // BEQ
                 if (rs1_dat == rs2_dat) begin
                     pc_nxt = pc + B_imm12 - 4;
@@ -237,7 +233,7 @@ always @* begin
             end
             endcase
         end
-        endcase // case(opcode)
+        endcase // case (opcode)
     end else begin // else if (!is_bubble)
         bubble = 0;
     end
@@ -251,6 +247,7 @@ always @(posedge clk) begin
 //        $display("**********************************************");
 //        $display("*** %0t: ir=%0h, pc=%0d, pc_nxt=%0d", $time, ir, pc, pc_nxt);
         regs_we3 <= ld_do ? 1 : 0;
+        ld_rd <= rd;
         is_bubble <= bubble;
         pc <= pc_nxt;
     end
