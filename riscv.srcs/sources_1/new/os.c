@@ -20,5 +20,5 @@ void delay(volatile unsigned int ticks) {
 }
 
 void set_stack_pointer(void* stack_ptr) {
-    asm volatile ("mv x2, %0" : : "r" (stack_ptr));
+    asm volatile ("mv sp, %0" : : "r" (stack_ptr));
 }
