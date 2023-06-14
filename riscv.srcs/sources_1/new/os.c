@@ -1,12 +1,13 @@
 #define CPU_FREQ_HZ 50000000
 #define TICKS_PER_SEC CPU_FREQ_HZ / 60
+#define TOP_OF_RAM 0x1ffff
 
 void delay(unsigned int ticks);
 void set_stack_pointer(void* stack_ptr);
 
 void _start() {
-    set_stack_pointer((void*)0x1fffe); // top of memory minus the mapped leds
-    volatile unsigned char* leds = (unsigned char*)0x1ffff; // address of leds mapped to ram
+    set_stack_pointer((void*)(TOP_OF_RAM-1)); // top of memory minus the mapped leds
+    volatile unsigned char* leds = (unsigned char*)TOP_OF_RAM; // address of leds mapped to ram
     
     unsigned char counter = 0;
     while(1) {
