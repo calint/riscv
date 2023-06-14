@@ -18,7 +18,7 @@ reg [18-1:0] addrB = 0;
 wire [31:0] doutB;
 
 RAM_Interface #(
-    .ADDR_WIDTH(16), // 2**16 = RAM depth in words
+    .ADDR_WIDTH(15), // 2**15 = RAM depth in words
     .DATA_WIDTH(32)
 ) dut (
     .clk(clk),
