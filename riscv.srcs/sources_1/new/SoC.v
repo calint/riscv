@@ -149,19 +149,19 @@ always @* begin
             ld_do = 1;
             case (funct3)
             3'b000: begin // LB
-                ram_reA = 3'b101;
+                ram_reA = 3'b101; // read sign extended byte
             end
             3'b001: begin // LH
-                ram_reA = 3'b110;
+                ram_reA = 3'b110; // read sign extended half word
             end
             3'b010: begin // LW
-                ram_reA = 3'b111;
+                ram_reA = 3'b111; // read word (signed)
             end
             3'b100: begin // LBU
-                ram_reA = 3'b001;
+                ram_reA = 3'b001; // read unsigned byte
             end
             3'b101: begin // LHU
-                ram_reA = 3'b010;
+                ram_reA = 3'b010; // read unsigned half word
             end
             endcase
         end
@@ -240,9 +240,9 @@ always @(posedge clk) begin
     end else begin
 //        $display("**********************************************");
 //        $display("*** %0t: ir=%0h, pc=%0d, pc_nxt=%0d", $time, ir, pc, pc_nxt);
-        regs_we3 <= ld_do ? 1 : 0;
-        ld_rd <= rd;
-        is_bubble <= bubble;
+        regs_we3 <= ld_do ? 1 : 0; // enable write during next instruction if this is a load (one cycle delay for data ready)
+        ld_rd <= rd; // save the destination register for next cycle write
+        is_bubble <= bubble; // if instruction generates bubble of next instruction
         pc <= pc_nxt;
     end
 end
