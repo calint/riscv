@@ -228,8 +228,6 @@ always @* begin
             endcase
         end
         endcase // case (opcode)
-    end else begin // else if (!is_bubble)
-        bubble = 0;
     end
 end
 
@@ -240,9 +238,9 @@ always @(posedge clk) begin
     end else begin
 //        $display("**********************************************");
 //        $display("*** %0t: ir=%0h, pc=%0d, pc_nxt=%0d", $time, ir, pc, pc_nxt);
-        regs_we3 <= ld_do ? 1 : 0; // enable write during next instruction if this is a load (one cycle delay for data ready)
+        regs_we3 <= ld_do ? 1 : 0; // if this is a 'load' from ram enable write to register 'ld_rd' during next instruction (one cycle delay for data ready from ram)
         ld_rd <= rd; // save the destination register for next cycle write
-        is_bubble <= bubble; // if instruction generates bubble of next instruction
+        is_bubble <= bubble; // if instruction generates bubble of next instruction (branch, jumps instructions)
         pc <= pc_nxt;
     end
 end
