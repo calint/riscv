@@ -6,32 +6,33 @@ Disassembly of section .text:
 
 00000000 <_start>:
    0:	000207b7          	lui	x15,0x20
-   4:	ffe78793          	addi	x15,x15,-2 # 1fffe <__global_pointer$+0x1e796>
+   4:	ffe78793          	addi	x15,x15,-2 # 1fffe <__global_pointer$+0x1e792>
    8:	00078113          	addi	x2,x15,0
-   c:	00000693          	addi	x13,x0,0
-  10:	000015b7          	lui	x11,0x1
-  14:	000cb637          	lui	x12,0xcb
-  18:	0685a703          	lw	x14,104(x11) # 1068 <leds>
-  1c:	00068793          	addi	x15,x13,0
-  20:	00168693          	addi	x13,x13,1
-  24:	00f70023          	sb	x15,0(x14)
-  28:	0ff6f693          	andi	x13,x13,255
-  2c:	73560793          	addi	x15,x12,1845 # cb735 <__global_pointer$+0xc9ecd>
-  30:	00078713          	addi	x14,x15,0
-  34:	fff78793          	addi	x15,x15,-1
-  38:	fe071ce3          	bne	x14,x0,30 <_start+0x30>
-  3c:	fddff06f          	jal	x0,18 <_start+0x18>
+   c:	000016b7          	lui	x13,0x1
+  10:	06c68693          	addi	x13,x13,108 # 106c <babas>
+  14:	00001837          	lui	x16,0x1
+  18:	000cb537          	lui	x10,0xcb
+  1c:	0016c703          	lbu	x14,1(x13)
+  20:	07c82603          	lw	x12,124(x16) # 107c <leds>
+  24:	73550793          	addi	x15,x10,1845 # cb735 <__global_pointer$+0xc9ec9>
+  28:	00170593          	addi	x11,x14,1
+  2c:	00b680a3          	sb	x11,1(x13)
+  30:	00e60023          	sb	x14,0(x12)
+  34:	00078713          	addi	x14,x15,0
+  38:	fff78793          	addi	x15,x15,-1
+  3c:	fe071ce3          	bne	x14,x0,34 <_start+0x34>
+  40:	fddff06f          	jal	x0,1c <_start+0x1c>
 
-00000040 <delay>:
-  40:	ff010113          	addi	x2,x2,-16
-  44:	00a12623          	sw	x10,12(x2)
-  48:	00c12783          	lw	x15,12(x2)
-  4c:	fff78713          	addi	x14,x15,-1
-  50:	00e12623          	sw	x14,12(x2)
-  54:	fe079ae3          	bne	x15,x0,48 <delay+0x8>
-  58:	01010113          	addi	x2,x2,16
-  5c:	00008067          	jalr	x0,0(x1)
+00000044 <delay>:
+  44:	ff010113          	addi	x2,x2,-16
+  48:	00a12623          	sw	x10,12(x2)
+  4c:	00c12783          	lw	x15,12(x2)
+  50:	fff78713          	addi	x14,x15,-1
+  54:	00e12623          	sw	x14,12(x2)
+  58:	fe079ae3          	bne	x15,x0,4c <delay+0x8>
+  5c:	01010113          	addi	x2,x2,16
+  60:	00008067          	jalr	x0,0(x1)
 
-00000060 <set_stack_pointer>:
-  60:	00050113          	addi	x2,x10,0
-  64:	00008067          	jalr	x0,0(x1)
+00000064 <set_stack_pointer>:
+  64:	00050113          	addi	x2,x10,0
+  68:	00008067          	jalr	x0,0(x1)

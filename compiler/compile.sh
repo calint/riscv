@@ -1,4 +1,7 @@
 #!/bin/sh
+# tools used:
+#       riscv32-unknown-elf-gcc: (g2ee5e430018) 12.2.0
+#   riscv32-unknown-elf-objdump: GNU objdump (GNU Binutils) 2.40.0.2023021
 set -e
 
 PATH=$PATH:~/riscv/install/rv32i/bin
