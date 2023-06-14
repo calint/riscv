@@ -1,5 +1,5 @@
 -------------------------------------------------------------
-TAG=2023-06-12--1--checkpoint && git tag $TAG && git push origin $TAG
+TAG=2023-06-13--5--checkpoint && git tag $TAG && git push origin $TAG
 -------------------------------------------------------------
 overwrites current workspace with HEAD
     git reset --hard HEAD
@@ -34,3 +34,4 @@ hexdump -C /dev/ttyUSB1
 overwrites HEAD with current workspace
     git push --force origin HEAD
 -------------------------------------------------------------
+./configure --prefix=$INS_DIR --with-arch=rv32i --with-abi=ilp32

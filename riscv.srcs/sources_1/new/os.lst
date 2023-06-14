@@ -6,11 +6,12 @@ Disassembly of section .text:
 
 00000000 <_start>:
    0:	00000713          	addi	x14,x0,0
-   4:	000cb637          	lui	x12,0xcb
-   8:	00170693          	addi	x13,x14,1
-   c:	fee00fa3          	sb	x14,-1(x0) # ffffffff <__global_pointer$+0xffffe7db>
-  10:	73560793          	addi	x15,x12,1845 # cb735 <__global_pointer$+0xc9f11>
-  14:	0ff6f713          	andi	x14,x13,255
-  18:	fff78793          	addi	x15,x15,-1
-  1c:	fe079ee3          	bne	x15,x0,18 <_start+0x18>
-  20:	fe9ff06f          	jal	x0,8 <_start+0x8>
+   4:	000cb6b7          	lui	x13,0xcb
+   8:	00070793          	addi	x15,x14,0
+   c:	00170713          	addi	x14,x14,1
+  10:	fef00fa3          	sb	x15,-1(x0) # ffffffff <__global_pointer$+0xffffe7d7>
+  14:	0ff77713          	andi	x14,x14,255
+  18:	73568793          	addi	x15,x13,1845 # cb735 <__global_pointer$+0xc9f0d>
+  1c:	fff78793          	addi	x15,x15,-1
+  20:	fe079ee3          	bne	x15,x0,1c <_start+0x1c>
+  24:	fe5ff06f          	jal	x0,8 <_start+0x8>
