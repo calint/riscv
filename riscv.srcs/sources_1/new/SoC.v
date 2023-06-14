@@ -33,8 +33,8 @@ wire signed [31:0] J_imm20 = {{20{ir[31]}}, ir[31], ir[19:12], ir[20], ir[30:21]
 
 reg [31:0] regs_rd_wd; // data to be written to register 'rd' if 'regs_rd_we' is enabled
 reg regs_rd_we;
-wire signed [31:0] regs_rd1;
-wire signed [31:0] regs_rd2;
+wire signed [31:0] regs_rd1; // register value of 'rs1'
+wire signed [31:0] regs_rd2; // register value of 'rs2'
 reg [1:0] ram_weA;
 reg [2:0] ram_reA;
 reg [31:0] ram_addrA;
