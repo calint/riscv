@@ -5,13 +5,32 @@ os:     file format elf32-littleriscv
 Disassembly of section .text:
 
 00000000 <_start>:
-   0:	00000713          	addi	x14,x0,0
-   4:	000cb6b7          	lui	x13,0xcb
-   8:	00070793          	addi	x15,x14,0
-   c:	00170713          	addi	x14,x14,1
-  10:	fef00fa3          	sb	x15,-1(x0) # ffffffff <__global_pointer$+0xffffe7d7>
-  14:	0ff77713          	andi	x14,x14,255
-  18:	73568793          	addi	x15,x13,1845 # cb735 <__global_pointer$+0xc9f0d>
-  1c:	fff78793          	addi	x15,x15,-1
-  20:	fe079ee3          	bne	x15,x0,1c <_start+0x1c>
-  24:	fe5ff06f          	jal	x0,8 <_start+0x8>
+   0:	000207b7          	lui	x15,0x20
+   4:	ffe78793          	addi	x15,x15,-2 # 1fffe <__global_pointer$+0x1e79a>
+   8:	00078113          	addi	x2,x15,0
+   c:	00000693          	addi	x13,x0,0
+  10:	000205b7          	lui	x11,0x20
+  14:	000cb637          	lui	x12,0xcb
+  18:	00068793          	addi	x15,x13,0
+  1c:	00168693          	addi	x13,x13,1
+  20:	fef58fa3          	sb	x15,-1(x11) # 1ffff <__global_pointer$+0x1e79b>
+  24:	0ff6f693          	andi	x13,x13,255
+  28:	73560793          	addi	x15,x12,1845 # cb735 <__global_pointer$+0xc9ed1>
+  2c:	00078713          	addi	x14,x15,0
+  30:	fff78793          	addi	x15,x15,-1
+  34:	fe071ce3          	bne	x14,x0,2c <_start+0x2c>
+  38:	fe1ff06f          	jal	x0,18 <_start+0x18>
+
+0000003c <delay>:
+  3c:	ff010113          	addi	x2,x2,-16
+  40:	00a12623          	sw	x10,12(x2)
+  44:	00c12783          	lw	x15,12(x2)
+  48:	fff78713          	addi	x14,x15,-1
+  4c:	00e12623          	sw	x14,12(x2)
+  50:	fe079ae3          	bne	x15,x0,44 <delay+0x8>
+  54:	01010113          	addi	x2,x2,16
+  58:	00008067          	jalr	x0,0(x1)
+
+0000005c <set_stack_pointer>:
+  5c:	00050113          	addi	x2,x10,0
+  60:	00008067          	jalr	x0,0(x1)

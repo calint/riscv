@@ -17,7 +17,7 @@ module SoC #(
 );
 
 reg [31:0] pc; // program counter, byte addressed
-reg [31:0] pc_nxt;
+reg [31:0] pc_nxt; // next value of program counter
 wire [31:0] ir; // instruction register
 wire [6:0] opcode = ir[6:0];
 wire [4:0] rd = ir[11:7];
@@ -31,7 +31,7 @@ wire signed [31:0] S_imm12 = {{20{ir[31]}}, ir[31:25], ir[11:7]};
 wire signed [31:0] B_imm12 = {{20{ir[31]}}, ir[31], ir[7], ir[30:25], ir[11:8], 1'b0};
 wire signed [31:0] J_imm20 = {{20{ir[31]}}, ir[31], ir[19:12], ir[20], ir[30:21], 1'b0};
 
-reg [31:0] regs_rd_wd;
+reg [31:0] regs_rd_wd; // data to be written to register 'rd' if 'regs_rd_we' is enabled
 reg regs_rd_we;
 wire signed [31:0] regs_rd1;
 wire signed [31:0] regs_rd2;
@@ -41,9 +41,9 @@ reg [31:0] ram_addrA;
 reg [31:0] ram_dinA;
 wire [31:0] ram_doutA;
 
-reg ld_do; // previous instruction was ld
-reg [4:0] ld_rd; // previous instruction rd
-reg regs_we3;
+reg ld_do; // previous instruction was 'ld'
+reg [4:0] ld_rd; // previous instruction 'rd'
+reg regs_we3; // enabled when previous instruction was 'ld' to write 'ram_doutA' to register 'ld_rd'
 
 // if last instruction was a load to register that is used in this instruction 
 wire signed [31:0] rs1_dat = regs_we3 && rs1 == ld_rd ? ram_doutA : regs_rd1;
