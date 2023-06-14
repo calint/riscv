@@ -49,8 +49,8 @@ reg regs_we3; // enabled when previous instruction was 'ld' to write 'ram_doutA'
 wire signed [31:0] rs1_dat = regs_we3 && rs1 == ld_rd ? ram_doutA : regs_rd1;
 wire signed [31:0] rs2_dat = regs_we3 && rs2 == ld_rd ? ram_doutA : regs_rd2;
 
-reg bubble;
-reg is_bubble;
+reg bubble; // signals that next instruction is a bubble
+reg is_bubble; // signals that current innstruction is a bubble
 
 always @* begin
     regs_rd_we = 0;
