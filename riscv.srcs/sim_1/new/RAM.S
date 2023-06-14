@@ -98,5 +98,5 @@ lbl_bgeu:
 
 .org 0x438
 lbl_auipc:
-	auipc x2, 0xfffff	# 0x0438 + 0xffff_f0000 (-4096) == -3016
+	auipc x2, 0xfffff	# 0x0438 + 0xffff_f0000 (-4096) == -3016 = 0xffff_f438
 	jalr x0, 0(x1)

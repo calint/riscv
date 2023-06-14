@@ -305,7 +305,7 @@ initial begin
 
     // 438: fffff117 auipc x2,0xfffff
     #clk_tk
-    if (dut.regs.mem[2]==-3016) $display("test 58 passed"); else $display("test 58 FAILED"); 
+    if (dut.regs.mem[2]==32'hffff_f438) $display("test 58 passed"); else $display("test 58 FAILED"); 
     
     // 43c: 00008067 jalr x0,0(x1)
     #clk_tk
