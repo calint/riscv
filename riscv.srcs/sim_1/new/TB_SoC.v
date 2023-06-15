@@ -324,6 +324,14 @@ initial begin
     #clk_tk
     if (dut.ram.leds == 7'b101_0101) $display("test 60 passed"); else $display("test 60 FAILED"); 
 
+    // d8: 002a5a83 lhu x21,2(x20)
+    #clk_tk
+    
+    // dc: 001a8a93 addi x21,x21,1
+    #clk_tk
+    if (dut.regs.mem[21]==32'h1_0000) $display("test 61 passed"); else $display("test 61 FAILED"); 
+    
+    
     $finish;
 end
 
