@@ -41,7 +41,7 @@ reg [31:0] ram_addrA;
 reg [31:0] ram_dinA;
 wire [31:0] ram_doutA;
 
-reg ld_do; // previous instruction was 'ld'
+reg is_ld; // previous instruction was 'ld'
 reg [4:0] ld_rd; // previous instruction 'rd'
 reg regs_we3; // enabled when previous instruction was 'ld' to write 'ram_doutA' to register 'ld_rd'
 
@@ -59,7 +59,7 @@ always @* begin
     ram_dinA = 0;
     ram_weA = 0;
     ram_reA = 0;
-    ld_do = 0;
+    is_ld = 0;
     bubble = 0;
     pc_nxt = pc + 4;
 //    $display("%0t: ir=%h, pc=%0d, pc_nxt=%0d, is_bubble=%0d rst=%0d, opcode=%0b", $time, ir, pc, pc_nxt, is_bubble, rst, opcode);    
@@ -146,7 +146,7 @@ always @* begin
         end
         7'b0000011: begin // load
             ram_addrA = rs1_dat + I_imm12;
-            ld_do = 1;
+            is_ld = 1;
             case (funct3)
             3'b000: begin // LB
                 ram_reA = 3'b101; // read sign extended byte
@@ -238,7 +238,7 @@ always @(posedge clk) begin
     end else begin
 //        $display("**********************************************");
 //        $display("*** %0t: ir=%0h, pc=%0d, pc_nxt=%0d", $time, ir, pc, pc_nxt);
-        regs_we3 <= ld_do ? 1 : 0; // if this is a 'load' from ram enable write to register 'ld_rd' during next instruction (one cycle delay for data ready from ram)
+        regs_we3 <= is_ld ? 1 : 0; // if this is a 'load' from ram enable write to register 'ld_rd' during next instruction (one cycle delay for data ready from ram)
         ld_rd <= rd; // save the destination register for next cycle write
         is_bubble <= bubble; // if instruction generates bubble of next instruction (branch, jumps instructions)
         pc <= pc_nxt;
