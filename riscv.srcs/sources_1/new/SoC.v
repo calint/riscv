@@ -69,7 +69,7 @@ always @* begin
 //    $display("%0t: ir=%h, pc=%0d, pc_nxt=%0d, is_bubble=%0d rst=%0d, opcode=%0b", $time, ir, pc, pc_nxt, is_bubble, rst, opcode);    
 
     // note. in iverilog commented code below creates inifinite loop with
-    // SoC and RAM_Interface triggering each other  
+    // SoC and RAM_Interface triggering each other without (obvious) signal change
     //rs1_dat = regs_we3 && rs1 == ld_rd ? ram_doutA : regs_rd1;
     //rs2_dat = regs_we3 && rs2 == ld_rd ? ram_doutA : regs_rd2;
 
