@@ -99,10 +99,8 @@ always @(posedge clk) begin
 end
 
 always @* begin
-    doutA = 0;
+//    doutA = 0;
     casex(reA_prev) // read size
-    3'b000: begin // not a read
-    end
     3'bx01: begin // byte
         case(addr_lower_r)
         2'b00: begin
@@ -124,16 +122,17 @@ always @* begin
         2'b00: begin
             doutA = reA[2] ? {{16{ram_doutA[15]}}, ram_doutA[15:0]} : {{24{1'b0}}, ram_doutA[15:0]};
         end
-        2'b01: ; // exception
+        2'b01: doutA = 0; // ? exception
         2'b10: begin
             doutA = reA[2] ? {{16{ram_doutA[31]}}, ram_doutA[31:16]} : {{24{1'b0}}, ram_doutA[31:16]};
         end
-        2'b11: ; // exception
+        2'b11: doutA = 0; // ? exception
         endcase    
     end
     3'b111: begin // word
         doutA = ram_doutA;
     end
+    default: doutA = 0;
     endcase
 end
 

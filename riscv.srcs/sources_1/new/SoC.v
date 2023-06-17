@@ -45,12 +45,8 @@ reg is_ld; // previous instruction was 'ld'
 reg [4:0] ld_rd; // previous instruction 'rd'
 reg regs_we3; // enabled when previous instruction was 'ld' to write 'ram_doutA' to register 'ld_rd'
 
-// if last instruction was a load to a register that is used in the instruction 
-wire signed [31:0] rs1_dat = regs_we3 && rs1 == ld_rd ? ram_doutA : regs_rd1;
-wire signed [31:0] rs2_dat = regs_we3 && rs2 == ld_rd ? ram_doutA : regs_rd2;
-
-//reg signed [31:0] rs1_dat;
-//reg signed [31:0] rs2_dat;
+reg signed [31:0] rs1_dat;
+reg signed [31:0] rs2_dat;
 
 reg bubble; // signals that next instruction is a bubble
 reg is_bubble; // signals that current innstruction is a bubble
@@ -68,12 +64,11 @@ always @* begin
 
 //    $display("%0t: ir=%h, pc=%0d, pc_nxt=%0d, is_bubble=%0d rst=%0d, opcode=%0b", $time, ir, pc, pc_nxt, is_bubble, rst, opcode);    
 
-    // note. in iverilog commented code below creates inifinite loop with
-    // SoC and RAM_Interface triggering each other without (obvious) signal change
-    //rs1_dat = regs_we3 && rs1 == ld_rd ? ram_doutA : regs_rd1;
-    //rs2_dat = regs_we3 && rs2 == ld_rd ? ram_doutA : regs_rd2;
-
     if (!is_bubble) begin
+        // if last instruction was a load to a register that is used in this instruction 
+        rs1_dat = regs_we3 && rs1 == ld_rd ? ram_doutA : regs_rd1;
+        rs2_dat = regs_we3 && rs2 == ld_rd ? ram_doutA : regs_rd2;
+        
         case (opcode)
         7'b0110111: begin // LUI
             regs_rd_wd = U_imm20;
