@@ -8,6 +8,7 @@ module RAM_Interface #(
     parameter DATA_FILE = "RAM.mem"
 )(
     input wire rst,
+    
     // port A: data memory, read / write byte addressable ram
     input wire clk,
     input wire [1:0] weA, // b01 - byte, b10 - half word, b11 - word
@@ -93,13 +94,11 @@ always @(posedge clk) begin
         addr_lower_r <= addrA[1:0];
         if (addrA == {(ADDR_WIDTH+2){1'b1}} && weA == 2'b01) begin
             leds = dinA[6:0];
-//            $display("leds: %b", leds);
         end
     end
 end
 
 always @* begin
-//    doutA = 0;
     casex(reA_prev) // read size
     3'bx01: begin // byte
         case(addr_lower_r)

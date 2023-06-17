@@ -62,8 +62,6 @@ always @* begin
     bubble = 0;
     pc_nxt = pc + 4;
 
-//    $display("%0t: ir=%h, pc=%0d, pc_nxt=%0d, is_bubble=%0d rst=%0d, opcode=%0b", $time, ir, pc, pc_nxt, is_bubble, rst, opcode);    
-
     if (!is_bubble) begin
         // if last instruction was a load to a register that is used in this instruction 
         rs1_dat = regs_we3 && rs1 == ld_rd ? ram_doutA : regs_rd1;
@@ -73,14 +71,12 @@ always @* begin
         7'b0110111: begin // LUI
             regs_rd_wd = U_imm20;
             regs_rd_we = 1;
-//            $display("%0t: ir=%h, LUI %0h", $time, ir, U_imm20);
         end
         7'b0010011: begin // logical ops immediate
             regs_rd_we = 1;
             case (funct3)
             3'b000: begin // ADDI
                 regs_rd_wd = rs1_dat + I_imm12;
-//                $display("%0t: ir=%h, ADDI x%0d = %0h + %0h", $time, ir, rd, rs1_dat, I_imm12);
             end
             3'b010: begin // SLTI
                 regs_rd_wd = rs1_dat < I_imm12 ? 1 : 0;
@@ -183,7 +179,6 @@ always @* begin
             regs_rd_we = 1;
             pc_nxt = pc + J_imm20 - 4;
             bubble = 1;
-//            $display("%0t: ir=%h, opcode=%0b JAL pc_nxt=%0h", $time, ir, opcode, pc_nxt);
         end
         7'b1100111: begin // JALR
             regs_rd_wd = pc;
@@ -224,7 +219,6 @@ always @* begin
                 end
             end
             3'b111: begin // BGEU
-//                $display("%0t: ir=%h, BGEU %0h >= %0h", $time, ir, rs1_dat, rs2_dat);
                 if ($unsigned(rs1_dat) >= $unsigned(rs2_dat)) begin
                     pc_nxt = pc + B_imm12 - 4;
                     bubble = 1;
@@ -241,8 +235,6 @@ always @(posedge clk) begin
         pc <= 0;
         is_bubble <= 0;
     end else begin
-//        $display("**********************************************");
-//        $display("*** %0t: ir=%0h, pc=%0d, pc_nxt=%0d", $time, ir, pc, pc_nxt);
         regs_we3 <= is_ld ? 1 : 0; // if this is a 'load' from ram enable write to register 'ld_rd' during next instruction (one cycle delay for data ready from ram)
         ld_rd <= rd; // save the destination register for next cycle write
         is_bubble <= bubble; // if instruction generates bubble of next instruction (branch, jumps instructions)
