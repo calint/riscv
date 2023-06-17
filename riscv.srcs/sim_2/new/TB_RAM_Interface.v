@@ -11,16 +11,18 @@ always #(clk_tk/2) clk = ~clk;
 
 reg [1:0] weA = 0;
 reg [2:0] reA = 0;
-reg [18-1:0] addrA = 0;
+reg [31:0] addrA = 0;
 reg [31:0] dinA = 0;
 wire [31:0] doutA;
-reg [18-1:0] addrB = 0;
+reg [31:0] addrB = 0;
 wire [31:0] doutB;
+reg rst = 1;
 
 RAM_Interface #(
     .ADDR_WIDTH(15), // 2**15 = RAM depth in words
     .DATA_WIDTH(32)
 ) dut (
+    .rst(rst),
     .clk(clk),
     .weA(weA), // b01 - byte, b10 - half word, b11 - word
     .reA(reA), // b01 - byte, b10 - half word, b11 - word
@@ -32,6 +34,9 @@ RAM_Interface #(
 );
 
 initial begin
+    #clk_tk
+    rst = 0;
+
     // write bytes
     weA = 1;
     reA = 0;
