@@ -70,8 +70,9 @@ lbl6:
 	lhu x21, 2(x20)			# x21 = ram[0x1000 + 2] == 0xffff
 	addi x21, x21, 1        # x21 = 0xffff + 1 == 0x1_0000
 
-	sh x21, 2(x20)			# ram[0x1000 + 2] = 0x1_0000
-	lhu x22, 2(x20)			# x22 = ram[0x1000 + 2] == 0x1_0000
+	sw x21, (x20)			# ram[0x1000] = 0x1_0000
+	lw x25, (x20)			# x25 = ram[0x1000] == 0x1_0000
+	addi x26, x25, 1		# x26 = 0x1_0000 + 1 == 0x1_0001
 
 lbl_done:
 	jal x0, lbl_done

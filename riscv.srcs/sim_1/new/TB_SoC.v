@@ -331,12 +331,19 @@ initial begin
     #clk_tk
     if (dut.regs.mem[21]==32'h1_0000) $display("test 61 passed"); else $display("test 61 FAILED"); 
     
-    // e0: 015a1123 sh x21,2(x20)
+    // e0: 015a2023 sw x21,0(x20)
+    #clk_tk
+    if (dut.ram.ram.ram_block[32'h0000_1000>>2]==32'h0001_0000) $display("test 62 passed"); else $display("test 62 FAILED"); 
+    
+    // e4: 000a2c83 lw x25,0(x20)
     #clk_tk
     
-    // e4: 002a5b03 lhu x22,2(x20)
+    // e8: 001c8d13 addi x26,x25,1
     #clk_tk
-    if (dut.regs.mem[22]==32'h1_0000) $display("test 62 passed"); else $display("test 62 FAILED"); 
+    // one cycle delay for x25 to be written from load
+    if (dut.regs.mem[25]==32'h1_0000) $display("test 63 passed"); else $display("test 63 FAILED"); 
+    // check that pipeline resolution of x25 is correct
+    if (dut.regs.mem[26]==32'h1_0001) $display("test 64 passed"); else $display("test 64 FAILED"); 
 
     $finish;
 end

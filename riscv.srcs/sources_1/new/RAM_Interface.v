@@ -67,15 +67,16 @@ always @* begin
             ram_weA = 4'b0011;
             ram_dinA = dinA;
         end
-        2'b01: ; // exception
+        2'b01: ; // ? error
         2'b10: begin
             ram_weA = 4'b1100;
             ram_dinA = dinA << 16;
         end
-        2'b11: ; // exception
+        2'b11: ; // ? error
         endcase    
     end
     2'b11: begin // word
+        // ? assert(addr_lower_w==0)
         ram_weA = 4'b1111;
         ram_dinA = dinA;
     end
