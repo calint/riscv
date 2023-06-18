@@ -331,7 +331,13 @@ initial begin
     #clk_tk
     if (dut.regs.mem[21]==32'h1_0000) $display("test 61 passed"); else $display("test 61 FAILED"); 
     
+    // e0: 015a1123 sh x21,2(x20)
+    #clk_tk
     
+    // e4: 002a5b03 lhu x22,2(x20)
+    #clk_tk
+    if (dut.regs.mem[22]==32'h1_0000) $display("test 62 passed"); else $display("test 62 FAILED"); 
+
     $finish;
 end
 

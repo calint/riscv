@@ -73,9 +73,11 @@ Disassembly of section .text:
   d4:	017c0023          	sb	x23,0(x24)
   d8:	002a5a83          	lhu	x21,2(x20)
   dc:	001a8a93          	addi	x21,x21,1
+  e0:	015a1123          	sh	x21,2(x20)
+  e4:	002a5b03          	lhu	x22,2(x20)
 
-000000e0 <lbl_done>:
-  e0:	0000006f          	jal	x0,e0 <lbl_done>
+000000e8 <lbl_done>:
+  e8:	0000006f          	jal	x0,e8 <lbl_done>
 	...
 
 00000400 <lbl_jal>:

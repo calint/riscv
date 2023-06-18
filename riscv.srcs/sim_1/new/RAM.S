@@ -66,9 +66,12 @@ lbl6:
 #	addi x23, x0, 0b0000000
 	sb x23, 0(x24)			#  write to memory mapped I/O ram[0xffff_ffff] = 0b111_1111
 
-	# check that register is writting with the result of the op instead of the ram
+	# check that register is writting the result of the op instead of the ram
 	lhu x21, 2(x20)			# x21 = ram[0x1000 + 2] == 0xffff
-	addi x21, x21, 1        # x22 = 0xffff + 1 == 0x1_0000
+	addi x21, x21, 1        # x21 = 0xffff + 1 == 0x1_0000
+
+	sh x21, 2(x20)			# ram[0x1000 + 2] = 0x1_0000
+	lhu x22, 2(x20)			# x22 = ram[0x1000 + 2] == 0x1_0000
 
 lbl_done:
 	jal x0, lbl_done
