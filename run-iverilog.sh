@@ -18,6 +18,5 @@ iverilog -Wall -Winfloop -pfileline=1 -o iverilog.out \
     $SRCPTH/Registers.v \
     $SRCPTH/SoC.v
 
-
 vvp iverilog.out
 rm iverilog.out
