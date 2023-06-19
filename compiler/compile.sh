@@ -8,17 +8,17 @@ PATH=$PATH:~/riscv/install/rv32i/bin
 SRC=$1
 BIN=${SRC%.*}
 
-
-#	-mstrict-align \
 riscv32-unknown-elf-gcc \
+	-ffreestanding \
+	-nostdlib \
 	-O2 \
 	-mstrict-align \
-	-ffreestanding \
 	-fno-pic \
 	-march=rv32i \
 	-mabi=ilp32 \
-	-nostdlib \
-	-Wl,-Ttext=0x0 -Wl,--no-relax $SRC -o $BIN
+	-Wl,-Ttext=0x0 \
+	-Wl,--no-relax \
+	$SRC -o $BIN
 
 riscv32-unknown-elf-objcopy $BIN -O binary $BIN.bin
 riscv32-unknown-elf-objdump -Mnumeric,no-aliases -dr $BIN > $BIN.lst
