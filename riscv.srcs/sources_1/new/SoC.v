@@ -41,15 +41,15 @@ reg [31:0] ram_addrA;
 reg [31:0] ram_dinA;
 wire [31:0] ram_doutA;
 
-reg is_ld; // previous instruction was 'ld'
+reg is_ld; // instruction is 'load'
 reg [4:0] ld_rd; // previous instruction 'rd'
 reg regs_we3; // enabled when previous instruction was 'ld' to write 'ram_doutA' to register 'ld_rd'
 
-reg signed [31:0] rs1_dat;
-reg signed [31:0] rs2_dat;
+reg signed [31:0] rs1_dat; // resolved rs1 value
+reg signed [31:0] rs2_dat; // resolved rs2 value
 
 reg bubble; // signals that next instruction is a bubble
-reg is_bubble; // signals that current innstruction is a bubble
+reg is_bubble; // signals that current instruction is a bubble
 
 always @* begin
     regs_rd_we = 0;
@@ -235,7 +235,7 @@ always @(posedge clk) begin
         pc <= 0;
         is_bubble <= 0;
     end else begin
-        regs_we3 <= is_ld ? 1 : 0; // if this is a 'load' from ram enable write to register 'ld_rd' during next instruction (one cycle delay for data ready from ram)
+        regs_we3 <= is_ld; // if this is a 'load' from ram enable write to register 'ld_rd' during next cycle (one cycle delay for data ready from ram)
         ld_rd <= rd; // save the destination register for next cycle write
         is_bubble <= bubble; // if instruction generates bubble of next instruction (branch, jumps instructions)
         pc <= pc_nxt;
