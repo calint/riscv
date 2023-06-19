@@ -8,11 +8,11 @@ PATH=$PATH:~/riscv/install/rv32i/bin
 SRC=$1
 BIN=${SRC%.*}
 
+# -mstrict-align \
 riscv32-unknown-elf-gcc \
+	-O2 \
 	-ffreestanding \
 	-nostdlib \
-	-O2 \
-	-mstrict-align \
 	-fno-pic \
 	-march=rv32i \
 	-mabi=ilp32 \
