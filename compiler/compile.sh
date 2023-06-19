@@ -16,6 +16,8 @@ riscv32-unknown-elf-gcc \
 	-fno-pic \
 	-march=rv32i \
 	-mabi=ilp32 \
+	-Wfatal-errors \
+	-Wall -Wextra -pedantic \
 	-Wl,-Ttext=0x0 \
 	-Wl,--no-relax \
 	$SRC -o $BIN

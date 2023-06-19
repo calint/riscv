@@ -13,13 +13,12 @@ struct baba {
     short word;
     int dword;
 } babas[] = {
-    {0xfa,0xfb,0xfffc,0xfffffffd},
+    {0xfa,0xfb,(short)0xfffc,0xfffffffd},
     {0x1a,0x1b,0x111c,0x1111111d},
 };
 
 void _start() {
     set_stack_pointer((void*)(TOP_OF_RAM-1)); // top of memory minus the mapped leds
-    unsigned char counter = 0;
     while(1) {
         *leds = babas[0].byte++;
         delay(TICKS_PER_SEC);
