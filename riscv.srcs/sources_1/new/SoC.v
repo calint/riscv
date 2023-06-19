@@ -43,7 +43,7 @@ wire [31:0] ram_doutA;
 
 reg is_ld; // instruction is 'load'
 reg [4:0] ld_rd; // previous instruction 'rd'
-reg regs_we3; // enabled when previous instruction was 'ld' to write 'ram_doutA' to register 'ld_rd'
+reg regs_we3; // enabled when previous instruction was 'load' to write 'ram_doutA' to register 'ld_rd'
 
 reg signed [31:0] rs1_dat; // resolved rs1 value
 reg signed [31:0] rs2_dat; // resolved rs2 value
