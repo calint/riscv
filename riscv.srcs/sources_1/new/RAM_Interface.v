@@ -45,19 +45,19 @@ always @* begin
         case(addr_lower_w)
         2'b00: begin
             ram_weA = 4'b0001;
-            ram_dinA = dinA;
+            ram_dinA[7:0] = dinA[7:0];
         end
         2'b01: begin
             ram_weA = 4'b0010;
-            ram_dinA = dinA << 8;
+            ram_dinA[15:8] = dinA[7:0];
         end
         2'b10: begin
             ram_weA = 4'b0100;
-            ram_dinA = dinA << 16;
+            ram_dinA[23:16] = dinA[7:0];
         end
         2'b11: begin
             ram_weA = 4'b1000;
-            ram_dinA = dinA << 24;
+            ram_dinA[31:24] = dinA[7:0];
         end
         endcase
     end
@@ -65,12 +65,12 @@ always @* begin
         case(addr_lower_w)
         2'b00: begin
             ram_weA = 4'b0011;
-            ram_dinA = dinA;
+            ram_dinA[15:0] = dinA[15:0];
         end
         2'b01: ; // ? error
         2'b10: begin
             ram_weA = 4'b1100;
-            ram_dinA = dinA << 16;
+            ram_dinA[31:16] = dinA[15:0];
         end
         2'b11: ; // ? error
         endcase    
