@@ -112,6 +112,7 @@ always @(posedge clk) begin
     end else begin
         reA_prev <= reA;
         addrA_prev <= addrA;
+        // if uart done sending a byte acknowledge (uarttx_go = 0)
         if (!uarttx_bsy && uarttx_go) begin
             uarttx_out <= 0;
             uarttx_go <= 0;
@@ -129,8 +130,10 @@ always @(posedge clk) begin
         if (uartrx_go == 0) begin
             uartrx_go <= 1;
         end
+        // if writing to leds
         if (addrA == {(ADDR_WIDTH+2){1'b1}} && weA == 2'b01) begin
             leds <= dinA[6:0];
+        // if writing to uart
         end else if (addrA == {(ADDR_WIDTH+2){1'b1}} - 1 && weA == 2'b01) begin
             uarttx_out <= dinA[7:0];
             uarttx_go <= 1;
