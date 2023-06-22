@@ -3,6 +3,7 @@
 #define TOP_OF_RAM 0x1ffff
 
 volatile unsigned char *leds = (unsigned char *)TOP_OF_RAM;
+volatile unsigned char *uart_out = (unsigned char *)TOP_OF_RAM - 1;
 
 void delay(unsigned int ticks);
 void set_stack_pointer(void *stack_ptr);
@@ -17,9 +18,20 @@ struct baba {
     {0x1a, 0x1b, 0x111c, 0x1111111d},
 };
 
+static char *hello = "Hello World\r\n";
+
 void _start() {
   // stack to top of memory minus the mapped leds
-  set_stack_pointer((void *)(TOP_OF_RAM - 1));
+  set_stack_pointer((void *)(TOP_OF_RAM - 2));
+
+  char *p = hello;
+  while (*p) {
+    *uart_out = *p;
+    while (*uart_out)
+      ;
+    p++;
+  }
+
   while (1) {
     *leds = babas[0].byte++;
     delay(TICKS_PER_SEC);

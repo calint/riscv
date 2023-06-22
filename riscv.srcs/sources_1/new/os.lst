@@ -6,33 +6,45 @@ Disassembly of section .text:
 
 00000000 <_start>:
    0:	000207b7          	lui	x15,0x20
-   4:	ffe78793          	addi	x15,x15,-2 # 1fffe <__global_pointer$+0x1e792>
+   4:	ffd78793          	addi	x15,x15,-3 # 1fffd <__global_pointer$+0x1e751>
    8:	00078113          	addi	x2,x15,0
-   c:	000016b7          	lui	x13,0x1
-  10:	06c68693          	addi	x13,x13,108 # 106c <babas>
-  14:	00001837          	lui	x16,0x1
-  18:	000cb537          	lui	x10,0xcb
-  1c:	0016c703          	lbu	x14,1(x13)
-  20:	07c82603          	lw	x12,124(x16) # 107c <leds>
-  24:	73550793          	addi	x15,x10,1845 # cb735 <__global_pointer$+0xc9ec9>
-  28:	00170593          	addi	x11,x14,1
-  2c:	00b680a3          	sb	x11,1(x13)
-  30:	00e60023          	sb	x14,0(x12)
-  34:	00078713          	addi	x14,x15,0
-  38:	fff78793          	addi	x15,x15,-1
-  3c:	fe071ce3          	bne	x14,x0,34 <_start+0x34>
-  40:	fddff06f          	jal	x0,1c <_start+0x1c>
+   c:	00001637          	lui	x12,0x1
+  10:	0bc62703          	lw	x14,188(x12) # 10bc <uart_out>
+  14:	000006b7          	lui	x13,0x0
+  18:	09c68693          	addi	x13,x13,156 # 9c <set_stack_pointer+0x8>
+  1c:	04800793          	addi	x15,x0,72
+  20:	00f70023          	sb	x15,0(x14)
+  24:	0bc62703          	lw	x14,188(x12)
+  28:	00074783          	lbu	x15,0(x14)
+  2c:	fe079ee3          	bne	x15,x0,28 <_start+0x28>
+  30:	0016c783          	lbu	x15,1(x13)
+  34:	00168693          	addi	x13,x13,1
+  38:	fe0794e3          	bne	x15,x0,20 <_start+0x20>
+  3c:	000016b7          	lui	x13,0x1
+  40:	0ac68693          	addi	x13,x13,172 # 10ac <babas>
+  44:	00001837          	lui	x16,0x1
+  48:	000cb537          	lui	x10,0xcb
+  4c:	0016c703          	lbu	x14,1(x13)
+  50:	0c082603          	lw	x12,192(x16) # 10c0 <leds>
+  54:	73550793          	addi	x15,x10,1845 # cb735 <__global_pointer$+0xc9e89>
+  58:	00170593          	addi	x11,x14,1
+  5c:	00b680a3          	sb	x11,1(x13)
+  60:	00e60023          	sb	x14,0(x12)
+  64:	00078713          	addi	x14,x15,0
+  68:	fff78793          	addi	x15,x15,-1
+  6c:	fe071ce3          	bne	x14,x0,64 <_start+0x64>
+  70:	fddff06f          	jal	x0,4c <_start+0x4c>
 
-00000044 <delay>:
-  44:	ff010113          	addi	x2,x2,-16
-  48:	00a12623          	sw	x10,12(x2)
-  4c:	00c12783          	lw	x15,12(x2)
-  50:	fff78713          	addi	x14,x15,-1
-  54:	00e12623          	sw	x14,12(x2)
-  58:	fe079ae3          	bne	x15,x0,4c <delay+0x8>
-  5c:	01010113          	addi	x2,x2,16
-  60:	00008067          	jalr	x0,0(x1)
+00000074 <delay>:
+  74:	ff010113          	addi	x2,x2,-16
+  78:	00a12623          	sw	x10,12(x2)
+  7c:	00c12783          	lw	x15,12(x2)
+  80:	fff78713          	addi	x14,x15,-1
+  84:	00e12623          	sw	x14,12(x2)
+  88:	fe079ae3          	bne	x15,x0,7c <delay+0x8>
+  8c:	01010113          	addi	x2,x2,16
+  90:	00008067          	jalr	x0,0(x1)
 
-00000064 <set_stack_pointer>:
-  64:	00050113          	addi	x2,x10,0
-  68:	00008067          	jalr	x0,0(x1)
+00000094 <set_stack_pointer>:
+  94:	00050113          	addi	x2,x10,0
+  98:	00008067          	jalr	x0,0(x1)

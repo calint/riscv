@@ -121,6 +121,7 @@ end
 always @* begin
     // create the 'doutA' based on the 'addrA' in previous cycle (one cycle delay for data ready)
     if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 1 && reA_prev == 3'b001) begin
+        // read unsigned byte from 0x1fffe
         doutA = {{24{1'b0}}, uarttx_out};
 //        $display("%0t: get uarttx_out: doutA=%0h", $time, doutA);
     end else begin
