@@ -12,28 +12,15 @@ void uart_send_string(char *str);
 void uart_send_char(char ch);
 char uart_read_char();
 
-struct baba {
-  char bits;
-  char byte;
-  short word;
-  int dword;
-} babas[] = {
-    {0xfa, 0xfb, (short)0xfffc, 0xfffffffd},
-    {0x1a, 0x1b, 0x111c, 0x1111111d},
-};
-
 static char *hello = "Hello World\r\n";
 
 void run() {
   uart_send_string(hello);
 
   while (1) {
-    uart_send_char(uart_read_char());
-  }
-
-  while (1) {
-    *leds = babas[0].byte++;
-    delay(TICKS_PER_SEC);
+    const char ch = uart_read_char();
+    uart_send_char(ch);
+    *leds = ch;
   }
 }
 

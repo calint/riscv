@@ -120,10 +120,12 @@ always @(posedge clk) begin
         if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 2 && reA_prev == 3'b001) begin
             uartrx_data_read <= 0;
         end
+        // if data ready copy data from uart and acknowledge (uartrx_go = 0)
         if (uartrx_dr && uartrx_go) begin
             uartrx_data_read <= uartrx_data;
             uartrx_go <= 0;
         end
+        // if last cycle acknowledged receiving a byte start receiving next byte (uartrx_go = 1)
         if (uartrx_go == 0) begin
             uartrx_go <= 1;
         end

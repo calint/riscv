@@ -228,6 +228,7 @@
       </Config>
     </FileSet>
     <FileSet Name="sim_3" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim_3" RelGenDir="$PGENDIR/sim_3">
+      <Filter Type="Srcs"/>
       <File Path="$PSRCDIR/sim_3/new/TB_SoC.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -261,6 +262,7 @@
       </Config>
     </FileSet>
     <FileSet Name="sim_4" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim_4" RelGenDir="$PGENDIR/sim_4">
+      <Filter Type="Srcs"/>
       <File Path="$PSRCDIR/sim_4/new/TB_SoC.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
