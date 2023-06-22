@@ -22,7 +22,6 @@ struct baba {
 static char *hello = "Hello World\r\n";
 
 void _start() {
-  // stack to top of memory minus the mapped leds
   set_stack_pointer((void *)(TOP_OF_STACK));
 
   char *p = hello;
