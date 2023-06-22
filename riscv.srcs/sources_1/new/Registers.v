@@ -35,6 +35,7 @@ always @(posedge clk) begin
     `ifdef DBG
         $display("%0t: clk+: Registers (rs1,rs2,rd)=(%0h,%0h,%0h)", $time, rs1, rs2, rd);
     `endif
+//    $display("%0t: we3=%0h, wd3=%0h, ra3=%0h, rd_we=%0h, rd_wd=%0h", $time, we3, wd3, ra3, rd_we, rd_wd);
 
     // write first the 'wd3' which is from a 'load'
     // then the 'wd2' which might overwrite the 'wd3'

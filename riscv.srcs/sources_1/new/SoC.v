@@ -3,7 +3,9 @@
 //`define DBG
 
 module SoC #(
-    parameter RAM_FILE = "RAM.mem"
+    parameter RAM_FILE = "RAM.mem",
+    parameter CLK_FREQ = 50_000_000,
+    parameter BAUD_RATE = 9600
 )(
     input wire clk,
     input wire rst,
@@ -258,7 +260,9 @@ Registers regs (
 
 RAM_Interface #(
     .ADDR_WIDTH(15), // 2**15 = RAM depth in words
-    .DATA_FILE(RAM_FILE)
+    .DATA_FILE(RAM_FILE),
+    .CLK_FREQ(CLK_FREQ),
+    .BAUD_RATE(BAUD_RATE)
 ) ram (
     .rst(rst),
     // port A: data memory, read / write byte addressable ram
@@ -273,7 +277,8 @@ RAM_Interface #(
     .addrB(pc),
     .doutB(ir),
 
-    .leds({led0_b, led0_g, led0_r, led[3:0]})
+    .leds({led0_b, led0_g, led0_r, led[3:0]}),
+    .uart_tx(uart_tx)
 );
 
 endmodule

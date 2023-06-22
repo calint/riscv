@@ -25,8 +25,11 @@ Clocking clocking(
 );
 
 SoC #(
-//    .RAM_FILE("/home/c/w/riscv/riscv.srcs/sim_1/new/RAM.mem");
-    .RAM_FILE("/home/c/w/riscv/riscv.srcs/sources_1/new/os.mem")
+//    .RAM_FILE("/home/c/w/riscv/riscv.srcs/sim_1/new/RAM.mem"),
+    .RAM_FILE("/home/c/w/riscv/riscv.srcs/sim_3/new/RAM.mem"),
+//    .RAM_FILE("/home/c/w/riscv/riscv.srcs/sources_1/new/os.mem"),
+    .CLK_FREQ(50_000_000),
+    .BAUD_RATE(9600)
 ) soc (
     .clk(clk_50MHz),
     .rst(reset || !clk_locked),

@@ -5,7 +5,9 @@
 module RAM_Interface #(
     parameter ADDR_WIDTH = 16, // 2**16 = RAM depth in words
     parameter DATA_WIDTH = 32,
-    parameter DATA_FILE = "RAM.mem"
+    parameter DATA_FILE = "RAM.mem",
+    parameter CLK_FREQ = 50_000_000,
+    parameter BAUD_RATE = 9600
 )(
     input wire rst,
     
@@ -22,13 +24,20 @@ module RAM_Interface #(
     output wire [DATA_WIDTH-1:0] doutB,
 
     // I/O mapping of leds
-    output reg [6:0] leds
+    output reg [6:0] leds,
+    
+    // uart
+    output wire uart_tx
 );
 
 reg [ADDR_WIDTH-1:0] ram_addrA;
 reg [DATA_WIDTH-1:0] ram_dinA;
 wire [DATA_WIDTH-1:0] ram_doutA;
 reg [3:0] ram_weA;
+
+reg [7:0] uarttx_out;
+reg uarttx_go;
+wire uarttx_bsy;
 
 reg [1:0] addr_lower_w;
 // write
@@ -84,57 +93,73 @@ always @* begin
 end
 
 // read
+reg [ADDR_WIDTH+1:0] addrA_prev;
 reg [2:0] reA_prev; // reA at read used in the next cycle when data is ready
-reg [1:0] addr_lower_r; // lower 2 bits of address used in the next cycle when data is ready
 
 always @(posedge clk) begin
     if (rst) begin
         leds <= 7'b111_0000; // turn of all leds
+        uarttx_out <= 0;
     end else begin
         reA_prev <= reA;
-        addr_lower_r <= addrA[1:0];
+        addrA_prev <= addrA;
+        if (!uarttx_bsy && uarttx_go) begin
+//            $display("%0t: uarttx_bsy=false", $time);
+            uarttx_out <= 0;
+            uarttx_go <= 0;
+        end
         if (addrA == {(ADDR_WIDTH+2){1'b1}} && weA == 2'b01) begin
-            leds = dinA[6:0];
+            leds <= dinA[6:0];
+        end else if (addrA == {(ADDR_WIDTH+2){1'b1}} - 1 && weA == 2'b01) begin
+//            $display("%0t: addrA=%0h data=%0h", $time, addrA, dinA);
+            uarttx_out <= dinA[7:0];
+            uarttx_go <= 1;
         end
     end
 end
 
 always @* begin
-    casex(reA_prev) // read size
-    3'bx01: begin // byte
-        case(addr_lower_r)
-        2'b00: begin
-            doutA = reA[2] ? {{24{ram_doutA[7]}}, ram_doutA[7:0]} : {{24{1'b0}}, ram_doutA[7:0]};
+    // create the 'doutA' based on the 'addrA' in previous cycle (one cycle delay for data ready)
+    if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 1 && reA_prev == 3'b001) begin
+        doutA = {{24{1'b0}}, uarttx_out};
+//        $display("%0t: get uarttx_out: doutA=%0h", $time, doutA);
+    end else begin
+        casex(reA_prev) // read size
+        3'bx01: begin // byte
+            case(addrA_prev[1:0])
+            2'b00: begin
+                doutA = reA[2] ? {{24{ram_doutA[7]}}, ram_doutA[7:0]} : {{24{1'b0}}, ram_doutA[7:0]};
+            end
+            2'b01: begin
+                doutA = reA[2] ? {{24{ram_doutA[15]}}, ram_doutA[15:8]} : {{24{1'b0}}, ram_doutA[15:8]};
+            end
+            2'b10: begin
+                doutA = reA[2] ? {{24{ram_doutA[23]}}, ram_doutA[23:16]} : {{24{1'b0}}, ram_doutA[23:16]};
+            end
+            2'b11: begin
+                doutA = reA[2] ? {{24{ram_doutA[31]}}, ram_doutA[31:24]} : {{24{1'b0}}, ram_doutA[31:24]};
+            end
+            endcase
         end
-        2'b01: begin
-            doutA = reA[2] ? {{24{ram_doutA[15]}}, ram_doutA[15:8]} : {{24{1'b0}}, ram_doutA[15:8]};
+        3'bx10: begin // half word
+            case(addrA_prev[1:0])
+            2'b00: begin
+                doutA = reA[2] ? {{16{ram_doutA[15]}}, ram_doutA[15:0]} : {{24{1'b0}}, ram_doutA[15:0]};
+            end
+            2'b01: doutA = 0; // ? error
+            2'b10: begin
+                doutA = reA[2] ? {{16{ram_doutA[31]}}, ram_doutA[31:16]} : {{24{1'b0}}, ram_doutA[31:16]};
+            end
+            2'b11: doutA = 0; // ? error
+            endcase    
         end
-        2'b10: begin
-            doutA = reA[2] ? {{24{ram_doutA[23]}}, ram_doutA[23:16]} : {{24{1'b0}}, ram_doutA[23:16]};
+        3'b111: begin // word
+            // ? assert(addr_lower_w==0)
+            doutA = ram_doutA;
         end
-        2'b11: begin
-            doutA = reA[2] ? {{24{ram_doutA[31]}}, ram_doutA[31:24]} : {{24{1'b0}}, ram_doutA[31:24]};
-        end
+        default: doutA = 0;
         endcase
     end
-    3'bx10: begin // half word
-        case(addr_lower_r)
-        2'b00: begin
-            doutA = reA[2] ? {{16{ram_doutA[15]}}, ram_doutA[15:0]} : {{24{1'b0}}, ram_doutA[15:0]};
-        end
-        2'b01: doutA = 0; // ? error
-        2'b10: begin
-            doutA = reA[2] ? {{16{ram_doutA[31]}}, ram_doutA[31:16]} : {{24{1'b0}}, ram_doutA[31:16]};
-        end
-        2'b11: doutA = 0; // ? error
-        endcase    
-    end
-    3'b111: begin // word
-        // ? assert(addr_lower_w==0)
-        doutA = ram_doutA;
-    end
-    default: doutA = 0;
-    endcase
 end
 
 RAM #(
@@ -153,6 +178,19 @@ RAM #(
     .addrB(addrB[ADDR_WIDTH+1:2]),
     .dinB(0),
     .doutB(doutB)
+);
+
+
+UartTx #(
+    .CLK_FREQ(CLK_FREQ),
+    .BAUD_RATE(BAUD_RATE)
+) uarttx (
+    .rst(rst),
+    .clk(clk),
+    .data(uarttx_out), // data to send
+    .go(uarttx_go), // enable to start transmission, disable after 'data' has been read
+    .tx(uart_tx), // uart tx wire
+    .bsy(uarttx_bsy) // enabled while sendng
 );
 
 endmodule
