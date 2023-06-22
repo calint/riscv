@@ -278,7 +278,8 @@ RAM_Interface #(
     .doutB(ir),
 
     .leds({led0_b, led0_g, led0_r, led[3:0]}),
-    .uart_tx(uart_tx)
+    .uart_tx(uart_tx),
+    .uart_rx(uart_rx)
 );
 
 endmodule

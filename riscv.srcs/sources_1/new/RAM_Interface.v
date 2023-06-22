@@ -27,7 +27,8 @@ module RAM_Interface #(
     output reg [6:0] leds,
     
     // uart
-    output wire uart_tx
+    output wire uart_tx,
+    input wire uart_rx
 );
 
 reg [ADDR_WIDTH-1:0] ram_addrA;
@@ -96,17 +97,28 @@ end
 reg [ADDR_WIDTH+1:0] addrA_prev; // address used in previous cycle
 reg [2:0] reA_prev; // reA from previous cycle used in this cycle (due to one cycle delay of data ready)
 
+reg uartrx_go;
+wire [7:0] uartrx_data;
+wire uartrx_dr;
+    
 always @(posedge clk) begin
     if (rst) begin
         leds <= 7'b111_0000; // turn off all leds
         uarttx_out <= 0;
         uarttx_go <= 0;
+        uartrx_go <= 1;
     end else begin
         reA_prev <= reA;
         addrA_prev <= addrA;
         if (!uarttx_bsy && uarttx_go) begin
             uarttx_out <= 0;
             uarttx_go <= 0;
+        end
+        if (uartrx_dr && uartrx_go) begin
+            uartrx_go <= 0;
+        end
+        if (uartrx_go == 0) begin
+            uartrx_go <= 1;
         end
         if (addrA == {(ADDR_WIDTH+2){1'b1}} && weA == 2'b01) begin
             leds <= dinA[6:0];
@@ -120,8 +132,13 @@ end
 always @* begin
     // create the 'doutA' based on the 'addrA' in previous cycle (one cycle delay for data ready)
     if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 1 && reA_prev == 3'b001) begin
-        // read unsigned byte from 0x1fffe
+        // uart_tx
+        // read unsigned byte from 0x1_fffe
         doutA = {{24{1'b0}}, uarttx_out};
+    end else if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 2 && reA_prev == 3'b001) begin
+        // uart_rx
+        // read unsigned byte from 0x1_fffd
+        doutA = {{24{1'b0}}, uartrx_data};
     end else begin
         casex(reA_prev) // read size
         3'bx01: begin // byte
@@ -190,6 +207,18 @@ UartTx #(
     .go(uarttx_go), // enable to start transmission, disable after 'data' has been read
     .tx(uart_tx), // uart tx wire
     .bsy(uarttx_bsy) // enabled while sendng
+);
+
+UartRx #(
+    .CLK_FREQ(CLK_FREQ),
+    .BAUD_RATE(BAUD_RATE)
+) uartrx (
+    .rst(rst),
+    .clk(clk),
+    .rx(uart_rx),
+    .go(uartrx_go),
+    .data(uartrx_data),
+    .dr(uartrx_dr) // enabled when data is ready
 );
 
 endmodule

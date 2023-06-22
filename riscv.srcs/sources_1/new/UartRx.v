@@ -80,6 +80,7 @@ always @(negedge clk) begin
         end
         STATE_WAIT_GO_LOW: begin
             if (!go) begin
+                data <= 0;
                 dr <= 0;
                 state <= STATE_IDLE;
             end

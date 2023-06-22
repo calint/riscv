@@ -1,6 +1,6 @@
 .text
 .align 2
-.globl _start
+.global _start
 
 _start:
 	addi x0, x0, 0			# nop
