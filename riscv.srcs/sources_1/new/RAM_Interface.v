@@ -100,13 +100,15 @@ reg [2:0] reA_prev; // reA from previous cycle used in this cycle (due to one cy
 reg uartrx_go;
 wire [7:0] uartrx_data;
 wire uartrx_dr;
-    
+reg [7:0] uartrx_data_read;
+
 always @(posedge clk) begin
     if (rst) begin
         leds <= 7'b111_0000; // turn off all leds
         uarttx_out <= 0;
         uarttx_go <= 0;
         uartrx_go <= 1;
+        uartrx_data_read <= 0;
     end else begin
         reA_prev <= reA;
         addrA_prev <= addrA;
@@ -114,7 +116,11 @@ always @(posedge clk) begin
             uarttx_out <= 0;
             uarttx_go <= 0;
         end
+        if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 2 && reA_prev == 3'b001) begin
+            uartrx_data_read <= 0;
+        end
         if (uartrx_dr && uartrx_go) begin
+            uartrx_data_read <= uartrx_data;
             uartrx_go <= 0;
         end
         if (uartrx_go == 0) begin
@@ -138,7 +144,7 @@ always @* begin
     end else if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 2 && reA_prev == 3'b001) begin
         // uart_rx
         // read unsigned byte from 0x1_fffd
-        doutA = {{24{1'b0}}, uartrx_data};
+        doutA = {{24{1'b0}}, uartrx_data_read};
     end else begin
         casex(reA_prev) // read size
         3'bx01: begin // byte

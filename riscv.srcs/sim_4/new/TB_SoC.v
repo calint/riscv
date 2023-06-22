@@ -65,6 +65,10 @@ initial begin
     for (i = 0; i < UART_TICKS_PER_BIT; i = i + 1) #clk_tk;
     uart_rx = 1; // idle
 
+    // wait until next load register
+    #clk_tk
+    #clk_tk
+    #clk_tk
     if (dut.regs.mem[11]==8'h55) $display("test 1 passed"); else $display("test 1 FAILED");
 
     // receive 0b0101_0101 (0x55)
@@ -91,7 +95,13 @@ initial begin
     uart_rx = 1; // stop bit
     for (i = 0; i < UART_TICKS_PER_BIT; i = i + 1) #clk_tk;
     uart_rx = 1; // idle
-    
+
+    // wait until next load register
+    #clk_tk
+    #clk_tk
+    #clk_tk
+    #clk_tk
+    #clk_tk
     if (dut.regs.mem[11]==8'h55) $display("test 2 passed"); else $display("test 2 FAILED");
     
     $finish;

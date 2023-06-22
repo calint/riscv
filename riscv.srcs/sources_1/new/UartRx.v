@@ -25,11 +25,13 @@ localparam STATE_WAIT_GO_LOW  = 4;
 reg [$clog2(5)-1:0] state;
 reg [$clog2(9)-1:0] bit_count;
 reg [(BIT_TIME == 1 ? 1 : $clog2(BIT_TIME))-1:0] bit_counter;
+reg [7:0] data_build;
 
-always @(negedge clk) begin
+always @(posedge clk) begin
     if (rst) begin
         state <= STATE_IDLE;
         data <= 0;
+        data_build <= 0;
         bit_count <= 0;
         bit_counter <= 0;
         dr <= 0;
@@ -59,7 +61,7 @@ always @(negedge clk) begin
         end
         STATE_DATA_BITS: begin
             if (bit_counter == 0) begin
-                data[bit_count] <= rx;
+                data_build[bit_count] <= rx;
                 bit_counter <= BIT_TIME - 1; // -1 because one of the ticks has been read before switching state
                 bit_count <= bit_count + 1;
                 if (bit_count == 7) begin // 7, not 8, because of NBA of bit_count 
@@ -72,6 +74,7 @@ always @(negedge clk) begin
         end
         STATE_STOP_BIT: begin
             if (bit_counter == 0) begin // no check if rx==1 because there is no error recovery
+                data <= data_build;
                 dr <= 1;
                 state <= STATE_WAIT_GO_LOW;
             end else begin
@@ -81,6 +84,7 @@ always @(negedge clk) begin
         STATE_WAIT_GO_LOW: begin
             if (!go) begin
                 data <= 0;
+                data_build <= 0; // ? not necessary
                 dr <= 0;
                 state <= STATE_IDLE;
             end

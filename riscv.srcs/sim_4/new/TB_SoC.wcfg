@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="197.557 ns"></ZoomEndTime>
-      <Cursor1Time time="290.000 ns"></Cursor1Time>
+      <ZoomStartTime time="230.800 ns"></ZoomStartTime>
+      <ZoomEndTime time="455.401 ns"></ZoomEndTime>
+      <Cursor1Time time="297.800 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="114"></NameColumnWidth>
+      <NameColumnWidth column_width="98"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="4" />
+   <WVObjectSize size="9" />
    <wvobject type="logic" fp_name="/TB_SoC/rst">
       <obj_property name="ElementShortName">rst</obj_property>
       <obj_property name="ObjectShortName">rst</obj_property>
@@ -48,5 +48,29 @@
          <obj_property name="ElementShortName">data[7:0]</obj_property>
          <obj_property name="ObjectShortName">data[7:0]</obj_property>
       </wvobject>
+      <wvobject type="array" fp_name="/TB_SoC/dut/ram/uartrx/data_build">
+         <obj_property name="ElementShortName">data_build[7:0]</obj_property>
+         <obj_property name="ObjectShortName">data_build[7:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="logic" fp_name="/TB_SoC/dut/is_ld">
+      <obj_property name="ElementShortName">is_ld</obj_property>
+      <obj_property name="ObjectShortName">is_ld</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/TB_SoC/dut/ld_rd">
+      <obj_property name="ElementShortName">ld_rd[4:0]</obj_property>
+      <obj_property name="ObjectShortName">ld_rd[4:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/TB_SoC/dut/ram_doutA">
+      <obj_property name="ElementShortName">ram_doutA[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ram_doutA[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/TB_SoC/dut/regs_we3">
+      <obj_property name="ElementShortName">regs_we3</obj_property>
+      <obj_property name="ObjectShortName">regs_we3</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/TB_SoC/dut/ram/uartrx_data_read">
+      <obj_property name="ElementShortName">uartrx_data_read[7:0]</obj_property>
+      <obj_property name="ObjectShortName">uartrx_data_read[7:0]</obj_property>
    </wvobject>
 </wave_config>

@@ -15,6 +15,7 @@ iverilog -Wall -Winfloop -pfileline=1 -o iverilog.out \
     $TB \
     $SRCPTH/RAM.v \
     $SRCPTH/UartTx.v \
+    $SRCPTH/UartRx.v \
     $SRCPTH/RAM_Interface.v \
     $SRCPTH/Registers.v \
     $SRCPTH/SoC.v
