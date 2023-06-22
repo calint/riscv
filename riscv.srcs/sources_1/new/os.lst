@@ -5,46 +5,52 @@ os:     file format elf32-littleriscv
 Disassembly of section .text:
 
 00000000 <_start>:
-   0:	000207b7          	lui	x15,0x20
-   4:	ffc78793          	addi	x15,x15,-4 # 1fffc <__global_pointer$+0x1e750>
-   8:	00078113          	addi	x2,x15,0
-   c:	00001637          	lui	x12,0x1
-  10:	0bc62703          	lw	x14,188(x12) # 10bc <uart_out>
-  14:	000006b7          	lui	x13,0x0
-  18:	09c68693          	addi	x13,x13,156 # 9c <set_stack_pointer+0x8>
-  1c:	04800793          	addi	x15,x0,72
-  20:	00f70023          	sb	x15,0(x14)
-  24:	0bc62703          	lw	x14,188(x12)
-  28:	00074783          	lbu	x15,0(x14)
-  2c:	fe079ee3          	bne	x15,x0,28 <_start+0x28>
-  30:	0016c783          	lbu	x15,1(x13)
-  34:	00168693          	addi	x13,x13,1
-  38:	fe0794e3          	bne	x15,x0,20 <_start+0x20>
-  3c:	000016b7          	lui	x13,0x1
-  40:	0ac68693          	addi	x13,x13,172 # 10ac <babas>
-  44:	00001837          	lui	x16,0x1
-  48:	000cb537          	lui	x10,0xcb
-  4c:	0016c703          	lbu	x14,1(x13)
-  50:	0c082603          	lw	x12,192(x16) # 10c0 <leds>
-  54:	73550793          	addi	x15,x10,1845 # cb735 <__global_pointer$+0xc9e89>
-  58:	00170593          	addi	x11,x14,1
-  5c:	00b680a3          	sb	x11,1(x13)
-  60:	00e60023          	sb	x14,0(x12)
-  64:	00078713          	addi	x14,x15,0
-  68:	fff78793          	addi	x15,x15,-1
-  6c:	fe071ce3          	bne	x14,x0,64 <_start+0x64>
-  70:	fddff06f          	jal	x0,4c <_start+0x4c>
+   0:	00002137          	lui	x2,0x2
+   4:	ff010113          	addi	x2,x2,-16 # 1ff0 <__global_pointer$+0x734>
+   8:	004000ef          	jal	x1,c <run>
 
-00000074 <delay>:
-  74:	ff010113          	addi	x2,x2,-16
-  78:	00a12623          	sw	x10,12(x2)
-  7c:	00c12783          	lw	x15,12(x2)
-  80:	fff78713          	addi	x14,x15,-1
-  84:	00e12623          	sw	x14,12(x2)
-  88:	fe079ae3          	bne	x15,x0,7c <delay+0x8>
-  8c:	01010113          	addi	x2,x2,16
-  90:	00008067          	jalr	x0,0(x1)
+0000000c <run>:
+   c:	000017b7          	lui	x15,0x1
+  10:	0d47a503          	lw	x10,212(x15) # 10d4 <hello>
+  14:	ff010113          	addi	x2,x2,-16
+  18:	00112623          	sw	x1,12(x2)
+  1c:	00000097          	auipc	x1,0x0
+  20:	060080e7          	jalr	x1,96(x1) # 7c <uart_send>
+  24:	000016b7          	lui	x13,0x1
+  28:	0bc68693          	addi	x13,x13,188 # 10bc <babas>
+  2c:	00001837          	lui	x16,0x1
+  30:	000cb537          	lui	x10,0xcb
+  34:	0016c703          	lbu	x14,1(x13)
+  38:	0cc82603          	lw	x12,204(x16) # 10cc <leds>
+  3c:	73550793          	addi	x15,x10,1845 # cb735 <__global_pointer$+0xc9e79>
+  40:	00170593          	addi	x11,x14,1
+  44:	00b680a3          	sb	x11,1(x13)
+  48:	00e60023          	sb	x14,0(x12)
+  4c:	00078713          	addi	x14,x15,0
+  50:	fff78793          	addi	x15,x15,-1
+  54:	fe071ce3          	bne	x14,x0,4c <run+0x40>
+  58:	fddff06f          	jal	x0,34 <run+0x28>
 
-00000094 <set_stack_pointer>:
-  94:	00050113          	addi	x2,x10,0
-  98:	00008067          	jalr	x0,0(x1)
+0000005c <delay>:
+  5c:	ff010113          	addi	x2,x2,-16
+  60:	00a12623          	sw	x10,12(x2)
+  64:	00c12783          	lw	x15,12(x2)
+  68:	fff78713          	addi	x14,x15,-1
+  6c:	00e12623          	sw	x14,12(x2)
+  70:	fe079ae3          	bne	x15,x0,64 <delay+0x8>
+  74:	01010113          	addi	x2,x2,16
+  78:	00008067          	jalr	x0,0(x1)
+
+0000007c <uart_send>:
+  7c:	00054783          	lbu	x15,0(x10)
+  80:	02078463          	beq	x15,x0,a8 <uart_send+0x2c>
+  84:	000016b7          	lui	x13,0x1
+  88:	0d06a703          	lw	x14,208(x13) # 10d0 <uart_out>
+  8c:	00f70023          	sb	x15,0(x14)
+  90:	0d06a703          	lw	x14,208(x13)
+  94:	00074783          	lbu	x15,0(x14)
+  98:	fe079ee3          	bne	x15,x0,94 <uart_send+0x18>
+  9c:	00154783          	lbu	x15,1(x10)
+  a0:	00150513          	addi	x10,x10,1
+  a4:	fe0794e3          	bne	x15,x0,8c <uart_send+0x10>
+  a8:	00008067          	jalr	x0,0(x1)

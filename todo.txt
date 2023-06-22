@@ -1,13 +1,21 @@
+[o] UartTx and UartRx mapped to upper memory,
+[x]   e.g. byte at 0xffff_fffe for UartTx. UartTx writes zero after transmission of a byte.
+      => 0x1_fffe
+[ ]   e.g. byte at 0xffff_fffd for UartRx. cpu writes 0 for UartRx to receive next.
 [ ] SoC: alu op with mux of register and immediate instead of cases
 [ ] SoC: pc module with selectable next value from mux of branch, increment etc
 [ ] RAM depth to use all block memory (currently 32 out of 45)
-[ ] UartTx and UartRx mapped to upper memory,
-[ ]   e.g. byte at 0xffff_fffe for UartTx. UartTx writes zero after transmission of a byte.
-[ ]   e.g. byte at 0xffff_fffd for UartRx. cpu writes 0 for UartRx to receive next.
 [ ] implement
 [ ]     ECALL
 [ ]     EBREAK
 ----------------------------------------------------------------------------------
+[x] generated assembly code does a write to an uninitialized stack before set_stack_pointer
+    0:	ff010113          	addi	x2,x2,-16
+    4:	000207b7          	lui	x15,0x20
+    8:	00112623          	sw	x1,12(x2)
+    c:	ffc78793          	addi	x15,x15,-4 # 1fffc
+    10:	00078113          	addi	x2,x15,0
+    => fixed with os_start.S that sets up the stack pointer
 [x] Led and rgb at one byte 0xffff_ffff {b,g,r,led[3:0]}
 [-]     FENCE.I
 [-]     FENCE => not a multithreaded implementation

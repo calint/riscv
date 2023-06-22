@@ -93,25 +93,24 @@ always @* begin
 end
 
 // read
-reg [ADDR_WIDTH+1:0] addrA_prev;
-reg [2:0] reA_prev; // reA at read used in the next cycle when data is ready
+reg [ADDR_WIDTH+1:0] addrA_prev; // address used in previous cycle
+reg [2:0] reA_prev; // reA from previous cycle used in this cycle (due to one cycle delay of data ready)
 
 always @(posedge clk) begin
     if (rst) begin
-        leds <= 7'b111_0000; // turn of all leds
+        leds <= 7'b111_0000; // turn off all leds
         uarttx_out <= 0;
+        uarttx_go <= 0;
     end else begin
         reA_prev <= reA;
         addrA_prev <= addrA;
         if (!uarttx_bsy && uarttx_go) begin
-//            $display("%0t: uarttx_bsy=false", $time);
             uarttx_out <= 0;
             uarttx_go <= 0;
         end
         if (addrA == {(ADDR_WIDTH+2){1'b1}} && weA == 2'b01) begin
             leds <= dinA[6:0];
         end else if (addrA == {(ADDR_WIDTH+2){1'b1}} - 1 && weA == 2'b01) begin
-//            $display("%0t: addrA=%0h data=%0h", $time, addrA, dinA);
             uarttx_out <= dinA[7:0];
             uarttx_go <= 1;
         end
@@ -123,7 +122,6 @@ always @* begin
     if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 1 && reA_prev == 3'b001) begin
         // read unsigned byte from 0x1fffe
         doutA = {{24{1'b0}}, uarttx_out};
-//        $display("%0t: get uarttx_out: doutA=%0h", $time, doutA);
     end else begin
         casex(reA_prev) // read size
         3'bx01: begin // byte

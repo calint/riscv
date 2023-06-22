@@ -5,7 +5,7 @@
 set -e
 
 PATH=$PATH:~/riscv/install/rv32i/bin
-SRC=$1
+SRC=os.c
 BIN=${SRC%.*}
 
 # -mstrict-align \
@@ -14,6 +14,7 @@ riscv32-unknown-elf-gcc \
 	-nostartfiles \
 	-ffreestanding \
 	-nostdlib \
+	-fno-toplevel-reorder \
 	-fno-pic \
 	-march=rv32i \
 	-mabi=ilp32 \
@@ -21,8 +22,7 @@ riscv32-unknown-elf-gcc \
 	-Wall -Wextra -pedantic \
 	-Wl,-Ttext=0x0 \
 	-Wl,--no-relax \
-	-fno-toplevel-reorder \
-	$SRC -o $BIN
+	os_start.S $SRC -o $BIN
 
 riscv32-unknown-elf-objcopy $BIN -O binary $BIN.bin
 riscv32-unknown-elf-objdump -Mnumeric,no-aliases -dr $BIN > $BIN.lst

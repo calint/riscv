@@ -7,7 +7,7 @@ volatile unsigned char *leds = (unsigned char *)TOP_OF_RAM;
 volatile unsigned char *uart_out = (unsigned char *)TOP_OF_RAM - 1;
 
 void delay(unsigned int ticks);
-void set_stack_pointer(void *stack_ptr);
+void uart_send(char *str);
 
 struct baba {
   char bits;
@@ -21,16 +21,8 @@ struct baba {
 
 static char *hello = "Hello World\r\n";
 
-void _start() {
-  set_stack_pointer((void *)(TOP_OF_STACK));
-
-  char *p = hello;
-  while (*p) {
-    *uart_out = *p;
-    while (*uart_out)
-      ;
-    p++;
-  }
+void run() {
+  uart_send(hello);
 
   while (1) {
     *leds = babas[0].byte++;
@@ -43,6 +35,11 @@ inline void delay(volatile unsigned int ticks) {
     ;
 }
 
-inline void set_stack_pointer(void *stack_ptr) {
-  asm volatile("mv sp, %0" : : "r"(stack_ptr));
+void uart_send(char *str) {
+  while (*str) {
+    *uart_out = *str;
+    while (*uart_out)
+      ;
+    str++;
+  }
 }
