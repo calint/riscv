@@ -6,7 +6,7 @@ Disassembly of section .text:
 
 00000000 <_start>:
    0:	000207b7          	lui	x15,0x20
-   4:	ffd78793          	addi	x15,x15,-3 # 1fffd <__global_pointer$+0x1e751>
+   4:	ffc78793          	addi	x15,x15,-4 # 1fffc <__global_pointer$+0x1e750>
    8:	00078113          	addi	x2,x15,0
    c:	00001637          	lui	x12,0x1
   10:	0bc62703          	lw	x14,188(x12) # 10bc <uart_out>
