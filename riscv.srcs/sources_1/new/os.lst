@@ -6,46 +6,66 @@ Disassembly of section .text:
 
 00000000 <_start>:
    0:	00002137          	lui	x2,0x2
-   4:	ff010113          	addi	x2,x2,-16 # 1ff0 <__global_pointer$+0x748>
+   4:	ff010113          	addi	x2,x2,-16 # 1ff0 <__global_pointer$+0x708>
    8:	004000ef          	jal	x1,c <run>
 
 0000000c <run>:
    c:	000017b7          	lui	x15,0x1
-  10:	0c47a503          	lw	x10,196(x15) # 10c4 <hello>
+  10:	1047a503          	lw	x10,260(x15) # 1104 <hello>
   14:	ff010113          	addi	x2,x2,-16
   18:	00112623          	sw	x1,12(x2)
   1c:	00000097          	auipc	x1,0x0
-  20:	04c080e7          	jalr	x1,76(x1) # 68 <uart_send>
+  20:	054080e7          	jalr	x1,84(x1) # 70 <uart_send_string>
   24:	000015b7          	lui	x11,0x1
   28:	00001637          	lui	x12,0x1
-  2c:	0c05a683          	lw	x13,192(x11) # 10c0 <uart_in>
-  30:	0006c783          	lbu	x15,0(x13)
-  34:	0ff7f713          	andi	x14,x15,255
+  2c:	1005a703          	lw	x14,256(x11) # 1100 <uart_in>
+  30:	00074783          	lbu	x15,0(x14)
+  34:	0ff7f693          	andi	x13,x15,255
   38:	fe078ce3          	beq	x15,x0,30 <run+0x24>
-  3c:	0bc62783          	lw	x15,188(x12) # 10bc <uart_out>
-  40:	00e78023          	sb	x14,0(x15)
-  44:	fe9ff06f          	jal	x0,2c <run+0x20>
+  3c:	0fc62703          	lw	x14,252(x12) # 10fc <uart_out>
+  40:	00074783          	lbu	x15,0(x14)
+  44:	fe079ee3          	bne	x15,x0,40 <run+0x34>
+  48:	00d70023          	sb	x13,0(x14)
+  4c:	fe1ff06f          	jal	x0,2c <run+0x20>
 
-00000048 <delay>:
-  48:	ff010113          	addi	x2,x2,-16
-  4c:	00a12623          	sw	x10,12(x2)
-  50:	00c12783          	lw	x15,12(x2)
-  54:	fff78713          	addi	x14,x15,-1
-  58:	00e12623          	sw	x14,12(x2)
-  5c:	fe079ae3          	bne	x15,x0,50 <delay+0x8>
-  60:	01010113          	addi	x2,x2,16
-  64:	00008067          	jalr	x0,0(x1)
+00000050 <delay>:
+  50:	ff010113          	addi	x2,x2,-16
+  54:	00a12623          	sw	x10,12(x2)
+  58:	00c12783          	lw	x15,12(x2)
+  5c:	fff78713          	addi	x14,x15,-1
+  60:	00e12623          	sw	x14,12(x2)
+  64:	fe079ae3          	bne	x15,x0,58 <delay+0x8>
+  68:	01010113          	addi	x2,x2,16
+  6c:	00008067          	jalr	x0,0(x1)
 
-00000068 <uart_send>:
-  68:	00054783          	lbu	x15,0(x10)
-  6c:	02078463          	beq	x15,x0,94 <uart_send+0x2c>
+00000070 <uart_send_string>:
   70:	000016b7          	lui	x13,0x1
-  74:	0bc6a703          	lw	x14,188(x13) # 10bc <uart_out>
-  78:	00f70023          	sb	x15,0(x14)
-  7c:	0bc6a703          	lw	x14,188(x13)
-  80:	00074783          	lbu	x15,0(x14)
-  84:	fe079ee3          	bne	x15,x0,80 <uart_send+0x18>
-  88:	00154783          	lbu	x15,1(x10)
-  8c:	00150513          	addi	x10,x10,1
-  90:	fe0794e3          	bne	x15,x0,78 <uart_send+0x10>
-  94:	00008067          	jalr	x0,0(x1)
+  74:	0fc6a703          	lw	x14,252(x13) # 10fc <uart_out>
+  78:	00074783          	lbu	x15,0(x14)
+  7c:	fe079ee3          	bne	x15,x0,78 <uart_send_string+0x8>
+  80:	00054783          	lbu	x15,0(x10)
+  84:	02078063          	beq	x15,x0,a4 <uart_send_string+0x34>
+  88:	00f70023          	sb	x15,0(x14)
+  8c:	0fc6a703          	lw	x14,252(x13)
+  90:	00074783          	lbu	x15,0(x14)
+  94:	fe079ee3          	bne	x15,x0,90 <uart_send_string+0x20>
+  98:	00154783          	lbu	x15,1(x10)
+  9c:	00150513          	addi	x10,x10,1
+  a0:	fe0794e3          	bne	x15,x0,88 <uart_send_string+0x18>
+  a4:	00008067          	jalr	x0,0(x1)
+
+000000a8 <uart_send_char>:
+  a8:	000017b7          	lui	x15,0x1
+  ac:	0fc7a703          	lw	x14,252(x15) # 10fc <uart_out>
+  b0:	00074783          	lbu	x15,0(x14)
+  b4:	fe079ee3          	bne	x15,x0,b0 <uart_send_char+0x8>
+  b8:	00a70023          	sb	x10,0(x14)
+  bc:	00008067          	jalr	x0,0(x1)
+
+000000c0 <uart_read_char>:
+  c0:	000017b7          	lui	x15,0x1
+  c4:	1007a703          	lw	x14,256(x15) # 1100 <uart_in>
+  c8:	00074783          	lbu	x15,0(x14)
+  cc:	0ff7f513          	andi	x10,x15,255
+  d0:	fe078ce3          	beq	x15,x0,c8 <uart_read_char+0x8>
+  d4:	00008067          	jalr	x0,0(x1)

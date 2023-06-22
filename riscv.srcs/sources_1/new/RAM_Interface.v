@@ -116,6 +116,7 @@ always @(posedge clk) begin
             uarttx_out <= 0;
             uarttx_go <= 0;
         end
+        // if previous command was a read from uart reset the read data
         if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 2 && reA_prev == 3'b001) begin
             uartrx_data_read <= 0;
         end

@@ -8,7 +8,9 @@ volatile unsigned char *uart_out = (unsigned char *)TOP_OF_RAM - 1;
 volatile unsigned char *uart_in = (unsigned char *)TOP_OF_RAM - 2;
 
 void delay(unsigned int ticks);
-void uart_send(char *str);
+void uart_send_string(char *str);
+void uart_send_char(char ch);
+char uart_read_char();
 
 struct baba {
   char bits;
@@ -23,13 +25,10 @@ struct baba {
 static char *hello = "Hello World\r\n";
 
 void run() {
-  uart_send(hello);
+  uart_send_string(hello);
 
   while (1) {
-    unsigned char ch;
-    while ((ch = *uart_in) == 0)
-      ;
-    *uart_out = ch;
+    uart_send_char(uart_read_char());
   }
 
   while (1) {
@@ -43,11 +42,26 @@ inline void delay(volatile unsigned int ticks) {
     ;
 }
 
-void uart_send(char *str) {
+void uart_send_string(char *str) {
+  while (*uart_out)
+    ;
   while (*str) {
     *uart_out = *str;
     while (*uart_out)
       ;
     str++;
   }
+}
+
+void uart_send_char(char ch) {
+  while (*uart_out)
+    ;
+  *uart_out = ch;
+}
+
+char uart_read_char() {
+  char ch;
+  while ((ch = *uart_in) == 0)
+    ;
+  return ch;
 }
