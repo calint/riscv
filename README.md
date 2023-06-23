@@ -11,6 +11,8 @@ implements UART send and receive (see ["riscv.srcs/sources_1/new/os.c"](https://
 
 intended for Cmod S7 from digilent.com
 
+runs at 50 MHz with most instructions execute in one cycle except branches and jumps which use two cycles
+
 
 how-to with Vivado v2023.1:
 * to program device edit path to RAM file in ["riscv.srcs/sources_1/new/Top.v"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/Top.v) if other than the default
