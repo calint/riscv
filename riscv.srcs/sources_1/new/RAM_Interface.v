@@ -112,21 +112,21 @@ always @(posedge clk) begin
     end else begin
         reA_prev <= reA;
         addrA_prev <= addrA;
-        // if uart done sending a byte acknowledge (uarttx_go = 0)
+        // if uart done sending data then acknowledge (uarttx_go = 0)
         if (!uarttx_bsy && uarttx_go) begin
             uarttx_out <= 0;
             uarttx_go <= 0;
         end
-        // if previous command was a read from uart reset the read data
+        // if previous command was a read from uart then reset the read data
         if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 2 && reA_prev == 3'b001) begin
             uartrx_data_read <= 0;
         end
-        // if data ready copy data from uart and acknowledge (uartrx_go = 0)
+        // if uart has data ready then copy the data from uart and acknowledge (uartrx_go = 0)
         if (uartrx_dr && uartrx_go) begin
             uartrx_data_read <= uartrx_data;
             uartrx_go <= 0;
         end
-        // if last cycle acknowledged receiving a byte start receiving next byte (uartrx_go = 1)
+        // if previous cycle acknowledged receiving data then start receiving next data (uartrx_go = 1)
         if (uartrx_go == 0) begin
             uartrx_go <= 1;
         end
@@ -144,12 +144,12 @@ end
 always @* begin
     // create the 'doutA' based on the 'addrA' in previous cycle (one cycle delay for data ready)
     if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 1 && reA_prev == 3'b001) begin
-        // uart_tx
         // read unsigned byte from 0x1_fffe
+        // uart_tx
         doutA = {{24{1'b0}}, uarttx_out};
     end else if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 2 && reA_prev == 3'b001) begin
-        // uart_rx
         // read unsigned byte from 0x1_fffd
+        // uart_rx
         doutA = {{24{1'b0}}, uartrx_data_read};
     end else begin
         casex(reA_prev) // read size
