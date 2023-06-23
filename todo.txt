@@ -2,6 +2,7 @@
 [ ] SoC: alu op with mux of register and immediate instead of cases
 [ ] SoC: pc module with selectable next value from mux of branch, increment etc
 [ ] RAM depth to use all block memory (currently 32 out of 45)
+[ ] UartTx operates on negative clock edge 
 [ ] implement
 [ ]     ECALL
 [ ]     EBREAK
