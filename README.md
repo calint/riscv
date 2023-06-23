@@ -11,7 +11,7 @@ implements UART send and receive (see ["riscv.srcs/sources_1/new/os.c"](https://
 
 intended for Cmod S7 from digilent.com
 
-runs at 50 MHz with most instructions execute in one cycle except branches and jumps which use two cycles
+runs at 50 MHz with most instructions executing in one cycle except branches and jumps which use two cycles due to creating a 'bubble' in the pipeline
 
 
 how-to with Vivado v2023.1:
