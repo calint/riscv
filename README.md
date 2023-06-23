@@ -7,13 +7,13 @@ implements the rv32i instructions with the exception for: FENCE, ECALL, EBREAK
 
 ad-hoc 2-stage pipeline where new instruction is fetched while previous executes
 
-implements UART send and receive (see riscv.srcs/sources_1/new/os.c for example)
+implements UART send and receive (see ["riscv.srcs/sources_1/new/os.c"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/os.c) for example)
 
 intended for Cmod S7 from digilent.com
 
 
 how-to with Vivado v2023.1:
-* to program device edit path to RAM file in ["riscv.srcs/sources_1/new/Top.v"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/os.c)
+* to program device edit path to RAM file in ["riscv.srcs/sources_1/new/Top.v"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/Top.v)
 * connect fpga board Cmod S7 from digilent.com
 * run synthesis, run implementation, generate bitstream, program device
 * find out which tty is on the usb connected to the card (e.g. /dev/ttyUSB1)
