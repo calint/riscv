@@ -13,7 +13,7 @@ intended for Cmod S7 from digilent.com
 
 
 how-to with Vivado v2023.1:
-* to program device edit path to RAM file in ["riscv.srcs/sources_1/new/Top.v"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/Top.v)
+* to program device edit path to RAM file in ["riscv.srcs/sources_1/new/Top.v"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/Top.v) if other than the default
 * connect fpga board Cmod S7 from digilent.com
 * run synthesis, run implementation, generate bitstream, program device
 * find out which tty is on the usb connected to the card (e.g. /dev/ttyUSB1)
