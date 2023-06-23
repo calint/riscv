@@ -97,10 +97,10 @@ end
 reg [ADDR_WIDTH+1:0] addrA_prev; // address used in previous cycle
 reg [2:0] reA_prev; // reA from previous cycle used in this cycle (due to one cycle delay of data ready)
 
-reg uartrx_go;
-wire [7:0] uartrx_data;
-wire uartrx_dr;
-reg [7:0] uartrx_data_read;
+wire uartrx_dr; // data ready
+wire [7:0] uartrx_data; // data being read
+reg uartrx_go; // enabled to start receiving and disabled to acknowledge that data has been read
+reg [7:0] uartrx_data_read; // data from 'uartrx_data' when 'uartrx_dr' (data ready) enabled
 
 always @(posedge clk) begin
     if (rst) begin
@@ -112,11 +112,6 @@ always @(posedge clk) begin
     end else begin
         reA_prev <= reA;
         addrA_prev <= addrA;
-        // if uart done sending data then acknowledge (uarttx_go = 0)
-        if (!uarttx_bsy && uarttx_go) begin
-            uarttx_out <= 0;
-            uarttx_go <= 0;
-        end
         // if previous command was a read from uart then reset the read data
         if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 2 && reA_prev == 3'b001) begin
             uartrx_data_read <= 0;
@@ -129,6 +124,11 @@ always @(posedge clk) begin
         // if previous cycle acknowledged receiving data then start receiving next data (uartrx_go = 1)
         if (uartrx_go == 0) begin
             uartrx_go <= 1;
+        end
+        // if uart done sending data then acknowledge (uarttx_go = 0)
+        if (!uarttx_bsy && uarttx_go) begin
+            uarttx_out <= 0;
+            uarttx_go <= 0;
         end
         // if writing to leds
         if (addrA == {(ADDR_WIDTH+2){1'b1}} && weA == 2'b01) begin
