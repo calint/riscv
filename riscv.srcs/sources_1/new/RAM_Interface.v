@@ -10,7 +10,7 @@ module RAM_Interface #(
     parameter BAUD_RATE = 9600
 )(
     input wire rst,
-    
+
     // port A: data memory, read / write byte addressable ram
     input wire clk,
     input wire [1:0] weA, // b01 - byte, b10 - half word, b11 - word
@@ -18,14 +18,14 @@ module RAM_Interface #(
     input wire [ADDR_WIDTH+1:0] addrA, // byte addressable
     input wire [DATA_WIDTH-1:0] dinA, // sign extended byte, half word, word
     output reg [DATA_WIDTH-1:0] doutA, // data at 'addrA' according to 'reA'
-    
+
     // port B: instruction memory, byte addressed, bottom 2 bits ignored, word aligned
     input wire [ADDR_WIDTH+1:0] addrB,
     output wire [DATA_WIDTH-1:0] doutB,
 
     // I/O mapping of leds
     output reg [6:0] leds,
-    
+
     // uart
     output wire uart_tx,
     input wire uart_rx
@@ -83,7 +83,7 @@ always @* begin
             ram_dinA[31:16] = dinA[15:0];
         end
         2'b11: ; // ? error
-        endcase    
+        endcase
     end
     2'b11: begin // word
         // ? assert(addr_lower_w==0)
@@ -180,7 +180,7 @@ always @* begin
                 doutA = reA[2] ? {{16{ram_doutA[31]}}, ram_doutA[31:16]} : {{24{1'b0}}, ram_doutA[31:16]};
             end
             2'b11: doutA = 0; // ? error
-            endcase    
+            endcase
         end
         3'b111: begin // word
             // ? assert(addr_lower_w==0)

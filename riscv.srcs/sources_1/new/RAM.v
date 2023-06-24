@@ -57,7 +57,7 @@ always @(posedge clkB) begin
     end
 end
 
-endmodule 
+endmodule
 
 `undef DBG
 `default_nettype wire
