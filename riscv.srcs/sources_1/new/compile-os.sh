@@ -10,7 +10,7 @@ BIN=${SRC%.*}
 
 # -mstrict-align \
 riscv32-unknown-elf-gcc \
-	-O2 \
+	-Os \
 	-nostartfiles \
 	-ffreestanding \
 	-nostdlib \
