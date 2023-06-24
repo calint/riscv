@@ -48,7 +48,7 @@ static const char *exit_names[] = {"north", "east", "south",
 
 static location locations[] = {{"", {0}, {0}, {0}},
                                {"roome", {0}, {1}, {2, 3}},
-                               {"office", {1, 0}, {2}, {0, 0, 1}},
+                               {"office", {3, 1}, {2}, {0, 0, 1}},
                                {"bathroom", {0}, {0}, {0}}};
 
 typedef struct entity {
@@ -63,13 +63,13 @@ typedef struct object {
   const char *name;
 } object;
 
-static object objects[] = {{""}, {"notebook"}, {"mirror"}};
+static object objects[] = {{""}, {"notebook"}, {"mirror"}, {"lighter"}};
 
 bool strings_equal(const char *s1, const char *s2);
-void add_object_to_list(object_id list[], object_id id);
-bool remove_object_from_list(object_id list[], object_id id);
+void add_object_to_list(object_id list[], unsigned list_max_size, object_id id);
+void remove_object_from_list(object_id list[], object_id id);
 void add_entity_to_list(entity_id list[], entity_id id);
-bool remove_entity_from_list(entity_id list[], entity_id id);
+void remove_entity_from_list(entity_id list[], entity_id id);
 
 void describe_inventory();
 void describe_current_location();
@@ -104,7 +104,7 @@ bool strings_equal(const char *s1, const char *s2) {
 
 void describe_current_location() {
   uart_send_str("u r in ");
-  unsigned char current_location = entities[active_entity].location;
+  const location_id current_location = entities[active_entity].location;
   uart_send_str(locations[current_location].name);
   uart_send_str("\r\nu c: ");
   // print entities in current location
@@ -158,6 +158,63 @@ void describe_current_location() {
   uart_send_str("\r\n");
 }
 
+void remove_object_from_list_by_index(object_id list[], unsigned ix) {
+  object_id *ptr = &list[ix];
+  while (1) {
+    object_id *nxt = ptr + 1;
+    *ptr = *nxt;
+    if (!*nxt)
+      return;
+    ptr++;
+  }
+}
+
+void add_object_to_list(object_id list[], unsigned list_max_size,
+                        object_id id) {
+  for (unsigned i = 0; i < list_max_size - 1; i++) {
+    if (!list[i]) {
+      list[i] = id;
+      list[i + 1] = 0;
+      return;
+    }
+  }
+  uart_send_str("inventory full\r\n");
+}
+
+void action_take(const char *object_name) {
+  const location_id current_location = entities[active_entity].location;
+  object_id *objs = locations[current_location].objects;
+  for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
+    const object_id id = objs[i];
+    if (!id)
+      break;
+    if (!strings_equal(objects[id].name, object_name))
+      continue;
+    remove_object_from_list_by_index(objs, i);
+    add_object_to_list(entities[active_entity].inventory, ENTITY_MAX_OBJECTS,
+                       id);
+    return;
+  }
+  uart_send_str(object_name);
+  uart_send_str(" not here\r\n");
+}
+
+void action_drop(const char *object_name) {
+  object_id *objs = entities[active_entity].inventory;
+  for (unsigned i = 0; i < ENTITY_MAX_OBJECTS; i++) {
+    const object_id id = objs[i];
+    if (!id)
+      break;
+    if (!strings_equal(objects[id].name, object_name))
+      continue;
+    remove_object_from_list_by_index(objs, i);
+    return;
+  }
+  uart_send_str("u don't have ");
+  uart_send_str(object_name);
+  uart_send_str("\r\n");
+}
+
 void handle_inbuf() {
   uart_send_str("\r\n");
   if (strings_equal(inbuf.line, "i")) {
@@ -165,6 +222,17 @@ void handle_inbuf() {
     uart_send_str("\r\n");
     return;
   }
+  if (strings_equal(inbuf.line, "t")) {
+    action_take("notebook");
+    uart_send_str("\r\n");
+    return;
+  }
+  if (strings_equal(inbuf.line, "d")) {
+    action_drop("notebook");
+    uart_send_str("\r\n");
+    return;
+  }
+
   entities[active_entity].location++;
   if (entities[active_entity].location > 3) {
     entities[active_entity].location = 1;
