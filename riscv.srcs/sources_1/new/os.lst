@@ -12,7 +12,7 @@ Disassembly of section .text:
 #     lui sp, 0x2         # set stack at # 0x1fff0
    0:	00002137          	lui	x2,0x2
 #     addi sp, sp, -16    #
-   4:	ff010113          	addi	x2,x2,-16 # 1ff0 <__global_pointer$+0x3a0>
+   4:	ff010113          	addi	x2,x2,-16 # 1ff0 <__global_pointer$+0x2b4>
    8:	004000ef          	jal	x1,c <run>
 
 0000000c <run>:
@@ -23,397 +23,491 @@ Disassembly of section .text:
 # void run() {
 #   uart_send_str(hello);
    c:	000027b7          	lui	x15,0x2
-  10:	8dc7a503          	lw	x10,-1828(x15) # 18dc <hello>
+  10:	8347a503          	lw	x10,-1996(x15) # 1834 <hello>
 # void run() {
-  14:	fd010113          	addi	x2,x2,-48
-  18:	02912223          	sw	x9,36(x2)
-  1c:	03212023          	sw	x18,32(x2)
+  14:	ff010113          	addi	x2,x2,-16
+  18:	00812423          	sw	x8,8(x2)
+  1c:	00112623          	sw	x1,12(x2)
 #   while (1) {
-#     uart_send_str("u r in ");
-#     unsigned char current_location = entities[active_entity].location;
-#     uart_send_str(locations[current_location].description);
-  20:	000014b7          	lui	x9,0x1
-#     unsigned char current_location = entities[active_entity].location;
-  24:	00002937          	lui	x18,0x2
-# void run() {
-  28:	01312e23          	sw	x19,28(x2)
-  2c:	01412c23          	sw	x20,24(x2)
-  30:	01512a23          	sw	x21,20(x2)
-  34:	01612823          	sw	x22,16(x2)
-  38:	02112623          	sw	x1,44(x2)
-  3c:	02812423          	sw	x8,40(x2)
-  40:	01712623          	sw	x23,12(x2)
-  44:	01812423          	sw	x24,8(x2)
-  48:	01912223          	sw	x25,4(x2)
-  4c:	01a12023          	sw	x26,0(x2)
-#     uart_send_str("u r in ");
-  50:	00000a37          	lui	x20,0x0
+#     describe_current_location();
+#     uart_send_str("> ");
+  20:	00000437          	lui	x8,0x0
 #   uart_send_str(hello);
-  54:	00000097          	auipc	x1,0x0
-  58:	288080e7          	jalr	x1,648(x1) # 2dc <uart_send_str>
-#     unsigned char current_location = entities[active_entity].location;
-  5c:	8b890a93          	addi	x21,x18,-1864 # 18b8 <entities>
-  60:	000029b7          	lui	x19,0x2
-#     uart_send_str(locations[current_location].description);
-  64:	46848493          	addi	x9,x9,1128 # 1468 <locations>
-#     uart_send_str("\r\nu c: ");
-  68:	00000b37          	lui	x22,0x0
-#     uart_send_str("u r in ");
-  6c:	414a0513          	addi	x10,x20,1044 # 414 <delay+0x8c>
-  70:	00000097          	auipc	x1,0x0
-  74:	26c080e7          	jalr	x1,620(x1) # 2dc <uart_send_str>
-#     unsigned char current_location = entities[active_entity].location;
-  78:	8e09c783          	lbu	x15,-1824(x19) # 18e0 <active_entity>
-  7c:	8b890c93          	addi	x25,x18,-1864
-#     unsigned char add_list_sep = 0;
-#     for (unsigned char i = 0; i < sizeof(entities) / sizeof(entity); i++) {
-  80:	00000c13          	addi	x24,x0,0
-#     unsigned char current_location = entities[active_entity].location;
-  84:	00379793          	slli	x15,x15,0x3
-  88:	00fa87b3          	add	x15,x21,x15
-  8c:	0047cb83          	lbu	x23,4(x15)
-#     for (unsigned char i = 0; i < sizeof(entities) / sizeof(entity); i++) {
-  90:	00300d13          	addi	x26,x0,3
-#     uart_send_str(locations[current_location].description);
-  94:	004b9413          	slli	x8,x23,0x4
-  98:	017407b3          	add	x15,x8,x23
-  9c:	00279793          	slli	x15,x15,0x2
-  a0:	017787b3          	add	x15,x15,x23
-  a4:	00279793          	slli	x15,x15,0x2
-  a8:	00f487b3          	add	x15,x9,x15
-  ac:	0007a503          	lw	x10,0(x15)
-  b0:	00000097          	auipc	x1,0x0
-  b4:	22c080e7          	jalr	x1,556(x1) # 2dc <uart_send_str>
-#     uart_send_str("\r\nu c: ");
-  b8:	41cb0513          	addi	x10,x22,1052 # 41c <delay+0x94>
-  bc:	00000097          	auipc	x1,0x0
-  c0:	220080e7          	jalr	x1,544(x1) # 2dc <uart_send_str>
-#     unsigned char add_list_sep = 0;
-  c4:	00000793          	addi	x15,x0,0
-#       if (i != active_entity && entities[i].location == current_location) {
-  c8:	8e09c703          	lbu	x14,-1824(x19)
-  cc:	03870863          	beq	x14,x24,fc <run+0xf0>
-  d0:	004cc703          	lbu	x14,4(x25)
-  d4:	03771463          	bne	x14,x23,fc <run+0xf0>
-#         if (add_list_sep) {
-  d8:	00078a63          	beq	x15,x0,ec <run+0xe0>
-#           uart_send_str(", ");
-  dc:	00000537          	lui	x10,0x0
-  e0:	42450513          	addi	x10,x10,1060 # 424 <delay+0x9c>
-  e4:	00000097          	auipc	x1,0x0
-  e8:	1f8080e7          	jalr	x1,504(x1) # 2dc <uart_send_str>
-#         } else {
-#           add_list_sep = 1;
-#         }
-#         uart_send_str(entities[i].name);
-  ec:	000ca503          	lw	x10,0(x25)
-  f0:	00000097          	auipc	x1,0x0
-  f4:	1ec080e7          	jalr	x1,492(x1) # 2dc <uart_send_str>
-  f8:	00100793          	addi	x15,x0,1
-#     for (unsigned char i = 0; i < sizeof(entities) / sizeof(entity); i++) {
-  fc:	001c0c13          	addi	x24,x24,1
- 100:	0ffc7c13          	andi	x24,x24,255
- 104:	008c8c93          	addi	x25,x25,8
- 108:	fdac10e3          	bne	x24,x26,c8 <run+0xbc>
-#       }
-#     }
-#     if (!add_list_sep) {
- 10c:	00079a63          	bne	x15,x0,120 <run+0x114>
-#       uart_send_str("no one");
- 110:	00000537          	lui	x10,0x0
- 114:	42850513          	addi	x10,x10,1064 # 428 <delay+0xa0>
- 118:	00000097          	auipc	x1,0x0
- 11c:	1c4080e7          	jalr	x1,452(x1) # 2dc <uart_send_str>
-#     }
-#     add_list_sep = 0;
-#     uart_send_str("\r\nexits: ");
- 120:	01740433          	add	x8,x8,x23
- 124:	00000537          	lui	x10,0x0
- 128:	00241413          	slli	x8,x8,0x2
- 12c:	01740433          	add	x8,x8,x23
- 130:	43050513          	addi	x10,x10,1072 # 430 <delay+0xa8>
- 134:	00001bb7          	lui	x23,0x1
- 138:	00000097          	auipc	x1,0x0
- 13c:	1a4080e7          	jalr	x1,420(x1) # 2dc <uart_send_str>
-#     for (unsigned char i = 0; i < 6; i++) {
- 140:	00241413          	slli	x8,x8,0x2
- 144:	450b8b93          	addi	x23,x23,1104 # 1450 <exit_names>
- 148:	00848433          	add	x8,x9,x8
- 14c:	018b8c13          	addi	x24,x23,24
-#     add_list_sep = 0;
- 150:	00000793          	addi	x15,x0,0
-#       if (locations[current_location].exits[i]) {
- 154:	10c44703          	lbu	x14,268(x8)
- 158:	02070463          	beq	x14,x0,180 <run+0x174>
-#         if (add_list_sep) {
- 15c:	00078a63          	beq	x15,x0,170 <run+0x164>
-#           uart_send_str(", ");
- 160:	00000537          	lui	x10,0x0
- 164:	42450513          	addi	x10,x10,1060 # 424 <delay+0x9c>
- 168:	00000097          	auipc	x1,0x0
- 16c:	174080e7          	jalr	x1,372(x1) # 2dc <uart_send_str>
-#         } else {
-#           add_list_sep = 1;
-#         }
-#         uart_send_str(exit_names[i]);
- 170:	000ba503          	lw	x10,0(x23)
- 174:	00000097          	auipc	x1,0x0
- 178:	168080e7          	jalr	x1,360(x1) # 2dc <uart_send_str>
- 17c:	00100793          	addi	x15,x0,1
-#     for (unsigned char i = 0; i < 6; i++) {
- 180:	004b8b93          	addi	x23,x23,4
- 184:	00140413          	addi	x8,x8,1
- 188:	fd8b96e3          	bne	x23,x24,154 <run+0x148>
-#       }
-#     }
-#     if (!add_list_sep) {
- 18c:	00079a63          	bne	x15,x0,1a0 <run+0x194>
-#       uart_send_str("none");
- 190:	00000537          	lui	x10,0x0
- 194:	43c50513          	addi	x10,x10,1084 # 43c <delay+0xb4>
- 198:	00000097          	auipc	x1,0x0
- 19c:	144080e7          	jalr	x1,324(x1) # 2dc <uart_send_str>
-#     }
-#     uart_send_str("\r\n> ");
- 1a0:	00000537          	lui	x10,0x0
- 1a4:	44450513          	addi	x10,x10,1092 # 444 <delay+0xbc>
- 1a8:	00000097          	auipc	x1,0x0
- 1ac:	134080e7          	jalr	x1,308(x1) # 2dc <uart_send_str>
+  24:	00000097          	auipc	x1,0x0
+  28:	394080e7          	jalr	x1,916(x1) # 3b8 <uart_send_str>
+#     describe_current_location();
+  2c:	00000097          	auipc	x1,0x0
+  30:	028080e7          	jalr	x1,40(x1) # 54 <describe_current_location>
+#     uart_send_str("> ");
+  34:	50440513          	addi	x10,x8,1284 # 504 <delay+0xa0>
+  38:	00000097          	auipc	x1,0x0
+  3c:	380080e7          	jalr	x1,896(x1) # 3b8 <uart_send_str>
 #     input_inbuf();
- 1b0:	00000097          	auipc	x1,0x0
- 1b4:	074080e7          	jalr	x1,116(x1) # 224 <input_inbuf>
+  40:	00000097          	auipc	x1,0x0
+  44:	2c0080e7          	jalr	x1,704(x1) # 300 <input_inbuf>
 #     handle_inbuf();
- 1b8:	00000097          	auipc	x1,0x0
- 1bc:	00c080e7          	jalr	x1,12(x1) # 1c4 <handle_inbuf>
+  48:	00000097          	auipc	x1,0x0
+  4c:	248080e7          	jalr	x1,584(x1) # 290 <handle_inbuf>
 #   while (1) {
- 1c0:	eadff06f          	jal	x0,6c <run+0x60>
+  50:	fddff06f          	jal	x0,2c <run+0x20>
 
-000001c4 <handle_inbuf>:
+00000054 <describe_current_location>:
 #   }
 # }
 # 
+# void describe_current_location() {
+#   uart_send_str("u r in ");
+  54:	00000537          	lui	x10,0x0
+# void describe_current_location() {
+  58:	fd010113          	addi	x2,x2,-48
+#   uart_send_str("u r in ");
+  5c:	50850513          	addi	x10,x10,1288 # 508 <delay+0xa4>
+# void describe_current_location() {
+  60:	02112623          	sw	x1,44(x2)
+  64:	02812423          	sw	x8,40(x2)
+  68:	02912223          	sw	x9,36(x2)
+  6c:	03212023          	sw	x18,32(x2)
+  70:	01312e23          	sw	x19,28(x2)
+  74:	01512a23          	sw	x21,20(x2)
+  78:	01612823          	sw	x22,16(x2)
+  7c:	01712623          	sw	x23,12(x2)
+  80:	01812423          	sw	x24,8(x2)
+  84:	01412c23          	sw	x20,24(x2)
+#   unsigned char current_location = entities[active_entity].location;
+  88:	000024b7          	lui	x9,0x2
+#   uart_send_str("u r in ");
+  8c:	00000097          	auipc	x1,0x0
+  90:	32c080e7          	jalr	x1,812(x1) # 3b8 <uart_send_str>
+#   unsigned char current_location = entities[active_entity].location;
+  94:	8384c683          	lbu	x13,-1992(x9) # 1838 <active_entity>
+  98:	000019b7          	lui	x19,0x1
+  9c:	7a498713          	addi	x14,x19,1956 # 17a4 <entities>
+  a0:	00269793          	slli	x15,x13,0x2
+  a4:	00d787b3          	add	x15,x15,x13
+  a8:	00379793          	slli	x15,x15,0x3
+  ac:	00f707b3          	add	x15,x14,x15
+  b0:	0047c703          	lbu	x14,4(x15)
+#   uart_send_str(locations[current_location].name);
+  b4:	00001437          	lui	x8,0x1
+  b8:	55440413          	addi	x8,x8,1364 # 1554 <locations>
+  bc:	00371793          	slli	x15,x14,0x3
+  c0:	00e787b3          	add	x15,x15,x14
+  c4:	00279793          	slli	x15,x15,0x2
+  c8:	00e787b3          	add	x15,x15,x14
+  cc:	00279793          	slli	x15,x15,0x2
+  d0:	00f40433          	add	x8,x8,x15
+  d4:	00042503          	lw	x10,0(x8)
+  d8:	00040913          	addi	x18,x8,0
+#   uart_send_str("\r\nu c: ");
+  dc:	00040c13          	addi	x24,x8,0
+#   uart_send_str(locations[current_location].name);
+  e0:	00000097          	auipc	x1,0x0
+  e4:	2d8080e7          	jalr	x1,728(x1) # 3b8 <uart_send_str>
+#   uart_send_str("\r\nu c: ");
+  e8:	00000537          	lui	x10,0x0
+  ec:	51050513          	addi	x10,x10,1296 # 510 <delay+0xac>
+  f0:	00000097          	auipc	x1,0x0
+  f4:	2c8080e7          	jalr	x1,712(x1) # 3b8 <uart_send_str>
+#   // print entities in current location
+#   unsigned char add_list_sep = 0;
+#   for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
+  f8:	00000b93          	addi	x23,x0,0
+#   unsigned char add_list_sep = 0;
+  fc:	00000793          	addi	x15,x0,0
+ 100:	7a498993          	addi	x19,x19,1956
+#     const entity_id id = locations[current_location].entities[i];
+#     if (!id)
+#       break;
+#     if (id != active_entity) {
+#       if (add_list_sep) {
+#         uart_send_str(", ");
+ 104:	00000b37          	lui	x22,0x0
+#   for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
+ 108:	00800a93          	addi	x21,x0,8
+#     const entity_id id = locations[current_location].entities[i];
+ 10c:	084c4a03          	lbu	x20,132(x24)
+#     if (!id)
+ 110:	020a1263          	bne	x20,x0,134 <describe_current_location+0xe0>
+#       uart_send_str(entities[id].name);
+#     }
+#   }
+#   // print objects in current location
+#   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
+#     const object_id id = locations[current_location].objects[i];
+ 114:	00444483          	lbu	x9,4(x8)
+#     if (!id)
+ 118:	06049263          	bne	x9,x0,17c <describe_current_location+0x128>
+#     } else {
+#       add_list_sep = 1;
+#     }
+#     uart_send_str(objects[id].name);
+#   }
+#   if (!add_list_sep) {
+ 11c:	08079863          	bne	x15,x0,1ac <describe_current_location+0x158>
+#     uart_send_str("no one");
+ 120:	00000537          	lui	x10,0x0
+ 124:	51c50513          	addi	x10,x10,1308 # 51c <delay+0xb8>
+ 128:	00000097          	auipc	x1,0x0
+ 12c:	290080e7          	jalr	x1,656(x1) # 3b8 <uart_send_str>
+ 130:	07c0006f          	jal	x0,1ac <describe_current_location+0x158>
+#     if (id != active_entity) {
+ 134:	8384c703          	lbu	x14,-1992(x9)
+ 138:	03470a63          	beq	x14,x20,16c <describe_current_location+0x118>
+#       if (add_list_sep) {
+ 13c:	00078863          	beq	x15,x0,14c <describe_current_location+0xf8>
+#         uart_send_str(", ");
+ 140:	518b0513          	addi	x10,x22,1304 # 518 <delay+0xb4>
+ 144:	00000097          	auipc	x1,0x0
+ 148:	274080e7          	jalr	x1,628(x1) # 3b8 <uart_send_str>
+#       uart_send_str(entities[id].name);
+ 14c:	002a1793          	slli	x15,x20,0x2
+ 150:	014787b3          	add	x15,x15,x20
+ 154:	00379793          	slli	x15,x15,0x3
+ 158:	00f987b3          	add	x15,x19,x15
+ 15c:	0007a503          	lw	x10,0(x15)
+ 160:	00000097          	auipc	x1,0x0
+ 164:	258080e7          	jalr	x1,600(x1) # 3b8 <uart_send_str>
+ 168:	00100793          	addi	x15,x0,1
+#   for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
+ 16c:	001b8b93          	addi	x23,x23,1
+ 170:	001c0c13          	addi	x24,x24,1
+ 174:	f95b9ce3          	bne	x23,x21,10c <describe_current_location+0xb8>
+ 178:	f9dff06f          	jal	x0,114 <describe_current_location+0xc0>
+#     if (add_list_sep) {
+ 17c:	00002a37          	lui	x20,0x2
+ 180:	81ca0a13          	addi	x20,x20,-2020 # 181c <objects>
+ 184:	0c079863          	bne	x15,x0,254 <describe_current_location+0x200>
+#     uart_send_str(objects[id].name);
+ 188:	00249493          	slli	x9,x9,0x2
+ 18c:	009a04b3          	add	x9,x20,x9
+ 190:	0004a503          	lw	x10,0(x9)
+#   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
+ 194:	00140413          	addi	x8,x8,1
+ 198:	00100993          	addi	x19,x0,1
+#     uart_send_str(objects[id].name);
+ 19c:	00000097          	auipc	x1,0x0
+ 1a0:	21c080e7          	jalr	x1,540(x1) # 3b8 <uart_send_str>
+#     const object_id id = locations[current_location].objects[i];
+ 1a4:	00444483          	lbu	x9,4(x8)
+#     if (!id)
+ 1a8:	0a049863          	bne	x9,x0,258 <describe_current_location+0x204>
+#   }
+#   // print exits from current location
+#   add_list_sep = 0;
+#   uart_send_str("\r\nexits: ");
+ 1ac:	00000537          	lui	x10,0x0
+ 1b0:	52450513          	addi	x10,x10,1316 # 524 <delay+0xc0>
+ 1b4:	00001437          	lui	x8,0x1
+ 1b8:	00000097          	auipc	x1,0x0
+ 1bc:	200080e7          	jalr	x1,512(x1) # 3b8 <uart_send_str>
+#   for (unsigned i = 0; i < 6; i++) {
+ 1c0:	53c40413          	addi	x8,x8,1340 # 153c <exit_names>
+ 1c4:	01840493          	addi	x9,x8,24
+#   add_list_sep = 0;
+ 1c8:	00000793          	addi	x15,x0,0
+#     if (locations[current_location].exits[i]) {
+ 1cc:	08c94703          	lbu	x14,140(x18)
+ 1d0:	02070463          	beq	x14,x0,1f8 <describe_current_location+0x1a4>
+#       if (add_list_sep) {
+ 1d4:	00078a63          	beq	x15,x0,1e8 <describe_current_location+0x194>
+#         uart_send_str(", ");
+ 1d8:	00000537          	lui	x10,0x0
+ 1dc:	51850513          	addi	x10,x10,1304 # 518 <delay+0xb4>
+ 1e0:	00000097          	auipc	x1,0x0
+ 1e4:	1d8080e7          	jalr	x1,472(x1) # 3b8 <uart_send_str>
+#       } else {
+#         add_list_sep = 1;
+#       }
+#       uart_send_str(exit_names[i]);
+ 1e8:	00042503          	lw	x10,0(x8)
+ 1ec:	00000097          	auipc	x1,0x0
+ 1f0:	1cc080e7          	jalr	x1,460(x1) # 3b8 <uart_send_str>
+ 1f4:	00100793          	addi	x15,x0,1
+#   for (unsigned i = 0; i < 6; i++) {
+ 1f8:	00440413          	addi	x8,x8,4
+ 1fc:	00190913          	addi	x18,x18,1
+ 200:	fc9416e3          	bne	x8,x9,1cc <describe_current_location+0x178>
+#     }
+#   }
+#   if (!add_list_sep) {
+ 204:	00079a63          	bne	x15,x0,218 <describe_current_location+0x1c4>
+#     uart_send_str("none");
+ 208:	00000537          	lui	x10,0x0
+ 20c:	53050513          	addi	x10,x10,1328 # 530 <delay+0xcc>
+ 210:	00000097          	auipc	x1,0x0
+ 214:	1a8080e7          	jalr	x1,424(x1) # 3b8 <uart_send_str>
+#   }
+#   uart_send_str("\r\n");
+# }
+ 218:	02812403          	lw	x8,40(x2)
+ 21c:	02c12083          	lw	x1,44(x2)
+ 220:	02412483          	lw	x9,36(x2)
+ 224:	02012903          	lw	x18,32(x2)
+ 228:	01c12983          	lw	x19,28(x2)
+ 22c:	01812a03          	lw	x20,24(x2)
+ 230:	01412a83          	lw	x21,20(x2)
+ 234:	01012b03          	lw	x22,16(x2)
+ 238:	00c12b83          	lw	x23,12(x2)
+ 23c:	00812c03          	lw	x24,8(x2)
+#   uart_send_str("\r\n");
+ 240:	00000537          	lui	x10,0x0
+ 244:	53850513          	addi	x10,x10,1336 # 538 <delay+0xd4>
+# }
+ 248:	03010113          	addi	x2,x2,48
+#   uart_send_str("\r\n");
+ 24c:	00000317          	auipc	x6,0x0
+ 250:	16c30067          	jalr	x0,364(x6) # 3b8 <uart_send_str>
+ 254:	00000993          	addi	x19,x0,0
+#       uart_send_str(", ");
+ 258:	00000537          	lui	x10,0x0
+ 25c:	51850513          	addi	x10,x10,1304 # 518 <delay+0xb4>
+#     uart_send_str(objects[id].name);
+ 260:	00249493          	slli	x9,x9,0x2
+#       uart_send_str(", ");
+ 264:	00000097          	auipc	x1,0x0
+ 268:	154080e7          	jalr	x1,340(x1) # 3b8 <uart_send_str>
+#     uart_send_str(objects[id].name);
+ 26c:	009a04b3          	add	x9,x20,x9
+ 270:	0004a503          	lw	x10,0(x9)
+#   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
+ 274:	00198993          	addi	x19,x19,1
+ 278:	00140413          	addi	x8,x8,1
+#     uart_send_str(objects[id].name);
+ 27c:	00000097          	auipc	x1,0x0
+ 280:	13c080e7          	jalr	x1,316(x1) # 3b8 <uart_send_str>
+#   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
+ 284:	08000793          	addi	x15,x0,128
+ 288:	f0f99ee3          	bne	x19,x15,1a4 <describe_current_location+0x150>
+ 28c:	f21ff06f          	jal	x0,1ac <describe_current_location+0x158>
+
+00000290 <handle_inbuf>:
+# 
 # void handle_inbuf() {
 #   uart_send_str("\r\n");
- 1c4:	00000537          	lui	x10,0x0
+ 290:	00000537          	lui	x10,0x0
 # void handle_inbuf() {
- 1c8:	ff010113          	addi	x2,x2,-16
+ 294:	ff010113          	addi	x2,x2,-16
 #   uart_send_str("\r\n");
- 1cc:	44c50513          	addi	x10,x10,1100 # 44c <delay+0xc4>
+ 298:	53850513          	addi	x10,x10,1336 # 538 <delay+0xd4>
 # void handle_inbuf() {
- 1d0:	00112623          	sw	x1,12(x2)
+ 29c:	00112623          	sw	x1,12(x2)
 #   uart_send_str("\r\n");
- 1d4:	00000097          	auipc	x1,0x0
- 1d8:	108080e7          	jalr	x1,264(x1) # 2dc <uart_send_str>
+ 2a0:	00000097          	auipc	x1,0x0
+ 2a4:	118080e7          	jalr	x1,280(x1) # 3b8 <uart_send_str>
 #   entities[active_entity].location++;
- 1dc:	000027b7          	lui	x15,0x2
- 1e0:	8e07c683          	lbu	x13,-1824(x15) # 18e0 <active_entity>
- 1e4:	00002737          	lui	x14,0x2
- 1e8:	8b870793          	addi	x15,x14,-1864 # 18b8 <entities>
- 1ec:	00369693          	slli	x13,x13,0x3
- 1f0:	00d787b3          	add	x15,x15,x13
- 1f4:	0047c783          	lbu	x15,4(x15)
+ 2a8:	000027b7          	lui	x15,0x2
+ 2ac:	8387c603          	lbu	x12,-1992(x15) # 1838 <active_entity>
+ 2b0:	00001737          	lui	x14,0x1
+ 2b4:	7a470793          	addi	x15,x14,1956 # 17a4 <entities>
+ 2b8:	00261693          	slli	x13,x12,0x2
+ 2bc:	00c685b3          	add	x11,x13,x12
+ 2c0:	00359593          	slli	x11,x11,0x3
+ 2c4:	00b787b3          	add	x15,x15,x11
+ 2c8:	0047c783          	lbu	x15,4(x15)
 #   if (entities[active_entity].location > 3) {
- 1f8:	00300613          	addi	x12,x0,3
- 1fc:	8b870713          	addi	x14,x14,-1864
+ 2cc:	00300593          	addi	x11,x0,3
+ 2d0:	7a470713          	addi	x14,x14,1956
 #   entities[active_entity].location++;
- 200:	00178793          	addi	x15,x15,1
- 204:	0ff7f793          	andi	x15,x15,255
+ 2d4:	00178793          	addi	x15,x15,1
+ 2d8:	0ff7f793          	andi	x15,x15,255
 #   if (entities[active_entity].location > 3) {
- 208:	00f67463          	bgeu	x12,x15,210 <handle_inbuf+0x4c>
+ 2dc:	00f5f463          	bgeu	x11,x15,2e4 <handle_inbuf+0x54>
 #     entities[active_entity].location = 1;
- 20c:	00100793          	addi	x15,x0,1
- 210:	00d70733          	add	x14,x14,x13
- 214:	00f70223          	sb	x15,4(x14)
+ 2e0:	00100793          	addi	x15,x0,1
+ 2e4:	00c686b3          	add	x13,x13,x12
+ 2e8:	00369693          	slli	x13,x13,0x3
+ 2ec:	00d70733          	add	x14,x14,x13
+ 2f0:	00f70223          	sb	x15,4(x14)
 #   }
 # }
- 218:	00c12083          	lw	x1,12(x2)
- 21c:	01010113          	addi	x2,x2,16
- 220:	00008067          	jalr	x0,0(x1)
+ 2f4:	00c12083          	lw	x1,12(x2)
+ 2f8:	01010113          	addi	x2,x2,16
+ 2fc:	00008067          	jalr	x0,0(x1)
 
-00000224 <input_inbuf>:
+00000300 <input_inbuf>:
 # 
 # void input_inbuf() {
- 224:	fe010113          	addi	x2,x2,-32
- 228:	00812c23          	sw	x8,24(x2)
- 22c:	00002437          	lui	x8,0x2
- 230:	01212823          	sw	x18,16(x2)
- 234:	01312623          	sw	x19,12(x2)
- 238:	01412423          	sw	x20,8(x2)
- 23c:	01512223          	sw	x21,4(x2)
- 240:	00112e23          	sw	x1,28(x2)
- 244:	00912a23          	sw	x9,20(x2)
+ 300:	fe010113          	addi	x2,x2,-32
+ 304:	00812c23          	sw	x8,24(x2)
+ 308:	00002437          	lui	x8,0x2
+ 30c:	01212823          	sw	x18,16(x2)
+ 310:	01312623          	sw	x19,12(x2)
+ 314:	01412423          	sw	x20,8(x2)
+ 318:	01512223          	sw	x21,4(x2)
+ 31c:	00112e23          	sw	x1,28(x2)
+ 320:	00912a23          	sw	x9,20(x2)
 #   while (1) {
 #     const char ch = uart_read_char();
 #     uart_send_char(ch);
 #     if (ch == CHAR_BACKSPACE) {
- 248:	07f00993          	addi	x19,x0,127
- 24c:	8e440413          	addi	x8,x8,-1820 # 18e4 <inbuf>
+ 324:	07f00993          	addi	x19,x0,127
+ 328:	83c40413          	addi	x8,x8,-1988 # 183c <inbuf>
 #       if (inbuf.ix > 0) {
 #         inbuf.ix--;
 #       }
 #     } else if (ch == CHAR_CARRIAGE_RETURN ||
- 250:	00d00a13          	addi	x20,x0,13
- 254:	04f00a93          	addi	x21,x0,79
+ 32c:	00d00a13          	addi	x20,x0,13
+ 330:	04f00a93          	addi	x21,x0,79
 #       return;
 #     } else {
 #       inbuf.line[inbuf.ix] = ch;
 #       inbuf.ix++;
 #     }
 #     *leds = inbuf.ix;
- 258:	00002937          	lui	x18,0x2
+ 334:	00002937          	lui	x18,0x2
 #     const char ch = uart_read_char();
- 25c:	00000097          	auipc	x1,0x0
- 260:	114080e7          	jalr	x1,276(x1) # 370 <uart_read_char>
- 264:	00050493          	addi	x9,x10,0
+ 338:	00000097          	auipc	x1,0x0
+ 33c:	114080e7          	jalr	x1,276(x1) # 44c <uart_read_char>
+ 340:	00050493          	addi	x9,x10,0
 #     uart_send_char(ch);
- 268:	00000097          	auipc	x1,0x0
- 26c:	0f0080e7          	jalr	x1,240(x1) # 358 <uart_send_char>
+ 344:	00000097          	auipc	x1,0x0
+ 348:	0f0080e7          	jalr	x1,240(x1) # 434 <uart_send_char>
 #       if (inbuf.ix > 0) {
- 270:	05044783          	lbu	x15,80(x8)
+ 34c:	05044783          	lbu	x15,80(x8)
 #     if (ch == CHAR_BACKSPACE) {
- 274:	03349063          	bne	x9,x19,294 <input_inbuf+0x70>
+ 350:	03349063          	bne	x9,x19,370 <input_inbuf+0x70>
 #       if (inbuf.ix > 0) {
- 278:	00078663          	beq	x15,x0,284 <input_inbuf+0x60>
+ 354:	00078663          	beq	x15,x0,360 <input_inbuf+0x60>
 #         inbuf.ix--;
- 27c:	fff78793          	addi	x15,x15,-1
+ 358:	fff78793          	addi	x15,x15,-1
 #       inbuf.ix++;
- 280:	04f40823          	sb	x15,80(x8)
+ 35c:	04f40823          	sb	x15,80(x8)
 #     *leds = inbuf.ix;
- 284:	8d092783          	lw	x15,-1840(x18) # 18d0 <leds>
- 288:	05044703          	lbu	x14,80(x8)
- 28c:	00e78023          	sb	x14,0(x15)
+ 360:	82892783          	lw	x15,-2008(x18) # 1828 <leds>
+ 364:	05044703          	lbu	x14,80(x8)
+ 368:	00e78023          	sb	x14,0(x15)
 #   while (1) {
- 290:	fcdff06f          	jal	x0,25c <input_inbuf+0x38>
+ 36c:	fcdff06f          	jal	x0,338 <input_inbuf+0x38>
 #     } else if (ch == CHAR_CARRIAGE_RETURN ||
- 294:	01448463          	beq	x9,x20,29c <input_inbuf+0x78>
- 298:	03579a63          	bne	x15,x21,2cc <input_inbuf+0xa8>
+ 370:	01448463          	beq	x9,x20,378 <input_inbuf+0x78>
+ 374:	03579a63          	bne	x15,x21,3a8 <input_inbuf+0xa8>
 #       inbuf.line[inbuf.ix] = 0;
- 29c:	00f407b3          	add	x15,x8,x15
- 2a0:	00078023          	sb	x0,0(x15)
+ 378:	00f407b3          	add	x15,x8,x15
+ 37c:	00078023          	sb	x0,0(x15)
 #       inbuf.ix = 0;
- 2a4:	04040823          	sb	x0,80(x8)
+ 380:	04040823          	sb	x0,80(x8)
 #   }
 # }
- 2a8:	01c12083          	lw	x1,28(x2)
- 2ac:	01812403          	lw	x8,24(x2)
- 2b0:	01412483          	lw	x9,20(x2)
- 2b4:	01012903          	lw	x18,16(x2)
- 2b8:	00c12983          	lw	x19,12(x2)
- 2bc:	00812a03          	lw	x20,8(x2)
- 2c0:	00412a83          	lw	x21,4(x2)
- 2c4:	02010113          	addi	x2,x2,32
- 2c8:	00008067          	jalr	x0,0(x1)
+ 384:	01c12083          	lw	x1,28(x2)
+ 388:	01812403          	lw	x8,24(x2)
+ 38c:	01412483          	lw	x9,20(x2)
+ 390:	01012903          	lw	x18,16(x2)
+ 394:	00c12983          	lw	x19,12(x2)
+ 398:	00812a03          	lw	x20,8(x2)
+ 39c:	00412a83          	lw	x21,4(x2)
+ 3a0:	02010113          	addi	x2,x2,32
+ 3a4:	00008067          	jalr	x0,0(x1)
 #       inbuf.line[inbuf.ix] = ch;
- 2cc:	00f40733          	add	x14,x8,x15
- 2d0:	00970023          	sb	x9,0(x14)
+ 3a8:	00f40733          	add	x14,x8,x15
+ 3ac:	00970023          	sb	x9,0(x14)
 #       inbuf.ix++;
- 2d4:	00178793          	addi	x15,x15,1
- 2d8:	fa9ff06f          	jal	x0,280 <input_inbuf+0x5c>
+ 3b0:	00178793          	addi	x15,x15,1
+ 3b4:	fa9ff06f          	jal	x0,35c <input_inbuf+0x5c>
 
-000002dc <uart_send_str>:
+000003b8 <uart_send_str>:
 # 
 # void uart_send_str(const char *str) {
 #   while (*str) {
 #     while (*uart_out)
- 2dc:	000026b7          	lui	x13,0x2
+ 3b8:	000026b7          	lui	x13,0x2
 #   while (*str) {
- 2e0:	00054783          	lbu	x15,0(x10)
- 2e4:	00079463          	bne	x15,x0,2ec <uart_send_str+0x10>
+ 3bc:	00054783          	lbu	x15,0(x10)
+ 3c0:	00079463          	bne	x15,x0,3c8 <uart_send_str+0x10>
 #       ;
 #     *uart_out = *str++;
 #   }
 # }
- 2e8:	00008067          	jalr	x0,0(x1)
+ 3c4:	00008067          	jalr	x0,0(x1)
 #     while (*uart_out)
- 2ec:	8d46a703          	lw	x14,-1836(x13) # 18d4 <uart_out>
- 2f0:	00074603          	lbu	x12,0(x14)
- 2f4:	fe061ee3          	bne	x12,x0,2f0 <uart_send_str+0x14>
+ 3c8:	82c6a703          	lw	x14,-2004(x13) # 182c <uart_out>
+ 3cc:	00074603          	lbu	x12,0(x14)
+ 3d0:	fe061ee3          	bne	x12,x0,3cc <uart_send_str+0x14>
 #     *uart_out = *str++;
- 2f8:	00150513          	addi	x10,x10,1
- 2fc:	00f70023          	sb	x15,0(x14)
- 300:	fe1ff06f          	jal	x0,2e0 <uart_send_str+0x4>
+ 3d4:	00150513          	addi	x10,x10,1
+ 3d8:	00f70023          	sb	x15,0(x14)
+ 3dc:	fe1ff06f          	jal	x0,3bc <uart_send_str+0x4>
 
-00000304 <uart_send_hex_byte>:
+000003e0 <uart_send_hex_byte>:
 # 
 # void uart_send_hex_byte(char ch) {
- 304:	ff010113          	addi	x2,x2,-16
- 308:	00812423          	sw	x8,8(x2)
- 30c:	00050413          	addi	x8,x10,0
+ 3e0:	ff010113          	addi	x2,x2,-16
+ 3e4:	00812423          	sw	x8,8(x2)
+ 3e8:	00050413          	addi	x8,x10,0
 #   uart_send_hex_nibble((ch & 0xf0) >> 4);
- 310:	00455513          	srli	x10,x10,0x4
+ 3ec:	00455513          	srli	x10,x10,0x4
 # void uart_send_hex_byte(char ch) {
- 314:	00112623          	sw	x1,12(x2)
+ 3f0:	00112623          	sw	x1,12(x2)
 #   uart_send_hex_nibble((ch & 0xf0) >> 4);
- 318:	00000097          	auipc	x1,0x0
- 31c:	020080e7          	jalr	x1,32(x1) # 338 <uart_send_hex_nibble>
+ 3f4:	00000097          	auipc	x1,0x0
+ 3f8:	020080e7          	jalr	x1,32(x1) # 414 <uart_send_hex_nibble>
 #   uart_send_hex_nibble(ch & 0x0f);
- 320:	00f47513          	andi	x10,x8,15
+ 3fc:	00f47513          	andi	x10,x8,15
 # }
- 324:	00812403          	lw	x8,8(x2)
- 328:	00c12083          	lw	x1,12(x2)
- 32c:	01010113          	addi	x2,x2,16
+ 400:	00812403          	lw	x8,8(x2)
+ 404:	00c12083          	lw	x1,12(x2)
+ 408:	01010113          	addi	x2,x2,16
 #   uart_send_hex_nibble(ch & 0x0f);
- 330:	00000317          	auipc	x6,0x0
- 334:	00830067          	jalr	x0,8(x6) # 338 <uart_send_hex_nibble>
+ 40c:	00000317          	auipc	x6,0x0
+ 410:	00830067          	jalr	x0,8(x6) # 414 <uart_send_hex_nibble>
 
-00000338 <uart_send_hex_nibble>:
+00000414 <uart_send_hex_nibble>:
 # 
 # void uart_send_hex_nibble(char nibble) {
 #   if (nibble < 10) {
- 338:	00900793          	addi	x15,x0,9
- 33c:	00a7ea63          	bltu	x15,x10,350 <uart_send_hex_nibble+0x18>
+ 414:	00900793          	addi	x15,x0,9
+ 418:	00a7ea63          	bltu	x15,x10,42c <uart_send_hex_nibble+0x18>
 #     uart_send_char('0' + nibble);
- 340:	03050513          	addi	x10,x10,48
+ 41c:	03050513          	addi	x10,x10,48
 #   } else {
 #     uart_send_char('A' + (nibble - 10));
- 344:	0ff57513          	andi	x10,x10,255
- 348:	00000317          	auipc	x6,0x0
- 34c:	01030067          	jalr	x0,16(x6) # 358 <uart_send_char>
- 350:	03750513          	addi	x10,x10,55
- 354:	ff1ff06f          	jal	x0,344 <uart_send_hex_nibble+0xc>
+ 420:	0ff57513          	andi	x10,x10,255
+ 424:	00000317          	auipc	x6,0x0
+ 428:	01030067          	jalr	x0,16(x6) # 434 <uart_send_char>
+ 42c:	03750513          	addi	x10,x10,55
+ 430:	ff1ff06f          	jal	x0,420 <uart_send_hex_nibble+0xc>
 
-00000358 <uart_send_char>:
+00000434 <uart_send_char>:
 #   }
 # }
 # 
 # void uart_send_char(char ch) {
 #   while (*uart_out)
- 358:	000027b7          	lui	x15,0x2
- 35c:	8d47a783          	lw	x15,-1836(x15) # 18d4 <uart_out>
- 360:	0007c703          	lbu	x14,0(x15)
- 364:	fe071ee3          	bne	x14,x0,360 <uart_send_char+0x8>
+ 434:	000027b7          	lui	x15,0x2
+ 438:	82c7a783          	lw	x15,-2004(x15) # 182c <uart_out>
+ 43c:	0007c703          	lbu	x14,0(x15)
+ 440:	fe071ee3          	bne	x14,x0,43c <uart_send_char+0x8>
 #     ;
 #   *uart_out = ch;
- 368:	00a78023          	sb	x10,0(x15)
+ 444:	00a78023          	sb	x10,0(x15)
 # }
- 36c:	00008067          	jalr	x0,0(x1)
+ 448:	00008067          	jalr	x0,0(x1)
 
-00000370 <uart_read_char>:
+0000044c <uart_read_char>:
 # 
 # char uart_read_char() {
 #   char ch;
 #   while ((ch = *uart_in) == 0)
- 370:	000027b7          	lui	x15,0x2
- 374:	8d87a703          	lw	x14,-1832(x15) # 18d8 <uart_in>
- 378:	00074783          	lbu	x15,0(x14)
- 37c:	0ff7f513          	andi	x10,x15,255
- 380:	fe078ce3          	beq	x15,x0,378 <uart_read_char+0x8>
+ 44c:	000027b7          	lui	x15,0x2
+ 450:	8307a703          	lw	x14,-2000(x15) # 1830 <uart_in>
+ 454:	00074783          	lbu	x15,0(x14)
+ 458:	0ff7f513          	andi	x10,x15,255
+ 45c:	fe078ce3          	beq	x15,x0,454 <uart_read_char+0x8>
 #     ;
 #   return ch;
 # }
- 384:	00008067          	jalr	x0,0(x1)
+ 460:	00008067          	jalr	x0,0(x1)
 
-00000388 <delay>:
+00000464 <delay>:
 # 
 # inline void delay(volatile unsigned int ticks) {
- 388:	ff010113          	addi	x2,x2,-16
- 38c:	00a12623          	sw	x10,12(x2)
+ 464:	ff010113          	addi	x2,x2,-16
+ 468:	00a12623          	sw	x10,12(x2)
 #   while (ticks--)
- 390:	00c12783          	lw	x15,12(x2)
- 394:	fff78713          	addi	x14,x15,-1
- 398:	00e12623          	sw	x14,12(x2)
- 39c:	fe079ae3          	bne	x15,x0,390 <delay+0x8>
+ 46c:	00c12783          	lw	x15,12(x2)
+ 470:	fff78713          	addi	x14,x15,-1
+ 474:	00e12623          	sw	x14,12(x2)
+ 478:	fe079ae3          	bne	x15,x0,46c <delay+0x8>
 #     ;
 # }
- 3a0:	01010113          	addi	x2,x2,16
- 3a4:	00008067          	jalr	x0,0(x1)
+ 47c:	01010113          	addi	x2,x2,16
+ 480:	00008067          	jalr	x0,0(x1)

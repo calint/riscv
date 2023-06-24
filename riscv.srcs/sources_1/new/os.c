@@ -4,6 +4,15 @@
 #define TOP_OF_STACK 0x1fff0 // note. update 'os_start.S' when changed
 #define CHAR_BACKSPACE 0x7f
 #define CHAR_CARRIAGE_RETURN 0x0d
+#define LOCATION_MAX_OBJECTS 128
+#define LOCATION_MAX_ENTITIES 8
+#define LOCATION_MAX_EXITS 6
+#define ENTITY_MAX_OBJECTS 32
+
+typedef unsigned char bool;
+typedef unsigned char location_id;
+typedef unsigned char object_id;
+typedef unsigned char entity_id;
 
 volatile unsigned char *leds = (unsigned char *)TOP_OF_RAM;
 volatile unsigned char *uart_out = (unsigned char *)TOP_OF_RAM - 1;
@@ -26,10 +35,10 @@ typedef struct input_buffer {
 static input_buffer inbuf;
 
 typedef struct location {
-  const char *description;
-  unsigned char objects[256];
-  unsigned char entities[8];
-  unsigned char exits[6];
+  const char *name;
+  object_id objects[LOCATION_MAX_OBJECTS];
+  entity_id entities[LOCATION_MAX_ENTITIES];
+  location_id exits[LOCATION_MAX_EXITS];
 } location;
 
 static const char *exit_names[] = {"north", "east", "south",
@@ -37,16 +46,29 @@ static const char *exit_names[] = {"north", "east", "south",
 
 static location locations[] = {{"", {0}, {0}, {0}},
                                {"roome", {0}, {1}, {2, 3}},
-                               {"office", {0}, {2}, {0, 0, 1}},
+                               {"office", {1, 0}, {2}, {0, 0, 1}},
                                {"bathroom", {0}, {0}, {0}}};
 
 typedef struct entity {
   const char *name;
-  unsigned char location;
+  location_id location;
+  object_id inventory[ENTITY_MAX_OBJECTS];
 } entity;
 
-static entity entities[] = {{"", 0}, {"me", 1}, {"u", 2}};
+static entity entities[] = {{"", 0, {0}}, {"me", 1, {2}}, {"u", 2, {0}}};
 
+typedef struct object {
+  const char *name;
+} object;
+
+static object objects[] = {{""}, {"notebook"}, {"mirror"}};
+
+void add_object_to_list(object_id list[], object_id id);
+bool remove_object_from_list(object_id list[], object_id id);
+void add_entity_to_list(entity_id list[], entity_id id);
+bool remove_entity_from_list(entity_id list[], entity_id id);
+
+void describe_current_location();
 void input_inbuf();
 void handle_inbuf();
 
@@ -55,43 +77,65 @@ unsigned char active_entity = 1;
 void run() {
   uart_send_str(hello);
   while (1) {
-    uart_send_str("u r in ");
-    unsigned char current_location = entities[active_entity].location;
-    uart_send_str(locations[current_location].description);
-    uart_send_str("\r\nu c: ");
-    unsigned char add_list_sep = 0;
-    for (unsigned char i = 0; i < sizeof(entities) / sizeof(entity); i++) {
-      if (i != active_entity && entities[i].location == current_location) {
-        if (add_list_sep) {
-          uart_send_str(", ");
-        } else {
-          add_list_sep = 1;
-        }
-        uart_send_str(entities[i].name);
-      }
-    }
-    if (!add_list_sep) {
-      uart_send_str("no one");
-    }
-    add_list_sep = 0;
-    uart_send_str("\r\nexits: ");
-    for (unsigned char i = 0; i < 6; i++) {
-      if (locations[current_location].exits[i]) {
-        if (add_list_sep) {
-          uart_send_str(", ");
-        } else {
-          add_list_sep = 1;
-        }
-        uart_send_str(exit_names[i]);
-      }
-    }
-    if (!add_list_sep) {
-      uart_send_str("none");
-    }
-    uart_send_str("\r\n> ");
+    describe_current_location();
+    uart_send_str("> ");
     input_inbuf();
     handle_inbuf();
   }
+}
+
+void describe_current_location() {
+  uart_send_str("u r in ");
+  unsigned char current_location = entities[active_entity].location;
+  uart_send_str(locations[current_location].name);
+  uart_send_str("\r\nu c: ");
+  // print entities in current location
+  unsigned char add_list_sep = 0;
+  for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
+    const entity_id id = locations[current_location].entities[i];
+    if (!id)
+      break;
+    if (id != active_entity) {
+      if (add_list_sep) {
+        uart_send_str(", ");
+      } else {
+        add_list_sep = 1;
+      }
+      uart_send_str(entities[id].name);
+    }
+  }
+  // print objects in current location
+  for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
+    const object_id id = locations[current_location].objects[i];
+    if (!id)
+      break;
+    if (add_list_sep) {
+      uart_send_str(", ");
+    } else {
+      add_list_sep = 1;
+    }
+    uart_send_str(objects[id].name);
+  }
+  if (!add_list_sep) {
+    uart_send_str("no one");
+  }
+  // print exits from current location
+  add_list_sep = 0;
+  uart_send_str("\r\nexits: ");
+  for (unsigned i = 0; i < 6; i++) {
+    if (locations[current_location].exits[i]) {
+      if (add_list_sep) {
+        uart_send_str(", ");
+      } else {
+        add_list_sep = 1;
+      }
+      uart_send_str(exit_names[i]);
+    }
+  }
+  if (!add_list_sep) {
+    uart_send_str("none");
+  }
+  uart_send_str("\r\n");
 }
 
 void handle_inbuf() {
