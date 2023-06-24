@@ -67,9 +67,9 @@ static object objects[] = {{""}, {"notebook"}, {"mirror"}, {"lighter"}};
 
 bool strings_equal(const char *s1, const char *s2);
 void add_object_to_list(object_id list[], unsigned list_max_size, object_id id);
-void remove_object_from_list(object_id list[], object_id id);
-void add_entity_to_list(entity_id list[], entity_id id);
-void remove_entity_from_list(entity_id list[], entity_id id);
+void remove_object_from_list_by_index(object_id list[], unsigned ix);
+void add_entity_to_list(entity_id list[], unsigned list_max_size, entity_id id);
+void remove_entity_from_list_by_index(entity_id list[], unsigned ix);
 
 void describe_inventory();
 void describe_current_location();
@@ -179,6 +179,29 @@ void add_object_to_list(object_id list[], unsigned list_max_size,
     }
   }
   uart_send_str("inventory full\r\n");
+}
+
+void add_entity_to_list(entity_id list[], unsigned list_max_size,
+                        entity_id id) {
+  for (unsigned i = 0; i < list_max_size - 1; i++) {
+    if (!list[i]) {
+      list[i] = id;
+      list[i + 1] = 0;
+      return;
+    }
+  }
+  uart_send_str("location full\r\n");
+}
+
+void remove_entity_from_list_by_index(entity_id list[], unsigned ix) {
+  entity_id *ptr = &list[ix];
+  while (1) {
+    entity_id *nxt = ptr + 1;
+    *ptr = *nxt;
+    if (!*nxt)
+      return;
+    ptr++;
+  }
 }
 
 void action_take(const char *object_name) {
