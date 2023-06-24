@@ -7,6 +7,7 @@
 [ ]     ECALL
 [ ]     EBREAK
 ----------------------------------------------------------------------------------
+[-] Uart cannot send or receive 0 => ok since meant for use with terminal and text
 [x] UartTx and UartRx mapped to upper memory,
 [x]   e.g. byte at 0xffff_fffe for UartTx. UartTx writes zero after transmission of a byte.
       => 0x1_fffe
