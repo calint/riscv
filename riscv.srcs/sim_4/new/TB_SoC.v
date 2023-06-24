@@ -51,7 +51,11 @@ initial begin
     for (i = 0; i < UART_TICKS_PER_BIT; i = i + 1) #clk_tk;
     uart_rx = 1;    
     for (i = 0; i < UART_TICKS_PER_BIT; i = i + 1) #clk_tk;
-    uart_rx = 0;    
+    uart_rx = 0;
+    
+    // sample that reg has not changed
+    if (dut.regs.mem[11]==0) $display("test 1 passed"); else $display("test 1 FAILED");
+    
     for (i = 0; i < UART_TICKS_PER_BIT; i = i + 1) #clk_tk;
     uart_rx = 1;
     for (i = 0; i < UART_TICKS_PER_BIT; i = i + 1) #clk_tk;
@@ -69,7 +73,7 @@ initial begin
     #clk_tk
     #clk_tk
     #clk_tk
-    if (dut.regs.mem[11]==8'h55) $display("test 1 passed"); else $display("test 1 FAILED");
+    if (dut.regs.mem[11]==8'h55) $display("test 2 passed"); else $display("test 2 FAILED");
 
     // receive 0b0101_0101 (0x55)
     uart_rx = 1; // idle
@@ -84,6 +88,10 @@ initial begin
     for (i = 0; i < UART_TICKS_PER_BIT; i = i + 1) #clk_tk;
     uart_rx = 0;    
     for (i = 0; i < UART_TICKS_PER_BIT; i = i + 1) #clk_tk;
+    
+    // sample that register has not changed
+    if (dut.regs.mem[11]==0) $display("test 3 passed"); else $display("test 3 FAILED");
+
     uart_rx = 1;
     for (i = 0; i < UART_TICKS_PER_BIT; i = i + 1) #clk_tk;
     uart_rx = 0;    
@@ -102,7 +110,7 @@ initial begin
     #clk_tk
     #clk_tk
     #clk_tk
-    if (dut.regs.mem[11]==8'h55) $display("test 2 passed"); else $display("test 2 FAILED");
+    if (dut.regs.mem[11]==8'h55) $display("test 4 passed"); else $display("test 4 FAILED");
     
     $finish;
 end
