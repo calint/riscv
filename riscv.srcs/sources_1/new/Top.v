@@ -18,10 +18,10 @@ wire clk_50MHz;
 wire clk_locked;
 
 Clocking clocking(
-  .reset(reset),
-  .clk_in1(clk_in1),
-  .clk_out1(clk_50MHz),
-  .clk_locked(clk_locked)
+    .reset(reset),
+    .clk_in1(clk_in1),
+    .clk_out1(clk_50MHz),
+    .clk_locked(clk_locked)
 );
 
 SoC #(
