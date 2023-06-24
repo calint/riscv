@@ -23,7 +23,6 @@ riscv32-unknown-elf-gcc \
 	-Wall -Wextra -pedantic \
 	-Wl,-Ttext=0x0 \
 	-Wl,--no-relax \
-	-Wno-char-subscripts \
 	os_start.S $SRC -o $BIN
 
 riscv32-unknown-elf-objcopy $BIN -O binary $BIN.bin

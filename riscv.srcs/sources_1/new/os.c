@@ -20,39 +20,85 @@ static char *hello = "welcome to adventure #3\r\n\r\n";
 
 typedef struct input_buffer {
   char line[80];
-  char ix;
+  unsigned char ix;
 } input_buffer;
 
 static input_buffer inbuf;
 
 typedef struct location {
   const char *description;
-  char objects[256];
-  char exits[8];
+  unsigned char objects[256];
+  unsigned char entities[8];
+  unsigned char exits[6];
 } location;
 
-static location locations[] = {{"", {0}, {0}},
-                               {"u r in roome", {0}, {2}},
-                               {"office", {0}, {0, 0, 0, 0, 1}}};
+static const char *exit_names[] = {"north", "east", "south",
+                                   "west",  "up",   "down"};
+
+static location locations[] = {{"", {0}, {0}, {0}},
+                               {"roome", {0}, {1}, {2, 3}},
+                               {"office", {0}, {2}, {0, 0, 1}},
+                               {"bathroom", {0}, {0}, {0}}};
 
 typedef struct entity {
   const char *name;
-  char location;
+  unsigned char location;
 } entity;
 
-static entity entities[] = {{"me", 1}, {"u", 2}};
+static entity entities[] = {{"", 0}, {"me", 1}, {"u", 2}};
 
 void input_inbuf();
 void handle_inbuf();
 
+unsigned char active_entity = 1;
+
 void run() {
   uart_send_str(hello);
-
   while (1) {
-    uart_send_str(locations[entities[0].location].description);
+    uart_send_str("u r in ");
+    unsigned char current_location = entities[active_entity].location;
+    uart_send_str(locations[current_location].description);
+    uart_send_str("\r\nu c: ");
+    unsigned char add_list_sep = 0;
+    for (unsigned char i = 0; i < sizeof(entities) / sizeof(entity); i++) {
+      if (i != active_entity && entities[i].location == current_location) {
+        if (add_list_sep) {
+          uart_send_str(", ");
+        } else {
+          add_list_sep = 1;
+        }
+        uart_send_str(entities[i].name);
+      }
+    }
+    if (!add_list_sep) {
+      uart_send_str("no one");
+    }
+    add_list_sep = 0;
+    uart_send_str("\r\nexits: ");
+    for (unsigned char i = 0; i < 6; i++) {
+      if (locations[current_location].exits[i]) {
+        if (add_list_sep) {
+          uart_send_str(", ");
+        } else {
+          add_list_sep = 1;
+        }
+        uart_send_str(exit_names[i]);
+      }
+    }
+    if (!add_list_sep) {
+      uart_send_str("none");
+    }
     uart_send_str("\r\n> ");
     input_inbuf();
     handle_inbuf();
+  }
+}
+
+void handle_inbuf() {
+  uart_send_str("\r\n");
+  entities[active_entity].location++;
+  if (entities[active_entity].location > 3) {
+    entities[active_entity].location = 1;
   }
 }
 
@@ -75,12 +121,6 @@ void input_inbuf() {
     }
     *leds = inbuf.ix;
   }
-}
-
-void handle_inbuf() {
-  uart_send_str("\r\n< ");
-  uart_send_str(inbuf.line);
-  uart_send_str("\r\n");
 }
 
 void uart_send_str(const char *str) {
