@@ -2,7 +2,7 @@
 `default_nettype none
 //`define DBG
 
-// from: https://docs.xilinx.com/r/en-US/ug901-vivado-synthesis/Block-RAM-with-Optional-Output-Registers-VHDL
+// from: https://docs.xilinx.com/r/en-US/ug901-vivado-synthesis/Byte-Write-Enable-True-Dual-Port-with-Byte-Wide-Write-Enable-Verilog
 
 module RAM #(
     parameter NUM_COL = 4,
