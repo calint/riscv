@@ -48,7 +48,7 @@ static const char *exit_names[] = {"north", "east", "south",
 
 static location locations[] = {{"", {0}, {0}, {0}},
                                {"roome", {0}, {1}, {2, 3}},
-                               {"office", {3, 1}, {2}, {0, 0, 1}},
+                               {"office", {1, 3}, {2}, {0, 0, 1}},
                                {"bathroom", {0}, {0}, {0}}};
 
 typedef struct entity {
@@ -182,8 +182,8 @@ void add_object_to_list(object_id list[], unsigned list_max_size,
 }
 
 void action_take(const char *object_name) {
-  const location_id current_location = entities[active_entity].location;
-  object_id *objs = locations[current_location].objects;
+  entity *ent = &entities[active_entity];
+  object_id *objs = locations[ent->location].objects;
   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
     const object_id id = objs[i];
     if (!id)
@@ -191,16 +191,16 @@ void action_take(const char *object_name) {
     if (!strings_equal(objects[id].name, object_name))
       continue;
     remove_object_from_list_by_index(objs, i);
-    add_object_to_list(entities[active_entity].inventory, ENTITY_MAX_OBJECTS,
-                       id);
+    add_object_to_list(ent->inventory, ENTITY_MAX_OBJECTS, id);
     return;
   }
   uart_send_str(object_name);
-  uart_send_str(" not here\r\n");
+  uart_send_str(" not here\r\n\r\n");
 }
 
 void action_drop(const char *object_name) {
-  object_id *objs = entities[active_entity].inventory;
+  entity *ent = &entities[active_entity];
+  object_id *objs = ent->inventory;
   for (unsigned i = 0; i < ENTITY_MAX_OBJECTS; i++) {
     const object_id id = objs[i];
     if (!id)
@@ -208,11 +208,13 @@ void action_drop(const char *object_name) {
     if (!strings_equal(objects[id].name, object_name))
       continue;
     remove_object_from_list_by_index(objs, i);
+    add_object_to_list(locations[ent->location].objects, LOCATION_MAX_OBJECTS,
+                       id);
     return;
   }
   uart_send_str("u don't have ");
   uart_send_str(object_name);
-  uart_send_str("\r\n");
+  uart_send_str("\r\n\r\n");
 }
 
 void handle_inbuf() {
@@ -224,12 +226,10 @@ void handle_inbuf() {
   }
   if (strings_equal(inbuf.line, "t")) {
     action_take("notebook");
-    uart_send_str("\r\n");
     return;
   }
   if (strings_equal(inbuf.line, "d")) {
     action_drop("notebook");
-    uart_send_str("\r\n");
     return;
   }
 
