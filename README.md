@@ -21,5 +21,4 @@ how-to with Vivado v2023.1:
 * find out which tty is on the usb connected to the card (e.g. /dev/ttyUSB1)
 * connect with terminal at 9600 baud, 8 bits, 1 stop bit, no parity 
 * button 0 is reset, click it to restart and display the prompt
-* "Hello World" is the prompt
-* after the prompt the program enters a read / write loop (echo)
+* "welcome to adventure #3" is the prompt

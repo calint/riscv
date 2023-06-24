@@ -23,10 +23,11 @@ riscv32-unknown-elf-gcc \
 	-Wall -Wextra -pedantic \
 	-Wl,-Ttext=0x0 \
 	-Wl,--no-relax \
+	-Wno-char-subscripts \
 	os_start.S $SRC -o $BIN
 
 riscv32-unknown-elf-objcopy $BIN -O binary $BIN.bin
 riscv32-unknown-elf-objdump -Mnumeric,no-aliases --source-comment -Sr $BIN > $BIN.lst
 xxd -p -c 4 -e $BIN.bin | awk '{print $2}' > $BIN.mem
 rm $BIN
-
+ls -l $BIN.bin

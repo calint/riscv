@@ -12,112 +12,280 @@ Disassembly of section .text:
 #     lui sp, 0x2         # set stack at # 0x1fff0
    0:	00002137          	lui	x2,0x2
 #     addi sp, sp, -16    #
-   4:	ff010113          	addi	x2,x2,-16 # 1ff0 <__global_pointer$+0x71a>
+   4:	ff010113          	addi	x2,x2,-16 # 1ff0 <__global_pointer$+0x550>
    8:	004000ef          	jal	x1,c <run>
 
 0000000c <run>:
-# void uart_send_str(char *str);
-# void uart_send_char(char ch);
-# char uart_read_char();
+# 
+# void input_inbuf();
+# void handle_inbuf();
 # 
 # void run() {
 #   uart_send_str(hello);
    c:	000017b7          	lui	x15,0x1
-  10:	0e47a503          	lw	x10,228(x15) # 10e4 <hello>
+  10:	5e07a503          	lw	x10,1504(x15) # 15e0 <hello>
 # void run() {
   14:	ff010113          	addi	x2,x2,-16
-  18:	00912223          	sw	x9,4(x2)
-  1c:	00112623          	sw	x1,12(x2)
-  20:	00812423          	sw	x8,8(x2)
+  18:	00812423          	sw	x8,8(x2)
+  1c:	00912223          	sw	x9,4(x2)
 # 
 #   while (1) {
-#     const char ch = uart_read_char();
-#     uart_send_char(ch);
-#     *leds = ch;
+#     uart_send_str(locations[entities[0].location].description);
+  20:	00001437          	lui	x8,0x1
   24:	000014b7          	lui	x9,0x1
+# void run() {
+  28:	01212023          	sw	x18,0(x2)
+  2c:	00112623          	sw	x1,12(x2)
+#     uart_send_str(locations[entities[0].location].description);
+  30:	2a040413          	addi	x8,x8,672 # 12a0 <locations>
 #   uart_send_str(hello);
-  28:	00000097          	auipc	x1,0x0
-  2c:	028080e7          	jalr	x1,40(x1) # 50 <uart_send_str>
-#     const char ch = uart_read_char();
-  30:	00000097          	auipc	x1,0x0
-  34:	060080e7          	jalr	x1,96(x1) # 90 <uart_read_char>
-  38:	00050413          	addi	x8,x10,0
-#     uart_send_char(ch);
-  3c:	00000097          	auipc	x1,0x0
-  40:	03c080e7          	jalr	x1,60(x1) # 78 <uart_send_char>
-#     *leds = ch;
-  44:	0d84a783          	lw	x15,216(x9) # 10d8 <leds>
-  48:	00878023          	sb	x8,0(x15)
+  34:	00000097          	auipc	x1,0x0
+  38:	150080e7          	jalr	x1,336(x1) # 184 <uart_send_str>
+#     uart_send_str(locations[entities[0].location].description);
+  3c:	5c448493          	addi	x9,x9,1476 # 15c4 <entities>
+#     uart_send_str("\r\n> ");
+  40:	00000937          	lui	x18,0x0
+#     uart_send_str(locations[entities[0].location].description);
+  44:	0044c703          	lbu	x14,4(x9)
+  48:	00471793          	slli	x15,x14,0x4
+  4c:	00e787b3          	add	x15,x15,x14
+  50:	00279793          	slli	x15,x15,0x2
+  54:	40e787b3          	sub	x15,x15,x14
+  58:	00279793          	slli	x15,x15,0x2
+  5c:	00f407b3          	add	x15,x8,x15
+  60:	0007a503          	lw	x10,0(x15)
+  64:	00000097          	auipc	x1,0x0
+  68:	120080e7          	jalr	x1,288(x1) # 184 <uart_send_str>
+#     uart_send_str("\r\n> ");
+  6c:	28c90513          	addi	x10,x18,652 # 28c <delay+0x5c>
+  70:	00000097          	auipc	x1,0x0
+  74:	114080e7          	jalr	x1,276(x1) # 184 <uart_send_str>
+#     input_inbuf();
+  78:	00000097          	auipc	x1,0x0
+  7c:	014080e7          	jalr	x1,20(x1) # 8c <input_inbuf>
+#     handle_inbuf();
+  80:	00000097          	auipc	x1,0x0
+  84:	0c4080e7          	jalr	x1,196(x1) # 144 <handle_inbuf>
 #   while (1) {
-  4c:	fe5ff06f          	jal	x0,30 <run+0x24>
+  88:	fbdff06f          	jal	x0,44 <run+0x38>
 
-00000050 <uart_send_str>:
+0000008c <input_inbuf>:
 #   }
 # }
 # 
-# void uart_send_str(char *str) {
-#   while (*str) {
-#     while (*uart_out)
-  50:	000016b7          	lui	x13,0x1
-#   while (*str) {
-  54:	00054783          	lbu	x15,0(x10)
-  58:	00079463          	bne	x15,x0,60 <uart_send_str+0x10>
-#       ;
-#     *uart_out = *str;
-#     str++;
+# void input_inbuf() {
+  8c:	fe010113          	addi	x2,x2,-32
+  90:	00812c23          	sw	x8,24(x2)
+  94:	00001437          	lui	x8,0x1
+  98:	01212823          	sw	x18,16(x2)
+  9c:	01312623          	sw	x19,12(x2)
+  a0:	01412423          	sw	x20,8(x2)
+  a4:	01512223          	sw	x21,4(x2)
+  a8:	00112e23          	sw	x1,28(x2)
+  ac:	00912a23          	sw	x9,20(x2)
+#   while (1) {
+#     const char ch = uart_read_char();
+#     uart_send_char(ch);
+#     if (ch == CHAR_BACKSPACE) {
+  b0:	07f00993          	addi	x19,x0,127
+  b4:	5e440413          	addi	x8,x8,1508 # 15e4 <inbuf>
+#       if (inbuf.ix > 0) {
+#         inbuf.ix--;
+#       }
+#     } else if (ch == CHAR_CARRIAGE_RETURN ||
+  b8:	00d00a13          	addi	x20,x0,13
+  bc:	04f00a93          	addi	x21,x0,79
+#       return;
+#     } else {
+#       inbuf.line[inbuf.ix] = ch;
+#       inbuf.ix++;
+#     }
+#     *leds = inbuf.ix;
+  c0:	00001937          	lui	x18,0x1
+#     const char ch = uart_read_char();
+  c4:	00000097          	auipc	x1,0x0
+  c8:	154080e7          	jalr	x1,340(x1) # 218 <uart_read_char>
+  cc:	00050493          	addi	x9,x10,0
+#     uart_send_char(ch);
+  d0:	00000097          	auipc	x1,0x0
+  d4:	130080e7          	jalr	x1,304(x1) # 200 <uart_send_char>
+#       if (inbuf.ix > 0) {
+  d8:	05044783          	lbu	x15,80(x8)
+#     if (ch == CHAR_BACKSPACE) {
+  dc:	03349063          	bne	x9,x19,fc <input_inbuf+0x70>
+#       if (inbuf.ix > 0) {
+  e0:	00078663          	beq	x15,x0,ec <input_inbuf+0x60>
+#         inbuf.ix--;
+  e4:	fff78793          	addi	x15,x15,-1
+#       inbuf.ix++;
+  e8:	04f40823          	sb	x15,80(x8)
+#     *leds = inbuf.ix;
+  ec:	5d492783          	lw	x15,1492(x18) # 15d4 <leds>
+  f0:	05044703          	lbu	x14,80(x8)
+  f4:	00e78023          	sb	x14,0(x15)
+#   while (1) {
+  f8:	fcdff06f          	jal	x0,c4 <input_inbuf+0x38>
+#     } else if (ch == CHAR_CARRIAGE_RETURN ||
+  fc:	01448463          	beq	x9,x20,104 <input_inbuf+0x78>
+ 100:	03579a63          	bne	x15,x21,134 <input_inbuf+0xa8>
+#       inbuf.line[inbuf.ix] = 0;
+ 104:	00f407b3          	add	x15,x8,x15
+ 108:	00078023          	sb	x0,0(x15)
+#       inbuf.ix = 0;
+ 10c:	04040823          	sb	x0,80(x8)
 #   }
 # }
-  5c:	00008067          	jalr	x0,0(x1)
-#     while (*uart_out)
-  60:	0dc6a703          	lw	x14,220(x13) # 10dc <uart_out>
-  64:	00074603          	lbu	x12,0(x14)
-  68:	fe061ee3          	bne	x12,x0,64 <uart_send_str+0x14>
-#     *uart_out = *str;
-  6c:	00f70023          	sb	x15,0(x14)
-#     str++;
-  70:	00150513          	addi	x10,x10,1
-  74:	fe1ff06f          	jal	x0,54 <uart_send_str+0x4>
+ 110:	01c12083          	lw	x1,28(x2)
+ 114:	01812403          	lw	x8,24(x2)
+ 118:	01412483          	lw	x9,20(x2)
+ 11c:	01012903          	lw	x18,16(x2)
+ 120:	00c12983          	lw	x19,12(x2)
+ 124:	00812a03          	lw	x20,8(x2)
+ 128:	00412a83          	lw	x21,4(x2)
+ 12c:	02010113          	addi	x2,x2,32
+ 130:	00008067          	jalr	x0,0(x1)
+#       inbuf.line[inbuf.ix] = ch;
+ 134:	00f40733          	add	x14,x8,x15
+ 138:	00970023          	sb	x9,0(x14)
+#       inbuf.ix++;
+ 13c:	00178793          	addi	x15,x15,1
+ 140:	fa9ff06f          	jal	x0,e8 <input_inbuf+0x5c>
 
-00000078 <uart_send_char>:
+00000144 <handle_inbuf>:
+# 
+# void handle_inbuf() {
+#   uart_send_str("\r\n< ");
+ 144:	00000537          	lui	x10,0x0
+# void handle_inbuf() {
+ 148:	ff010113          	addi	x2,x2,-16
+#   uart_send_str("\r\n< ");
+ 14c:	29450513          	addi	x10,x10,660 # 294 <delay+0x64>
+# void handle_inbuf() {
+ 150:	00112623          	sw	x1,12(x2)
+#   uart_send_str("\r\n< ");
+ 154:	00000097          	auipc	x1,0x0
+ 158:	030080e7          	jalr	x1,48(x1) # 184 <uart_send_str>
+#   uart_send_str(inbuf.line);
+ 15c:	00001537          	lui	x10,0x1
+ 160:	5e450513          	addi	x10,x10,1508 # 15e4 <inbuf>
+ 164:	00000097          	auipc	x1,0x0
+ 168:	020080e7          	jalr	x1,32(x1) # 184 <uart_send_str>
+#   uart_send_str("\r\n");
+# }
+ 16c:	00c12083          	lw	x1,12(x2)
+#   uart_send_str("\r\n");
+ 170:	00000537          	lui	x10,0x0
+ 174:	29c50513          	addi	x10,x10,668 # 29c <delay+0x6c>
+# }
+ 178:	01010113          	addi	x2,x2,16
+#   uart_send_str("\r\n");
+ 17c:	00000317          	auipc	x6,0x0
+ 180:	00830067          	jalr	x0,8(x6) # 184 <uart_send_str>
+
+00000184 <uart_send_str>:
+# 
+# void uart_send_str(const char *str) {
+#   while (*str) {
+#     while (*uart_out)
+ 184:	000016b7          	lui	x13,0x1
+#   while (*str) {
+ 188:	00054783          	lbu	x15,0(x10)
+ 18c:	00079463          	bne	x15,x0,194 <uart_send_str+0x10>
+#       ;
+#     *uart_out = *str++;
+#   }
+# }
+ 190:	00008067          	jalr	x0,0(x1)
+#     while (*uart_out)
+ 194:	5d86a703          	lw	x14,1496(x13) # 15d8 <uart_out>
+ 198:	00074603          	lbu	x12,0(x14)
+ 19c:	fe061ee3          	bne	x12,x0,198 <uart_send_str+0x14>
+#     *uart_out = *str++;
+ 1a0:	00150513          	addi	x10,x10,1
+ 1a4:	00f70023          	sb	x15,0(x14)
+ 1a8:	fe1ff06f          	jal	x0,188 <uart_send_str+0x4>
+
+000001ac <uart_send_hex_byte>:
+# 
+# void uart_send_hex_byte(char ch) {
+ 1ac:	ff010113          	addi	x2,x2,-16
+ 1b0:	00812423          	sw	x8,8(x2)
+ 1b4:	00050413          	addi	x8,x10,0
+#   uart_send_hex_nibble((ch & 0xf0) >> 4);
+ 1b8:	00455513          	srli	x10,x10,0x4
+# void uart_send_hex_byte(char ch) {
+ 1bc:	00112623          	sw	x1,12(x2)
+#   uart_send_hex_nibble((ch & 0xf0) >> 4);
+ 1c0:	00000097          	auipc	x1,0x0
+ 1c4:	020080e7          	jalr	x1,32(x1) # 1e0 <uart_send_hex_nibble>
+#   uart_send_hex_nibble(ch & 0x0f);
+ 1c8:	00f47513          	andi	x10,x8,15
+# }
+ 1cc:	00812403          	lw	x8,8(x2)
+ 1d0:	00c12083          	lw	x1,12(x2)
+ 1d4:	01010113          	addi	x2,x2,16
+#   uart_send_hex_nibble(ch & 0x0f);
+ 1d8:	00000317          	auipc	x6,0x0
+ 1dc:	00830067          	jalr	x0,8(x6) # 1e0 <uart_send_hex_nibble>
+
+000001e0 <uart_send_hex_nibble>:
+# 
+# void uart_send_hex_nibble(char nibble) {
+#   if (nibble < 10) {
+ 1e0:	00900793          	addi	x15,x0,9
+ 1e4:	00a7ea63          	bltu	x15,x10,1f8 <uart_send_hex_nibble+0x18>
+#     uart_send_char('0' + nibble);
+ 1e8:	03050513          	addi	x10,x10,48
+#   } else {
+#     uart_send_char('A' + (nibble - 10));
+ 1ec:	0ff57513          	andi	x10,x10,255
+ 1f0:	00000317          	auipc	x6,0x0
+ 1f4:	01030067          	jalr	x0,16(x6) # 200 <uart_send_char>
+ 1f8:	03750513          	addi	x10,x10,55
+ 1fc:	ff1ff06f          	jal	x0,1ec <uart_send_hex_nibble+0xc>
+
+00000200 <uart_send_char>:
+#   }
+# }
 # 
 # void uart_send_char(char ch) {
 #   while (*uart_out)
-  78:	000017b7          	lui	x15,0x1
-  7c:	0dc7a783          	lw	x15,220(x15) # 10dc <uart_out>
-  80:	0007c703          	lbu	x14,0(x15)
-  84:	fe071ee3          	bne	x14,x0,80 <uart_send_char+0x8>
+ 200:	000017b7          	lui	x15,0x1
+ 204:	5d87a783          	lw	x15,1496(x15) # 15d8 <uart_out>
+ 208:	0007c703          	lbu	x14,0(x15)
+ 20c:	fe071ee3          	bne	x14,x0,208 <uart_send_char+0x8>
 #     ;
 #   *uart_out = ch;
-  88:	00a78023          	sb	x10,0(x15)
+ 210:	00a78023          	sb	x10,0(x15)
 # }
-  8c:	00008067          	jalr	x0,0(x1)
+ 214:	00008067          	jalr	x0,0(x1)
 
-00000090 <uart_read_char>:
+00000218 <uart_read_char>:
 # 
 # char uart_read_char() {
 #   char ch;
 #   while ((ch = *uart_in) == 0)
-  90:	000017b7          	lui	x15,0x1
-  94:	0e07a703          	lw	x14,224(x15) # 10e0 <uart_in>
-  98:	00074783          	lbu	x15,0(x14)
-  9c:	0ff7f513          	andi	x10,x15,255
-  a0:	fe078ce3          	beq	x15,x0,98 <uart_read_char+0x8>
+ 218:	000017b7          	lui	x15,0x1
+ 21c:	5dc7a703          	lw	x14,1500(x15) # 15dc <uart_in>
+ 220:	00074783          	lbu	x15,0(x14)
+ 224:	0ff7f513          	andi	x10,x15,255
+ 228:	fe078ce3          	beq	x15,x0,220 <uart_read_char+0x8>
 #     ;
 #   return ch;
 # }
-  a4:	00008067          	jalr	x0,0(x1)
+ 22c:	00008067          	jalr	x0,0(x1)
 
-000000a8 <delay>:
+00000230 <delay>:
 # 
 # inline void delay(volatile unsigned int ticks) {
-  a8:	ff010113          	addi	x2,x2,-16
-  ac:	00a12623          	sw	x10,12(x2)
+ 230:	ff010113          	addi	x2,x2,-16
+ 234:	00a12623          	sw	x10,12(x2)
 #   while (ticks--)
-  b0:	00c12783          	lw	x15,12(x2)
-  b4:	fff78713          	addi	x14,x15,-1
-  b8:	00e12623          	sw	x14,12(x2)
-  bc:	fe079ae3          	bne	x15,x0,b0 <delay+0x8>
+ 238:	00c12783          	lw	x15,12(x2)
+ 23c:	fff78713          	addi	x14,x15,-1
+ 240:	00e12623          	sw	x14,12(x2)
+ 244:	fe079ae3          	bne	x15,x0,238 <delay+0x8>
 #     ;
 # }
-  c0:	01010113          	addi	x2,x2,16
-  c4:	00008067          	jalr	x0,0(x1)
+ 248:	01010113          	addi	x2,x2,16
+ 24c:	00008067          	jalr	x0,0(x1)
