@@ -4,4 +4,4 @@
 _start:
     lui sp, 0x2         # set stack at # 0x1fff0
     addi sp, sp, -16    #
-    jal ra, run         
+    jal ra, run         # run program
