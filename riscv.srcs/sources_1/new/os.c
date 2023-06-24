@@ -8,6 +8,8 @@
 #define LOCATION_MAX_ENTITIES 8
 #define LOCATION_MAX_EXITS 6
 #define ENTITY_MAX_OBJECTS 32
+#define TRUE 1
+#define FALSE 0
 
 typedef unsigned char bool;
 typedef unsigned char location_id;
@@ -63,11 +65,13 @@ typedef struct object {
 
 static object objects[] = {{""}, {"notebook"}, {"mirror"}};
 
+bool strings_equal(const char *s1, const char *s2);
 void add_object_to_list(object_id list[], object_id id);
 bool remove_object_from_list(object_id list[], object_id id);
 void add_entity_to_list(entity_id list[], entity_id id);
 bool remove_entity_from_list(entity_id list[], entity_id id);
 
+void describe_inventory();
 void describe_current_location();
 void input_inbuf();
 void handle_inbuf();
@@ -84,6 +88,20 @@ void run() {
   }
 }
 
+bool strings_equal(const char *s1, const char *s2) {
+  while (1) {
+    char diff = *s1 - *s2;
+    if (diff)
+      return FALSE;
+    if (!*s1 && !*s2)
+      return TRUE;
+    if (!*s1 || !*s2)
+      return FALSE;
+    s1++;
+    s2++;
+  }
+}
+
 void describe_current_location() {
   uart_send_str("u r in ");
   unsigned char current_location = entities[active_entity].location;
@@ -91,8 +109,9 @@ void describe_current_location() {
   uart_send_str("\r\nu c: ");
   // print entities in current location
   unsigned char add_list_sep = 0;
+  const entity_id *ents = locations[current_location].entities;
   for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
-    const entity_id id = locations[current_location].entities[i];
+    const entity_id id = ents[i];
     if (!id)
       break;
     if (id != active_entity) {
@@ -105,8 +124,9 @@ void describe_current_location() {
     }
   }
   // print objects in current location
+  const object_id *objs = locations[current_location].objects;
   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
-    const object_id id = locations[current_location].objects[i];
+    const object_id id = objs[i];
     if (!id)
       break;
     if (add_list_sep) {
@@ -122,7 +142,7 @@ void describe_current_location() {
   // print exits from current location
   add_list_sep = 0;
   uart_send_str("\r\nexits: ");
-  for (unsigned i = 0; i < 6; i++) {
+  for (unsigned i = 0; i < LOCATION_MAX_EXITS; i++) {
     if (locations[current_location].exits[i]) {
       if (add_list_sep) {
         uart_send_str(", ");
@@ -140,10 +160,36 @@ void describe_current_location() {
 
 void handle_inbuf() {
   uart_send_str("\r\n");
+  if (strings_equal(inbuf.line, "i")) {
+    describe_inventory();
+    uart_send_str("\r\n");
+    return;
+  }
   entities[active_entity].location++;
   if (entities[active_entity].location > 3) {
     entities[active_entity].location = 1;
   }
+}
+
+void describe_inventory() {
+  uart_send_str("u have: ");
+  bool add_list_sep = FALSE;
+  const object_id *inv = entities[active_entity].inventory;
+  for (unsigned i = 0; i < ENTITY_MAX_OBJECTS; i++) {
+    const object_id id = inv[i];
+    if (!id)
+      break;
+    if (add_list_sep) {
+      uart_send_str(", ");
+    } else {
+      add_list_sep = TRUE;
+    }
+    uart_send_str(objects[id].name);
+  }
+  if (!add_list_sep) {
+    uart_send_str("nothing");
+  }
+  uart_send_str("\r\n");
 }
 
 void input_inbuf() {
