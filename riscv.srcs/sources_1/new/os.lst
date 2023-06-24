@@ -16,12 +16,12 @@ Disassembly of section .text:
    8:	004000ef          	jal	x1,c <run>
 
 0000000c <run>:
-# void uart_send_string(char *str);
+# void uart_send_str(char *str);
 # void uart_send_char(char ch);
 # char uart_read_char();
 # 
 # void run() {
-#   uart_send_string(hello);
+#   uart_send_str(hello);
    c:	000017b7          	lui	x15,0x1
   10:	0e47a503          	lw	x10,228(x15) # 10e4 <hello>
 # void run() {
@@ -35,9 +35,9 @@ Disassembly of section .text:
 #     uart_send_char(ch);
 #     *leds = ch;
   24:	000014b7          	lui	x9,0x1
-#   uart_send_string(hello);
+#   uart_send_str(hello);
   28:	00000097          	auipc	x1,0x0
-  2c:	028080e7          	jalr	x1,40(x1) # 50 <uart_send_string>
+  2c:	028080e7          	jalr	x1,40(x1) # 50 <uart_send_str>
 #     const char ch = uart_read_char();
   30:	00000097          	auipc	x1,0x0
   34:	060080e7          	jalr	x1,96(x1) # 90 <uart_read_char>
@@ -51,17 +51,17 @@ Disassembly of section .text:
 #   while (1) {
   4c:	fe5ff06f          	jal	x0,30 <run+0x24>
 
-00000050 <uart_send_string>:
+00000050 <uart_send_str>:
 #   }
 # }
 # 
-# void uart_send_string(char *str) {
+# void uart_send_str(char *str) {
 #   while (*str) {
 #     while (*uart_out)
   50:	000016b7          	lui	x13,0x1
 #   while (*str) {
   54:	00054783          	lbu	x15,0(x10)
-  58:	00079463          	bne	x15,x0,60 <uart_send_string+0x10>
+  58:	00079463          	bne	x15,x0,60 <uart_send_str+0x10>
 #       ;
 #     *uart_out = *str;
 #     str++;
@@ -71,12 +71,12 @@ Disassembly of section .text:
 #     while (*uart_out)
   60:	0dc6a703          	lw	x14,220(x13) # 10dc <uart_out>
   64:	00074603          	lbu	x12,0(x14)
-  68:	fe061ee3          	bne	x12,x0,64 <uart_send_string+0x14>
+  68:	fe061ee3          	bne	x12,x0,64 <uart_send_str+0x14>
 #     *uart_out = *str;
   6c:	00f70023          	sb	x15,0(x14)
 #     str++;
   70:	00150513          	addi	x10,x10,1
-  74:	fe1ff06f          	jal	x0,54 <uart_send_string+0x4>
+  74:	fe1ff06f          	jal	x0,54 <uart_send_str+0x4>
 
 00000078 <uart_send_char>:
 # 

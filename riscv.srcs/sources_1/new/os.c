@@ -10,12 +10,12 @@ volatile unsigned char *uart_in = (unsigned char *)TOP_OF_RAM - 2;
 static char *hello = "Hello World\r\n";
 
 void delay(unsigned int ticks);
-void uart_send_string(char *str);
+void uart_send_str(char *str);
 void uart_send_char(char ch);
 char uart_read_char();
 
 void run() {
-  uart_send_string(hello);
+  uart_send_str(hello);
 
   while (1) {
     const char ch = uart_read_char();
@@ -24,7 +24,7 @@ void run() {
   }
 }
 
-void uart_send_string(char *str) {
+void uart_send_str(char *str) {
   while (*str) {
     while (*uart_out)
       ;
