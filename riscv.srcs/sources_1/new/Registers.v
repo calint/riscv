@@ -4,7 +4,7 @@
 module Registers #(
     parameter ADDR_WIDTH = 5,
     parameter WIDTH = 32
-) (
+)(
     input wire clk,
     input wire [ADDR_WIDTH-1:0] rs1,
     input wire [ADDR_WIDTH-1:0] rs2,
@@ -18,22 +18,22 @@ module Registers #(
     input wire we3
 );
 
-  reg signed [WIDTH-1:0] mem[0:2**ADDR_WIDTH-1];
+reg signed [WIDTH-1:0] mem[0:2**ADDR_WIDTH-1];
 
-  assign rd1 = rs1 == 0 ? 0 : mem[rs1];
-  assign rd2 = rs2 == 0 ? 0 : mem[rs2];
+assign rd1 = rs1 == 0 ? 0 : mem[rs1];
+assign rd2 = rs2 == 0 ? 0 : mem[rs2];
 
-  integer i;
-  initial begin
+integer i;
+initial begin
     for (i = 0; i < 2 ** ADDR_WIDTH; i = i + 1) begin
-      mem[i] = {WIDTH{1'b0}};
+        mem[i] = {WIDTH{1'b0}};
     end
-  end
+end
 
-  always @(posedge clk) begin
-`ifdef DBG
-    $display("%0t: clk+: Registers (rs1,rs2,rd)=(%0h,%0h,%0h)", $time, rs1, rs2, rd);
-`endif
+always @(posedge clk) begin
+    `ifdef DBG
+        $display("%0t: clk+: Registers (rs1,rs2,rd)=(%0h,%0h,%0h)", $time, rs1, rs2, rd);
+    `endif
     //    $display("%0t: we3=%0h, wd3=%0h, ra3=%0h, rd_we=%0h, rd_wd=%0h", $time, we3, wd3, ra3, rd_we, rd_wd);
 
     // write first the 'wd3' which is from a 'load'
@@ -41,7 +41,7 @@ module Registers #(
     //   example: lw x1, 0(x2) ; addi x1, x1, 1
     if (we3 && ra3 != 0) mem[ra3] <= wd3;
     if (rd_we && rd != 0) mem[rd] <= rd_wd;
-  end
+end
 
 endmodule
 
