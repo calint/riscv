@@ -5,63 +5,119 @@ os:     file format elf32-littleriscv
 Disassembly of section .text:
 
 00000000 <_start>:
+# .global _start
+# 
+# # sets up the stack before calling c function 'run' in 'os.c'
+# _start:
+#     lui sp, 0x2         # set stack at # 0x1fff0
    0:	00002137          	lui	x2,0x2
+#     addi sp, sp, -16    #
    4:	ff010113          	addi	x2,x2,-16 # 1ff0 <__global_pointer$+0x71a>
    8:	004000ef          	jal	x1,c <run>
 
 0000000c <run>:
+# void uart_send_string(char *str);
+# void uart_send_char(char ch);
+# char uart_read_char();
+# 
+# void run() {
+#   uart_send_string(hello);
    c:	000017b7          	lui	x15,0x1
   10:	0e47a503          	lw	x10,228(x15) # 10e4 <hello>
+# void run() {
   14:	ff010113          	addi	x2,x2,-16
   18:	00912223          	sw	x9,4(x2)
   1c:	00112623          	sw	x1,12(x2)
   20:	00812423          	sw	x8,8(x2)
+# 
+#   while (1) {
+#     const char ch = uart_read_char();
+#     uart_send_char(ch);
+#     *leds = ch;
   24:	000014b7          	lui	x9,0x1
+#   uart_send_string(hello);
   28:	00000097          	auipc	x1,0x0
   2c:	028080e7          	jalr	x1,40(x1) # 50 <uart_send_string>
+#     const char ch = uart_read_char();
   30:	00000097          	auipc	x1,0x0
   34:	060080e7          	jalr	x1,96(x1) # 90 <uart_read_char>
   38:	00050413          	addi	x8,x10,0
+#     uart_send_char(ch);
   3c:	00000097          	auipc	x1,0x0
   40:	03c080e7          	jalr	x1,60(x1) # 78 <uart_send_char>
+#     *leds = ch;
   44:	0d84a783          	lw	x15,216(x9) # 10d8 <leds>
   48:	00878023          	sb	x8,0(x15)
+#   while (1) {
   4c:	fe5ff06f          	jal	x0,30 <run+0x24>
 
 00000050 <uart_send_string>:
+#   }
+# }
+# 
+# void uart_send_string(char *str) {
+#   while (*str) {
+#     while (*uart_out)
   50:	000016b7          	lui	x13,0x1
+#   while (*str) {
   54:	00054783          	lbu	x15,0(x10)
   58:	00079463          	bne	x15,x0,60 <uart_send_string+0x10>
+#       ;
+#     *uart_out = *str;
+#     str++;
+#   }
+# }
   5c:	00008067          	jalr	x0,0(x1)
+#     while (*uart_out)
   60:	0dc6a703          	lw	x14,220(x13) # 10dc <uart_out>
   64:	00074603          	lbu	x12,0(x14)
   68:	fe061ee3          	bne	x12,x0,64 <uart_send_string+0x14>
+#     *uart_out = *str;
   6c:	00f70023          	sb	x15,0(x14)
+#     str++;
   70:	00150513          	addi	x10,x10,1
   74:	fe1ff06f          	jal	x0,54 <uart_send_string+0x4>
 
 00000078 <uart_send_char>:
+# 
+# void uart_send_char(char ch) {
+#   while (*uart_out)
   78:	000017b7          	lui	x15,0x1
   7c:	0dc7a783          	lw	x15,220(x15) # 10dc <uart_out>
   80:	0007c703          	lbu	x14,0(x15)
   84:	fe071ee3          	bne	x14,x0,80 <uart_send_char+0x8>
+#     ;
+#   *uart_out = ch;
   88:	00a78023          	sb	x10,0(x15)
+# }
   8c:	00008067          	jalr	x0,0(x1)
 
 00000090 <uart_read_char>:
+# 
+# char uart_read_char() {
+#   char ch;
+#   while ((ch = *uart_in) == 0)
   90:	000017b7          	lui	x15,0x1
   94:	0e07a703          	lw	x14,224(x15) # 10e0 <uart_in>
   98:	00074783          	lbu	x15,0(x14)
   9c:	0ff7f513          	andi	x10,x15,255
   a0:	fe078ce3          	beq	x15,x0,98 <uart_read_char+0x8>
+#     ;
+#   return ch;
+# }
   a4:	00008067          	jalr	x0,0(x1)
 
 000000a8 <delay>:
+# 
+# inline void delay(volatile unsigned int ticks) {
   a8:	ff010113          	addi	x2,x2,-16
   ac:	00a12623          	sw	x10,12(x2)
+#   while (ticks--)
   b0:	00c12783          	lw	x15,12(x2)
   b4:	fff78713          	addi	x14,x15,-1
   b8:	00e12623          	sw	x14,12(x2)
   bc:	fe079ae3          	bne	x15,x0,b0 <delay+0x8>
+#     ;
+# }
   c0:	01010113          	addi	x2,x2,16
   c4:	00008067          	jalr	x0,0(x1)
