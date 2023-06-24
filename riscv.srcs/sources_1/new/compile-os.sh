@@ -26,7 +26,7 @@ riscv32-unknown-elf-gcc \
 	os_start.S $SRC -o $BIN
 
 riscv32-unknown-elf-objcopy $BIN -O binary $BIN.bin
-riscv32-unknown-elf-objdump -Mnumeric,no-aliases --source-comment -Sdr $BIN > $BIN.lst
+riscv32-unknown-elf-objdump -Mnumeric,no-aliases --source-comment -Sr $BIN > $BIN.lst
 xxd -p -c 4 -e $BIN.bin | awk '{print $2}' > $BIN.mem
 rm $BIN
 
