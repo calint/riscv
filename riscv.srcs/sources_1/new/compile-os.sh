@@ -8,7 +8,6 @@ PATH=$PATH:~/riscv/install/rv32i/bin
 SRC=os.c
 BIN=${SRC%.*}
 
-# -mstrict-align \
 riscv32-unknown-elf-gcc \
 	-Os \
 	-g \
@@ -19,6 +18,7 @@ riscv32-unknown-elf-gcc \
 	-fno-pic \
 	-march=rv32i \
 	-mabi=ilp32 \
+	-mstrict-align \
 	-Wfatal-errors \
 	-Wall -Wextra -pedantic \
 	-Wl,-Ttext=0x0 \
