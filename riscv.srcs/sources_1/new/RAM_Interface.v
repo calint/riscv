@@ -142,6 +142,7 @@ always @(posedge clk) begin
 end
 
 always @* begin
+//    doutA = 0; // ? note. uncommenting this creates infinite loop when simulating with iverilog
     // create the 'doutA' based on the 'addrA' in previous cycle (one cycle delay for data ready)
     if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 1 && reA_prev == 3'b001) begin
         // read unsigned byte from 0x1_fffe
