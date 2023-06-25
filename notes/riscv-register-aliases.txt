@@ -1,32 +1,32 @@
-0	x0, zero	Hard-wired zero
-1	x1, ra	Return address
-2	x2, sp	Stack pointer
-3	x3, gp	Global pointer
-4	x4, tp	Thread pointer
-5	x5, t0	Temporary/alternate link
-6	x6, t1	Temporary
-7	x7, t2	Temporary
-8	x8, s0/fp	Saved register/frame pointer
-9	x9, s1	Saved register
-10	x10, a0	Function argument/return value
-11	x11, a1	Function argument
-12	x12, a2	Function argument
-13	x13, a3	Function argument
-14	x14, a4	Function argument
-15	x15, a5	Function argument
-16	x16, a6	Function argument
-17	x17, a7	Function argument
-18	x18, s2	Saved register
-19	x19, s3	Saved register
-20	x20, s4	Saved register
-21	x21, s5	Saved register
-22	x22, s6	Saved register
-23	x23, s7	Saved register
-24	x24, s8	Saved register
-25	x25, s9	Saved register
-26	x26, s10	Saved register
-27	x27, s11	Saved register
-28	x28, t3	Temporary
-29	x29, t4	Temporary
-30	x30, t5	Temporary
-31	x31, t6	Temporary
+x0   zero  Hard-wired zero
+x1   ra    Return address
+x2   sp    Stack pointer
+x3   gp    Global pointer
+x4   tp    Thread pointer
+x5   t0    Temporary/alternate link
+x6   t1    Temporary
+x7   t2    Temporary
+x8   s0/fp Saved register/frame pointer
+x9   s1    Saved register
+x10  a0    Function argument/return value
+x11  a1    Function argument
+x12  a2    Function argument
+x13  a3    Function argument
+x14  a4    Function argument
+x15  a5    Function argument
+x16  a6    Function argument
+x17  a7    Function argument
+x18  s2    Saved register
+x19  s3    Saved register
+x20  s4    Saved register
+x21  s5    Saved register
+x22  s6    Saved register
+x23  s7    Saved register
+x24  s8    Saved register
+x25  s9    Saved register
+x26  s10   Saved register
+x27  s11   Saved register
+x28  t3    Temporary
+x29  t4    Temporary
+x30  t5    Temporary
+x31  t6    Temporary
