@@ -90,8 +90,9 @@ unsigned char active_entity = 1;
 void run() {
   uart_send_str(hello);
   while (1) {
-    print_location(entities[active_entity].location);
-    uart_send_str(entities[active_entity].name);
+    entity *ent = &entities[active_entity];
+    print_location(ent->location);
+    uart_send_str(ent->name);
     uart_send_str(" > ");
     input_inbuf();
     uart_send_str("\r\n");
@@ -124,7 +125,7 @@ void print_location(location_id lid) {
   uart_send_str("\r\nu c: ");
 
   // print objects in current location
-  unsigned char add_list_sep = 0;
+  bool add_list_sep = FALSE;
   const object_id *objs = loc->objects;
   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
     const object_id oid = objs[i];
@@ -133,7 +134,7 @@ void print_location(location_id lid) {
     if (add_list_sep) {
       uart_send_str(", ");
     } else {
-      add_list_sep = 1;
+      add_list_sep = TRUE;
     }
     uart_send_str(objects[oid].name);
   }
@@ -143,7 +144,7 @@ void print_location(location_id lid) {
   uart_send_str("\r\n");
 
   // print entities in current location
-  add_list_sep = 0;
+  add_list_sep = FALSE;
   const entity_id *ents = loc->entities;
   for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
     const entity_id eid = ents[i];
@@ -154,7 +155,7 @@ void print_location(location_id lid) {
     if (add_list_sep) {
       uart_send_str(", ");
     } else {
-      add_list_sep = 1;
+      add_list_sep = TRUE;
     }
     uart_send_str(entities[eid].name);
   }
@@ -163,7 +164,7 @@ void print_location(location_id lid) {
   }
 
   // print exits from current location
-  add_list_sep = 0;
+  add_list_sep = FALSE;
   uart_send_str("exits: ");
   for (unsigned i = 0; i < LOCATION_MAX_EXITS; i++) {
     if (!loc->exits[i])
@@ -171,7 +172,7 @@ void print_location(location_id lid) {
     if (add_list_sep) {
       uart_send_str(", ");
     } else {
-      add_list_sep = 1;
+      add_list_sep = TRUE;
     }
     uart_send_str(exit_names[i]);
   }
