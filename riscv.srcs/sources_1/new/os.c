@@ -69,7 +69,8 @@ typedef struct object {
 
 static object objects[] = {{""}, {"notebook"}, {"mirror"}, {"lighter"}};
 
-bool strings_equal(const char *s1, const char *s2);
+void print_location(location_id lid);
+void print_inventory(entity_id eid);
 bool add_object_to_list(object_id list[], unsigned list_len, object_id oid);
 void remove_object_from_list_by_index(object_id list[], unsigned ix);
 bool add_entity_to_list(entity_id list[], unsigned list_len, entity_id eid);
@@ -80,10 +81,9 @@ void action_give(entity_id eid, object_name obj, entity_name to);
 void action_go(entity_id eid, direction dir);
 void action_drop(entity_id eid, object_name obj);
 void action_take(entity_id eid, object_name obj);
-void print_inventory(entity_id eid);
-void print_location(location_id lid);
 void input_inbuf();
 void handle_inbuf();
+bool strings_equal(const char *s1, const char *s2);
 
 unsigned char active_entity = 1;
 

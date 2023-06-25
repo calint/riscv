@@ -16,7 +16,7 @@ Disassembly of section .text:
    8:	004000ef          	jal	x1,c <run>
 
 0000000c <run>:
-# void handle_inbuf();
+# bool strings_equal(const char *s1, const char *s2);
 # 
 # unsigned char active_entity = 1;
 # 
