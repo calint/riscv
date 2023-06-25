@@ -407,7 +407,7 @@ void handle_inbuf() {
       return;
     }
     if (nwords < 3) {
-      uart_send_str("give to who\r\n\r\n");
+      uart_send_str("give to whom\r\n\r\n");
       return;
     }
     action_give(words[1], words[2]);
