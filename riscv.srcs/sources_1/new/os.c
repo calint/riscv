@@ -69,6 +69,7 @@ typedef struct object {
 
 static object objects[] = {{""}, {"notebook"}, {"mirror"}, {"lighter"}};
 
+void print_help();
 void print_location(location_id lid);
 void print_inventory(entity_id eid);
 bool add_object_to_list(object_id list[], unsigned list_len, object_id oid);
@@ -101,6 +102,68 @@ void run() {
       active_entity = 2;
     else
       active_entity = 1;
+  }
+}
+
+void handle_inbuf() {
+  const char *words[8];
+  char *ptr = inbuf.line;
+  unsigned nwords = 0;
+  while (1) {
+    words[nwords++] = ptr;
+    while (*ptr && *ptr != ' ') {
+      ptr++;
+    }
+    if (!*ptr)
+      break;
+    *ptr = 0;
+    ptr++;
+    if (nwords == sizeof(words) / sizeof(const char *)) {
+      uart_send_str("too many words, some ignored\r\n\r\n");
+      break;
+    }
+  }
+  //  for (unsigned i = 0; i < nwords; i++) {
+  //    uart_send_str(words[i]);
+  //    uart_send_str("\r\n");
+  //  }
+  if (strings_equal(words[0], "help")) {
+    print_help();
+  } else if (strings_equal(words[0], "i")) {
+    print_inventory(active_entity);
+    uart_send_str("\r\n");
+  } else if (strings_equal(words[0], "t")) {
+    if (nwords < 2) {
+      uart_send_str("take what\r\n\r\n");
+      return;
+    }
+    action_take(active_entity, words[1]);
+  } else if (strings_equal(words[0], "d")) {
+    if (nwords < 2) {
+      uart_send_str("drop what\r\n\r\n");
+      return;
+    }
+    action_drop(active_entity, words[1]);
+  } else if (strings_equal(words[0], "n")) {
+    action_go(active_entity, 0);
+  } else if (strings_equal(words[0], "e")) {
+    action_go(active_entity, 1);
+  } else if (strings_equal(words[0], "s")) {
+    action_go(active_entity, 2);
+  } else if (strings_equal(words[0], "w")) {
+    action_go(active_entity, 3);
+  } else if (strings_equal(words[0], "g")) {
+    if (nwords < 2) {
+      uart_send_str("give what\r\n\r\n");
+      return;
+    }
+    if (nwords < 3) {
+      uart_send_str("give to whom\r\n\r\n");
+      return;
+    }
+    action_give(active_entity, words[1], words[2]);
+  } else {
+    uart_send_str("not understood\r\n\r\n");
   }
 }
 
@@ -342,69 +405,7 @@ void print_help() {
       "message\r\n\r\n");
 }
 
-void handle_inbuf() {
-  const char *words[8];
-  char *ptr = inbuf.line;
-  unsigned nwords = 0;
-  while (1) {
-    words[nwords++] = ptr;
-    while (*ptr && *ptr != ' ') {
-      ptr++;
-    }
-    if (!*ptr)
-      break;
-    *ptr = 0;
-    ptr++;
-    if (nwords == sizeof(words) / sizeof(const char *)) {
-      uart_send_str("too many words, some ignored\r\n\r\n");
-      break;
-    }
-  }
-  //  for (unsigned i = 0; i < nwords; i++) {
-  //    uart_send_str(words[i]);
-  //    uart_send_str("\r\n");
-  //  }
-  if (strings_equal(words[0], "help")) {
-    print_help();
-  } else if (strings_equal(words[0], "i")) {
-    print_inventory(active_entity);
-    uart_send_str("\r\n");
-  } else if (strings_equal(words[0], "t")) {
-    if (nwords < 2) {
-      uart_send_str("take what\r\n\r\n");
-      return;
-    }
-    action_take(active_entity, words[1]);
-  } else if (strings_equal(words[0], "d")) {
-    if (nwords < 2) {
-      uart_send_str("drop what\r\n\r\n");
-      return;
-    }
-    action_drop(active_entity, words[1]);
-  } else if (strings_equal(words[0], "n")) {
-    action_go(active_entity, 0);
-  } else if (strings_equal(words[0], "e")) {
-    action_go(active_entity, 1);
-  } else if (strings_equal(words[0], "s")) {
-    action_go(active_entity, 2);
-  } else if (strings_equal(words[0], "w")) {
-    action_go(active_entity, 3);
-  } else if (strings_equal(words[0], "g")) {
-    if (nwords < 2) {
-      uart_send_str("give what\r\n\r\n");
-      return;
-    }
-    if (nwords < 3) {
-      uart_send_str("give to whom\r\n\r\n");
-      return;
-    }
-    action_give(active_entity, words[1], words[2]);
-  } else {
-    uart_send_str("not understood\r\n\r\n");
-  }
-}
-
-void input_inbuf() {
+void input_inbuf() { // ? infbuf as argument
   while (1) {
     const char ch = uart_read_char();
     if (ch == CHAR_BACKSPACE) {
