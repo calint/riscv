@@ -67,13 +67,16 @@ typedef struct object {
 static object objects[] = {{""}, {"notebook"}, {"mirror"}, {"lighter"}};
 
 bool strings_equal(const char *s1, const char *s2);
-void add_object_to_list(object_id list[], unsigned list_max_size, object_id id);
+bool add_object_to_list(object_id list[], unsigned list_max_size, object_id id);
 void remove_object_from_list_by_index(object_id list[], unsigned ix);
-void add_entity_to_list(entity_id list[], unsigned list_max_size, entity_id id);
+bool add_entity_to_list(entity_id list[], unsigned list_max_size, entity_id id);
 void remove_entity_from_list_by_index(entity_id list[], unsigned ix);
 void remove_entity_from_list(entity_id list[], unsigned list_max_size,
                              entity_id ix);
-
+void action_give(const char *entity_name, const char *object_name);
+void action_go(unsigned char dir);
+void action_drop(const char *object_name);
+void action_take(const char *object_name);
 void describe_inventory();
 void describe_current_location();
 void input_inbuf();
@@ -186,28 +189,30 @@ void remove_object_from_list_by_index(object_id list[], unsigned ix) {
   }
 }
 
-void add_object_to_list(object_id list[], unsigned list_max_size,
+bool add_object_to_list(object_id list[], unsigned list_max_size,
                         object_id id) {
   for (unsigned i = 0; i < list_max_size - 1; i++) {
     if (!list[i]) {
       list[i] = id;
       list[i + 1] = 0;
-      return;
+      return TRUE;
     }
   }
-  uart_send_str("inventory full\r\n");
+  uart_send_str("space full\r\n");
+  return FALSE;
 }
 
-void add_entity_to_list(entity_id list[], unsigned list_max_size,
+bool add_entity_to_list(entity_id list[], unsigned list_max_size,
                         entity_id id) {
   for (unsigned i = 0; i < list_max_size - 1; i++) {
     if (list[i])
       continue;
     list[i] = id;
     list[i + 1] = 0;
-    return;
+    return TRUE;
   }
   uart_send_str("location full\r\n");
+  return FALSE;
 }
 
 void remove_entity_from_list(entity_id list[], unsigned list_max_size,
@@ -244,8 +249,9 @@ void action_take(const char *object_name) {
       break;
     if (!strings_equal(objects[id].name, object_name))
       continue;
-    remove_object_from_list_by_index(objs, i);
-    add_object_to_list(ent->inventory, ENTITY_MAX_OBJECTS, id);
+    if (add_object_to_list(ent->inventory, ENTITY_MAX_OBJECTS, id)) {
+      remove_object_from_list_by_index(objs, i);
+    }
     return;
   }
   uart_send_str(object_name);
@@ -261,9 +267,10 @@ void action_drop(const char *object_name) {
       break;
     if (!strings_equal(objects[id].name, object_name))
       continue;
-    remove_object_from_list_by_index(objs, i);
-    add_object_to_list(locations[ent->location].objects, LOCATION_MAX_OBJECTS,
-                       id);
+    if (add_object_to_list(locations[ent->location].objects,
+                           LOCATION_MAX_OBJECTS, id)) {
+      remove_object_from_list_by_index(objs, i);
+    }
     return;
   }
   uart_send_str("u don't have ");
@@ -279,9 +286,11 @@ void action_go(unsigned char dir) {
     uart_send_str("cannot go there\r\n\r\n");
     return;
   }
-  remove_entity_from_list(loc->entities, LOCATION_MAX_ENTITIES, active_entity);
-  add_entity_to_list(locations[to].entities, LOCATION_MAX_ENTITIES,
-                     active_entity);
+  if (add_entity_to_list(locations[to].entities, LOCATION_MAX_ENTITIES,
+                         active_entity)) {
+    remove_entity_from_list(loc->entities, LOCATION_MAX_ENTITIES,
+                            active_entity);
+  }
   ent->location = to;
 }
 
@@ -302,8 +311,9 @@ void action_give(const char *entity_name, const char *object_name) {
         break;
       if (!strings_equal(objects[oid].name, object_name))
         continue;
-      remove_object_from_list_by_index(objs, j);
-      add_object_to_list(to->inventory, ENTITY_MAX_OBJECTS, oid);
+      if (add_object_to_list(to->inventory, ENTITY_MAX_OBJECTS, oid)) {
+        remove_object_from_list_by_index(objs, j);
+      }
       return;
     }
     uart_send_str(object_name);
