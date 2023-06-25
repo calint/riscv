@@ -70,7 +70,7 @@ typedef struct object {
 static object objects[] = {{""}, {"notebook"}, {"mirror"}, {"lighter"}};
 
 void print_help();
-void print_location(location_id lid);
+void print_location(location_id lid, entity_id eid_exclude_from_output);
 void print_inventory(entity_id eid);
 bool add_object_to_list(object_id list[], unsigned list_len, object_id oid);
 void remove_object_from_list_by_index(object_id list[], unsigned ix);
@@ -92,7 +92,7 @@ void run() {
   uart_send_str(hello);
   while (1) {
     entity *ent = &entities[active_entity];
-    print_location(ent->location);
+    print_location(ent->location, active_entity);
     uart_send_str(ent->name);
     uart_send_str(" > ");
     input_inbuf();
@@ -167,7 +167,7 @@ void handle_inbuf() {
   }
 }
 
-void print_location(location_id lid) {
+void print_location(location_id lid, entity_id eid_exclude_from_output) {
   const location *loc = &locations[lid];
   uart_send_str("u r in ");
   uart_send_str(loc->name);
@@ -199,7 +199,7 @@ void print_location(location_id lid) {
     const entity_id eid = ents[i];
     if (!eid)
       break;
-    if (eid == active_entity) // ? hmm
+    if (eid == eid_exclude_from_output)
       continue;
     if (add_list_sep) {
       uart_send_str(", ");
