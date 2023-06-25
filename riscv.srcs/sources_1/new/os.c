@@ -273,20 +273,49 @@ void action_go(unsigned char dir) {
 }
 
 void handle_inbuf() {
-  if (strings_equal(inbuf.line, "i")) {
+  const char *words[8];
+  char *ptr = inbuf.line;
+  unsigned nwords = 0;
+  while (1) {
+    words[nwords++] = ptr;
+    while (*ptr && *ptr != ' ') {
+      ptr++;
+    }
+    if (!*ptr)
+      break;
+    *ptr = 0;
+    ptr++;
+    if (nwords == sizeof(words) / sizeof(const char *)) {
+      uart_send_str("too many words, some ignored\r\n\r\n");
+      break;
+    }
+  }
+//  for (unsigned i = 0; i < nwords; i++) {
+//    uart_send_str(words[i]);
+//    uart_send_str("\r\n");
+//  }
+  if (strings_equal(words[0], "i")) {
     describe_inventory();
     uart_send_str("\r\n");
-  } else if (strings_equal(inbuf.line, "t")) {
-    action_take("notebook");
-  } else if (strings_equal(inbuf.line, "d")) {
-    action_drop("notebook");
-  } else if (strings_equal(inbuf.line, "n")) {
+  } else if (strings_equal(words[0], "t")) {
+    if (nwords < 2) {
+      uart_send_str("take what\r\n\r\n");
+      return;
+    }
+    action_take(words[1]);
+  } else if (strings_equal(words[0], "d")) {
+    if (nwords < 2) {
+      uart_send_str("drop what\r\n\r\n");
+      return;
+    }
+    action_drop(words[1]);
+  } else if (strings_equal(words[0], "n")) {
     action_go(0);
-  } else if (strings_equal(inbuf.line, "e")) {
+  } else if (strings_equal(words[0], "e")) {
     action_go(1);
-  } else if (strings_equal(inbuf.line, "s")) {
+  } else if (strings_equal(words[0], "s")) {
     action_go(2);
-  } else if (strings_equal(inbuf.line, "w")) {
+  } else if (strings_equal(words[0], "w")) {
     action_go(3);
   } else {
     uart_send_str("not understood\r\n\r\n");
