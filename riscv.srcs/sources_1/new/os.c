@@ -70,6 +70,8 @@ void add_object_to_list(object_id list[], unsigned list_max_size, object_id id);
 void remove_object_from_list_by_index(object_id list[], unsigned ix);
 void add_entity_to_list(entity_id list[], unsigned list_max_size, entity_id id);
 void remove_entity_from_list_by_index(entity_id list[], unsigned ix);
+void remove_entity_from_list(entity_id list[], unsigned list_max_size,
+                             entity_id ix);
 
 void describe_inventory();
 void describe_current_location();
@@ -84,6 +86,7 @@ void run() {
     describe_current_location();
     uart_send_str("> ");
     input_inbuf();
+    uart_send_str("\r\n");
     handle_inbuf();
   }
 }
@@ -193,6 +196,20 @@ void add_entity_to_list(entity_id list[], unsigned list_max_size,
   uart_send_str("location full\r\n");
 }
 
+void remove_entity_from_list(entity_id list[], unsigned list_max_size,
+                             entity_id id) {
+  for (unsigned i = 0; i < list_max_size - 1; i++) {
+    if (list[i] == id) {
+      for (unsigned j = i; j < list_max_size - 1; j++) {
+        list[j] = list[j + 1];
+        if (!list[j])
+          return;
+      }
+    }
+  }
+  uart_send_str("entity not here\r\n");
+}
+
 void remove_entity_from_list_by_index(entity_id list[], unsigned ix) {
   entity_id *ptr = &list[ix];
   while (1) {
@@ -240,25 +257,39 @@ void action_drop(const char *object_name) {
   uart_send_str("\r\n\r\n");
 }
 
-void handle_inbuf() {
-  uart_send_str("\r\n");
-  if (strings_equal(inbuf.line, "i")) {
-    describe_inventory();
-    uart_send_str("\r\n");
-    return;
-  }
-  if (strings_equal(inbuf.line, "t")) {
-    action_take("notebook");
-    return;
-  }
-  if (strings_equal(inbuf.line, "d")) {
-    action_drop("notebook");
+void action_go(unsigned char dir) {
+  entity *ent = &entities[active_entity];
+  location *loc = &locations[ent->location];
+  location_id to = loc->exits[dir];
+  if (!to) {
+    uart_send_str("cannot go there\r\n\r\n");
     return;
   }
 
-  entities[active_entity].location++;
-  if (entities[active_entity].location > 3) {
-    entities[active_entity].location = 1;
+  remove_entity_from_list(loc->entities, LOCATION_MAX_ENTITIES, active_entity);
+  add_entity_to_list(locations[to].entities, LOCATION_MAX_ENTITIES,
+                     active_entity);
+  ent->location = to;
+}
+
+void handle_inbuf() {
+  if (strings_equal(inbuf.line, "i")) {
+    describe_inventory();
+    uart_send_str("\r\n");
+  } else if (strings_equal(inbuf.line, "t")) {
+    action_take("notebook");
+  } else if (strings_equal(inbuf.line, "d")) {
+    action_drop("notebook");
+  } else if (strings_equal(inbuf.line, "n")) {
+    action_go(0);
+  } else if (strings_equal(inbuf.line, "e")) {
+    action_go(1);
+  } else if (strings_equal(inbuf.line, "s")) {
+    action_go(2);
+  } else if (strings_equal(inbuf.line, "w")) {
+    action_go(3);
+  } else {
+    uart_send_str("not understood\r\n\r\n");
   }
 }
 
