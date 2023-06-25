@@ -207,12 +207,12 @@ Disassembly of section .text:
  1a0:	00000c13          	addi	x24,x0,0
 #   add_list_sep = 0;
  1a4:	00000793          	addi	x15,x0,0
-#     const entity_id id = ents[i];
 #     if (!id)
 #       break;
-#     if (id != active_entity) {
-#       if (add_list_sep) {
-#         uart_send_str(", ");
+#     if (id == active_entity)
+#       continue;
+#     if (add_list_sep) {
+#       uart_send_str(", ");
  1a8:	00001bb7          	lui	x23,0x1
 #   for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
  1ac:	00800a93          	addi	x21,x0,8
@@ -222,19 +222,19 @@ Disassembly of section .text:
  1b8:	00074c83          	lbu	x25,0(x14)
 #     if (!id)
  1bc:	040c8263          	beq	x25,x0,200 <describe_current_location+0x168>
-#     if (id != active_entity) {
+#     if (id == active_entity)
  1c0:	3949c703          	lbu	x14,916(x19)
  1c4:	03970a63          	beq	x14,x25,1f8 <describe_current_location+0x160>
-#       if (add_list_sep) {
+#     if (add_list_sep) {
  1c8:	00078863          	beq	x15,x0,1d8 <describe_current_location+0x140>
-#         uart_send_str(", ");
+#       uart_send_str(", ");
  1cc:	c74b8513          	addi	x10,x23,-908 # c74 <delay+0xc4>
  1d0:	00001097          	auipc	x1,0x1
  1d4:	934080e7          	jalr	x1,-1740(x1) # b04 <uart_send_str>
-#       } else {
-#         add_list_sep = 1;
-#       }
-#       uart_send_str(entities[id].name);
+#     } else {
+#       add_list_sep = 1;
+#     }
+#     uart_send_str(entities[id].name);
  1d8:	002c9793          	slli	x15,x25,0x2
  1dc:	019787b3          	add	x15,x15,x25
  1e0:	00379793          	slli	x15,x15,0x3
@@ -246,7 +246,6 @@ Disassembly of section .text:
 #   for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
  1f8:	001c0c13          	addi	x24,x24,1
  1fc:	fb5c1ae3          	bne	x24,x21,1b0 <describe_current_location+0x118>
-#     }
 #   }
 #   if (add_list_sep) {
  200:	00078a63          	beq	x15,x0,214 <describe_current_location+0x17c>

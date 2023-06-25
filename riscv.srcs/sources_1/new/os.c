@@ -196,11 +196,11 @@ void add_object_to_list(object_id list[], unsigned list_max_size,
 void add_entity_to_list(entity_id list[], unsigned list_max_size,
                         entity_id id) {
   for (unsigned i = 0; i < list_max_size - 1; i++) {
-    if (!list[i]) {
-      list[i] = id;
-      list[i + 1] = 0;
-      return;
-    }
+    if (list[i])
+      continue;
+    list[i] = id;
+    list[i + 1] = 0;
+    return;
   }
   uart_send_str("location full\r\n");
 }
@@ -208,12 +208,12 @@ void add_entity_to_list(entity_id list[], unsigned list_max_size,
 void remove_entity_from_list(entity_id list[], unsigned list_max_size,
                              entity_id id) {
   for (unsigned i = 0; i < list_max_size - 1; i++) {
-    if (list[i] == id) {
-      for (unsigned j = i; j < list_max_size - 1; j++) {
-        list[j] = list[j + 1];
-        if (!list[j])
-          return;
-      }
+    if (list[i] != id)
+      continue;
+    for (unsigned j = i; j < list_max_size - 1; j++) {
+      list[j] = list[j + 1];
+      if (!list[j])
+        return;
     }
   }
   uart_send_str("entity not here\r\n");
