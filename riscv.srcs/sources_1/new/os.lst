@@ -241,7 +241,7 @@ Disassembly of section .text:
  1d8:	00000c13          	addi	x24,x0,0
 #   add_list_sep = FALSE;
  1dc:	00000793          	addi	x15,x0,0
-#     if (eid == active_entity)
+#     if (eid == active_entity) // ? hmm
  1e0:	00002b37          	lui	x22,0x2
 #     uart_send_str(entities[eid].name);
  1e4:	54490913          	addi	x18,x18,1348 # 2544 <entities>
@@ -255,7 +255,7 @@ Disassembly of section .text:
  1f8:	00074c83          	lbu	x25,0(x14)
 #     if (!eid)
  1fc:	040c8263          	beq	x25,x0,240 <print_location+0x150>
-#     if (eid == active_entity)
+#     if (eid == active_entity) // ? hmm
  200:	5dcb4703          	lbu	x14,1500(x22) # 25dc <active_entity>
  204:	03970a63          	beq	x14,x25,238 <print_location+0x148>
 #     if (add_list_sep) {
@@ -645,7 +645,7 @@ Disassembly of section .text:
 #   }
 # }
 # 
-# void action_take(entity_id eid, const char *object_name) {
+# void action_take(entity_id eid, object_name obj) {
  544:	fd010113          	addi	x2,x2,-48
  548:	01312e23          	sw	x19,28(x2)
  54c:	00050993          	addi	x19,x10,0
@@ -659,7 +659,7 @@ Disassembly of section .text:
  564:	00371713          	slli	x14,x14,0x3
  568:	00e787b3          	add	x15,x15,x14
  56c:	0047c783          	lbu	x15,4(x15)
-# void action_take(entity_id eid, const char *object_name) {
+# void action_take(entity_id eid, object_name obj) {
  570:	02812423          	sw	x8,40(x2)
  574:	01612823          	sw	x22,16(x2)
 #   object_id *objs = locations[ent->location].objects;
@@ -675,9 +675,9 @@ Disassembly of section .text:
 #     const object_id oid = objs[i];
 #     if (!oid)
 #       break;
-#     if (!strings_equal(objects[oid].name, object_name))
+#     if (!strings_equal(objects[oid].name, obj))
  598:	00002b37          	lui	x22,0x2
-# void action_take(entity_id eid, const char *object_name) {
+# void action_take(entity_id eid, object_name obj) {
  59c:	03212023          	sw	x18,32(x2)
  5a0:	01412c23          	sw	x20,24(x2)
  5a4:	01512a23          	sw	x21,20(x2)
@@ -688,14 +688,14 @@ Disassembly of section .text:
 #   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
  5b4:	00000913          	addi	x18,x0,0
  5b8:	54450a93          	addi	x21,x10,1348
-#     if (!strings_equal(objects[oid].name, object_name))
+#     if (!strings_equal(objects[oid].name, obj))
  5bc:	5bcb0b13          	addi	x22,x22,1468 # 25bc <objects>
 #     const object_id oid = objs[i];
  5c0:	012407b3          	add	x15,x8,x18
  5c4:	0007c603          	lbu	x12,0(x15)
 #     if (!oid)
  5c8:	02060a63          	beq	x12,x0,5fc <action_take+0xb8>
-#     if (!strings_equal(objects[oid].name, object_name))
+#     if (!strings_equal(objects[oid].name, obj))
  5cc:	00261793          	slli	x15,x12,0x2
  5d0:	00fb07b3          	add	x15,x22,x15
  5d4:	0007a503          	lw	x10,0(x15)
@@ -714,7 +714,7 @@ Disassembly of section .text:
 #     }
 #     return;
 #   }
-#   uart_send_str(object_name);
+#   uart_send_str(obj);
  5fc:	000a0513          	addi	x10,x20,0
  600:	00001097          	auipc	x1,0x1
  604:	888080e7          	jalr	x1,-1912(x1) # e88 <uart_send_str>
@@ -777,19 +777,19 @@ Disassembly of section .text:
 
 000006b8 <action_drop>:
 # 
-# void action_drop(entity_id eid, const char *object_name) {
+# void action_drop(entity_id eid, object_name obj) {
  6b8:	fd010113          	addi	x2,x2,-48
  6bc:	03212023          	sw	x18,32(x2)
 #   entity *ent = &entities[eid];
 #   object_id *objs = ent->objects;
  6c0:	00251913          	slli	x18,x10,0x2
-# void action_drop(entity_id eid, const char *object_name) {
+# void action_drop(entity_id eid, object_name obj) {
  6c4:	02812423          	sw	x8,40(x2)
 #   object_id *objs = ent->objects;
  6c8:	00a90433          	add	x8,x18,x10
  6cc:	000027b7          	lui	x15,0x2
  6d0:	00341413          	slli	x8,x8,0x3
-# void action_drop(entity_id eid, const char *object_name) {
+# void action_drop(entity_id eid, object_name obj) {
  6d4:	01612823          	sw	x22,16(x2)
 #   object_id *objs = ent->objects;
  6d8:	00540413          	addi	x8,x8,5
@@ -798,9 +798,9 @@ Disassembly of section .text:
 #     const object_id oid = objs[i];
 #     if (!oid)
 #       break;
-#     if (!strings_equal(objects[oid].name, object_name))
+#     if (!strings_equal(objects[oid].name, obj))
  6e0:	00002b37          	lui	x22,0x2
-# void action_drop(entity_id eid, const char *object_name) {
+# void action_drop(entity_id eid, object_name obj) {
  6e4:	02912223          	sw	x9,36(x2)
  6e8:	01312e23          	sw	x19,28(x2)
  6ec:	01412c23          	sw	x20,24(x2)
@@ -813,14 +813,14 @@ Disassembly of section .text:
 #   for (unsigned i = 0; i < ENTITY_MAX_OBJECTS; i++) {
  704:	00000993          	addi	x19,x0,0
  708:	54478493          	addi	x9,x15,1348
-#     if (!strings_equal(objects[oid].name, object_name))
+#     if (!strings_equal(objects[oid].name, obj))
  70c:	5bcb0b13          	addi	x22,x22,1468 # 25bc <objects>
 #     const object_id oid = objs[i];
  710:	013407b3          	add	x15,x8,x19
  714:	0007c603          	lbu	x12,0(x15)
 #     if (!oid)
  718:	02060a63          	beq	x12,x0,74c <action_drop+0x94>
-#     if (!strings_equal(objects[oid].name, object_name))
+#     if (!strings_equal(objects[oid].name, obj))
  71c:	00261793          	slli	x15,x12,0x2
  720:	00fb07b3          	add	x15,x22,x15
  724:	0007a503          	lw	x10,0(x15)
@@ -844,7 +844,7 @@ Disassembly of section .text:
  750:	08450513          	addi	x10,x10,132 # 1084 <delay+0x150>
  754:	00000097          	auipc	x1,0x0
  758:	734080e7          	jalr	x1,1844(x1) # e88 <uart_send_str>
-#   uart_send_str(object_name);
+#   uart_send_str(obj);
  75c:	000a8513          	addi	x10,x21,0
  760:	00000097          	auipc	x1,0x0
  764:	728080e7          	jalr	x1,1832(x1) # e88 <uart_send_str>
@@ -1007,14 +1007,13 @@ Disassembly of section .text:
 
 0000093c <action_give>:
 # 
-# void action_give(entity_id eid, const char *object_name,
-#                  const char *entity_name) {
+# void action_give(entity_id eid, object_name obj, entity_name to_ent) {
  93c:	fc010113          	addi	x2,x2,-64
  940:	02912a23          	sw	x9,52(x2)
 #   entity *ent = &entities[eid];
 #   location *loc = &locations[ent->location];
  944:	00251493          	slli	x9,x10,0x2
-#                  const char *entity_name) {
+# void action_give(entity_id eid, object_name obj, entity_name to_ent) {
  948:	03412423          	sw	x20,40(x2)
 #   location *loc = &locations[ent->location];
  94c:	00a48733          	add	x14,x9,x10
@@ -1023,7 +1022,7 @@ Disassembly of section .text:
  958:	00371713          	slli	x14,x14,0x3
  95c:	00e787b3          	add	x15,x15,x14
  960:	0047c783          	lbu	x15,4(x15)
-#                  const char *entity_name) {
+# void action_give(entity_id eid, object_name obj, entity_name to_ent) {
  964:	02812c23          	sw	x8,56(x2)
  968:	01912a23          	sw	x25,20(x2)
  96c:	00379413          	slli	x8,x15,0x3
@@ -1035,7 +1034,7 @@ Disassembly of section .text:
 #   for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
 #     if (!ents[i])
  980:	00002cb7          	lui	x25,0x2
-#                  const char *entity_name) {
+# void action_give(entity_id eid, object_name obj, entity_name to_ent) {
  984:	03212823          	sw	x18,48(x2)
  988:	03512223          	sw	x21,36(x2)
  98c:	03612023          	sw	x22,32(x2)
@@ -1058,7 +1057,7 @@ Disassembly of section .text:
  9c8:	020b8a63          	beq	x23,x0,9fc <action_give+0xc0>
 #       break;
 #     entity *to = &entities[ents[i]];
-#     if (!strings_equal(to->name, entity_name))
+#     if (!strings_equal(to->name, to_ent))
  9cc:	002b9993          	slli	x19,x23,0x2
  9d0:	017987b3          	add	x15,x19,x23
  9d4:	00379793          	slli	x15,x15,0x3
@@ -1073,11 +1072,11 @@ Disassembly of section .text:
  9f4:	00800793          	addi	x15,x0,8
  9f8:	fcfc12e3          	bne	x24,x15,9bc <action_give+0x80>
 #     }
-#     uart_send_str(object_name);
+#     uart_send_str(obj);
 #     uart_send_str(" not in inventory\r\n\r\n");
 #     return;
 #   }
-#   uart_send_str(entity_name);
+#   uart_send_str(to_ent);
  9fc:	000b0513          	addi	x10,x22,0
  a00:	00000097          	auipc	x1,0x0
  a04:	488080e7          	jalr	x1,1160(x1) # e88 <uart_send_str>
@@ -1089,20 +1088,20 @@ Disassembly of section .text:
  a14:	01548433          	add	x8,x9,x21
  a18:	00341413          	slli	x8,x8,0x3
  a1c:	00540413          	addi	x8,x8,5
-#       if (!strings_equal(objects[oid].name, object_name))
+#       if (!strings_equal(objects[oid].name, obj))
  a20:	00002ab7          	lui	x21,0x2
 #     object_id *objs = ent->objects;
  a24:	008a0433          	add	x8,x20,x8
 #     for (unsigned j = 0; j < ENTITY_MAX_OBJECTS; j++) {
  a28:	00000493          	addi	x9,x0,0
-#       if (!strings_equal(objects[oid].name, object_name))
+#       if (!strings_equal(objects[oid].name, obj))
  a2c:	5bca8a93          	addi	x21,x21,1468 # 25bc <objects>
 #       const object_id oid = objs[j];
  a30:	009407b3          	add	x15,x8,x9
  a34:	0007c603          	lbu	x12,0(x15)
 #       if (!oid)
  a38:	02060a63          	beq	x12,x0,a6c <action_give+0x130>
-#       if (!strings_equal(objects[oid].name, object_name))
+#       if (!strings_equal(objects[oid].name, obj))
  a3c:	00261793          	slli	x15,x12,0x2
  a40:	00fa87b3          	add	x15,x21,x15
  a44:	0007a503          	lw	x10,0(x15)
@@ -1116,7 +1115,7 @@ Disassembly of section .text:
  a60:	00148493          	addi	x9,x9,1
  a64:	02000793          	addi	x15,x0,32
  a68:	fcf494e3          	bne	x9,x15,a30 <action_give+0xf4>
-#     uart_send_str(object_name);
+#     uart_send_str(obj);
  a6c:	00090513          	addi	x10,x18,0
  a70:	00000097          	auipc	x1,0x0
  a74:	418080e7          	jalr	x1,1048(x1) # e88 <uart_send_str>

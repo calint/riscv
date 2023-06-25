@@ -15,6 +15,8 @@ typedef unsigned char bool;
 typedef unsigned char location_id;
 typedef unsigned char object_id;
 typedef unsigned char entity_id;
+typedef const char *entity_name;
+typedef const char *object_name;
 
 volatile unsigned char *leds = (unsigned char *)TOP_OF_RAM;
 volatile unsigned char *uart_out = (unsigned char *)TOP_OF_RAM - 1;
@@ -75,11 +77,10 @@ bool add_entity_to_list(entity_id list[], unsigned list_max_size,
 void remove_entity_from_list_by_index(entity_id list[], unsigned ix);
 void remove_entity_from_list(entity_id list[], unsigned list_max_size,
                              entity_id eid);
-void action_give(entity_id eid, const char *entity_name,
-                 const char *object_name);
+void action_give(entity_id eid, object_name obj, entity_name to);
 void action_go(entity_id eid, unsigned char dir);
-void action_drop(entity_id eid, const char *object_name);
-void action_take(entity_id eid, const char *object_name);
+void action_drop(entity_id eid, object_name obj);
+void action_take(entity_id eid, object_name obj);
 void print_inventory(entity_id eid);
 void print_location(location_id lid);
 void input_inbuf();
@@ -265,32 +266,32 @@ void remove_entity_from_list_by_index(entity_id list[], unsigned ix) {
   }
 }
 
-void action_take(entity_id eid, const char *object_name) {
+void action_take(entity_id eid, object_name obj) {
   entity *ent = &entities[eid];
   object_id *objs = locations[ent->location].objects;
   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
     const object_id oid = objs[i];
     if (!oid)
       break;
-    if (!strings_equal(objects[oid].name, object_name))
+    if (!strings_equal(objects[oid].name, obj))
       continue;
     if (add_object_to_list(ent->objects, ENTITY_MAX_OBJECTS, oid)) {
       remove_object_from_list_by_index(objs, i);
     }
     return;
   }
-  uart_send_str(object_name);
+  uart_send_str(obj);
   uart_send_str(" not here\r\n\r\n");
 }
 
-void action_drop(entity_id eid, const char *object_name) {
+void action_drop(entity_id eid, object_name obj) {
   entity *ent = &entities[eid];
   object_id *objs = ent->objects;
   for (unsigned i = 0; i < ENTITY_MAX_OBJECTS; i++) {
     const object_id oid = objs[i];
     if (!oid)
       break;
-    if (!strings_equal(objects[oid].name, object_name))
+    if (!strings_equal(objects[oid].name, obj))
       continue;
     if (add_object_to_list(locations[ent->location].objects,
                            LOCATION_MAX_OBJECTS, oid)) {
@@ -299,7 +300,7 @@ void action_drop(entity_id eid, const char *object_name) {
     return;
   }
   uart_send_str("u don't have ");
-  uart_send_str(object_name);
+  uart_send_str(obj);
   uart_send_str("\r\n\r\n");
 }
 
@@ -319,8 +320,7 @@ void action_go(entity_id eid, unsigned char dir) {
   }
 }
 
-void action_give(entity_id eid, const char *object_name,
-                 const char *entity_name) {
+void action_give(entity_id eid, object_name obj, entity_name to_ent) {
   entity *ent = &entities[eid];
   location *loc = &locations[ent->location];
   entity_id *ents = loc->entities;
@@ -328,25 +328,25 @@ void action_give(entity_id eid, const char *object_name,
     if (!ents[i])
       break;
     entity *to = &entities[ents[i]];
-    if (!strings_equal(to->name, entity_name))
+    if (!strings_equal(to->name, to_ent))
       continue;
     object_id *objs = ent->objects;
     for (unsigned j = 0; j < ENTITY_MAX_OBJECTS; j++) {
       const object_id oid = objs[j];
       if (!oid)
         break;
-      if (!strings_equal(objects[oid].name, object_name))
+      if (!strings_equal(objects[oid].name, obj))
         continue;
       if (add_object_to_list(to->objects, ENTITY_MAX_OBJECTS, oid)) {
         remove_object_from_list_by_index(objs, j);
       }
       return;
     }
-    uart_send_str(object_name);
+    uart_send_str(obj);
     uart_send_str(" not in inventory\r\n\r\n");
     return;
   }
-  uart_send_str(entity_name);
+  uart_send_str(to_ent);
   uart_send_str(" is not here\r\n\r\n");
 }
 
