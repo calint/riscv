@@ -104,20 +104,6 @@ void run() {
   }
 }
 
-bool strings_equal(const char *s1, const char *s2) {
-  while (1) {
-    char diff = *s1 - *s2;
-    if (diff)
-      return FALSE;
-    if (!*s1 && !*s2)
-      return TRUE;
-    if (!*s1 || !*s2)
-      return FALSE;
-    s1++;
-    s2++;
-  }
-}
-
 void print_location(location_id lid) {
   const location *loc = &locations[lid];
   uart_send_str("u r in ");
@@ -437,6 +423,20 @@ void input_inbuf() {
       uart_send_char(ch);
     }
     *leds = inbuf.ix;
+  }
+}
+
+bool strings_equal(const char *s1, const char *s2) {
+  while (1) {
+    char diff = *s1 - *s2;
+    if (diff)
+      return FALSE;
+    if (!*s1 && !*s2)
+      return TRUE;
+    if (!*s1 || !*s2)
+      return FALSE;
+    s1++;
+    s2++;
   }
 }
 
