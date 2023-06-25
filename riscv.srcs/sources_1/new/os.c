@@ -150,7 +150,7 @@ void print_location(location_id lid) {
     const entity_id eid = ents[i];
     if (!eid)
       break;
-    if (eid == active_entity)
+    if (eid == active_entity) // ? hmm
       continue;
     if (add_list_sep) {
       uart_send_str(", ");
@@ -247,7 +247,7 @@ void remove_entity_from_list(entity_id list[], unsigned list_max_size,
       continue;
     for (unsigned j = i; j < list_max_size - 1; j++) {
       list[j] = list[j + 1];
-      if (!list[i])
+      if (!list[j])
         return;
     }
   }
