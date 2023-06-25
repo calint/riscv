@@ -39,21 +39,11 @@ typedef struct input_buffer {
 
 static input_buffer inbuf;
 
-typedef struct location {
+typedef struct object {
   const char *name;
-  object_id objects[LOCATION_MAX_OBJECTS];
-  entity_id entities[LOCATION_MAX_ENTITIES];
-  location_id exits[LOCATION_MAX_EXITS];
-} location;
+} object;
 
-static const char *exit_names[] = {"north", "east", "south",
-                                   "west",  "up",   "down"};
-
-static location locations[] = {{"", {0}, {0}, {0}},
-                               {"roome", {0}, {1}, {2, 3, 0, 4}},
-                               {"office", {1, 3}, {2}, {0, 0, 1}},
-                               {"bathroom", {0}, {0}, {0}},
-                               {"kitchen", {0}, {0}, {0, 1}}};
+static object objects[] = {{""}, {"notebook"}, {"mirror"}, {"lighter"}};
 
 typedef struct entity {
   const char *name;
@@ -63,21 +53,31 @@ typedef struct entity {
 
 static entity entities[] = {{"", 0, {0}}, {"me", 1, {2}}, {"u", 2, {0}}};
 
-typedef struct object {
+typedef struct location {
   const char *name;
-} object;
+  object_id objects[LOCATION_MAX_OBJECTS];
+  entity_id entities[LOCATION_MAX_ENTITIES];
+  location_id exits[LOCATION_MAX_EXITS];
+} location;
 
-static object objects[] = {{""}, {"notebook"}, {"mirror"}, {"lighter"}};
+static location locations[] = {{"", {0}, {0}, {0}},
+                               {"roome", {0}, {1}, {2, 3, 0, 4}},
+                               {"office", {1, 3}, {2}, {0, 0, 1}},
+                               {"bathroom", {0}, {0}, {0}},
+                               {"kitchen", {0}, {0}, {0, 1}}};
+
+static const char *exit_names[] = {"north", "east", "south",
+                                   "west",  "up",   "down"};
 
 void print_help();
 void print_location(location_id lid, entity_id eid_exclude_from_output);
-void print_inventory(entity_id eid);
 bool add_object_to_list(object_id list[], unsigned list_len, object_id oid);
 void remove_object_from_list_by_index(object_id list[], unsigned ix);
 bool add_entity_to_list(entity_id list[], unsigned list_len, entity_id eid);
 void remove_entity_from_list_by_index(entity_id list[], unsigned ix);
 void remove_entity_from_list(entity_id list[], unsigned list_len,
                              entity_id eid);
+void action_inventory(entity_id eid);
 void action_give(entity_id eid, object_name obj, entity_name to);
 void action_go(entity_id eid, direction dir);
 void action_drop(entity_id eid, object_name obj);
@@ -130,7 +130,7 @@ void handle_inbuf() {
   if (strings_equal(words[0], "help")) {
     print_help();
   } else if (strings_equal(words[0], "i")) {
-    print_inventory(active_entity);
+    action_inventory(active_entity);
     uart_send_str("\r\n");
   } else if (strings_equal(words[0], "t")) {
     if (nwords < 2) {
@@ -231,7 +231,7 @@ void print_location(location_id lid, entity_id eid_exclude_from_output) {
   uart_send_str("\r\n");
 }
 
-void print_inventory(entity_id eid) {
+void action_inventory(entity_id eid) {
   uart_send_str("u have: ");
   bool add_list_sep = FALSE;
   const object_id *objs = entities[eid].objects;

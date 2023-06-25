@@ -5,8 +5,7 @@
 set -e
 
 PATH=$PATH:~/riscv/install/rv32i/bin
-SRC=os.c
-BIN=${SRC%.*}
+BIN=os
 
 riscv32-unknown-elf-gcc \
 	-Os \
@@ -25,7 +24,7 @@ riscv32-unknown-elf-gcc \
 	-Wshadow \
 	-Wl,-Ttext=0x0 \
 	-Wl,--no-relax \
-	os_start.S $SRC -o $BIN
+	os_start.S os.c -o $BIN
 
 #	-Wpadded \
 
