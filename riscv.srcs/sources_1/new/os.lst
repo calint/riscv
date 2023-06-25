@@ -23,7 +23,7 @@ Disassembly of section .text:
 # void run() {
 #   uart_send_str(hello);
    c:	000027b7          	lui	x15,0x2
-  10:	5c87a503          	lw	x10,1480(x15) # 25c8 <hello>
+  10:	5cc7a503          	lw	x10,1484(x15) # 25cc <hello>
 # void run() {
   14:	fe010113          	addi	x2,x2,-32
   18:	00812c23          	sw	x8,24(x2)
@@ -38,7 +38,7 @@ Disassembly of section .text:
   2c:	01412423          	sw	x20,8(x2)
   30:	00112e23          	sw	x1,28(x2)
 #     uart_send_str(entities[active_entity].name);
-  34:	53440413          	addi	x8,x8,1332 # 2534 <entities>
+  34:	53840413          	addi	x8,x8,1336 # 2538 <entities>
 #   uart_send_str(hello);
   38:	00001097          	auipc	x1,0x1
   3c:	e58080e7          	jalr	x1,-424(x1) # e90 <uart_send_str>
@@ -56,7 +56,7 @@ Disassembly of section .text:
   50:	00000097          	auipc	x1,0x0
   54:	098080e7          	jalr	x1,152(x1) # e8 <print_current_location>
 #     uart_send_str(entities[active_entity].name);
-  58:	5cc4c703          	lbu	x14,1484(x9) # 25cc <active_entity>
+  58:	5d04c703          	lbu	x14,1488(x9) # 25d0 <active_entity>
   5c:	00271793          	slli	x15,x14,0x2
   60:	00e787b3          	add	x15,x15,x14
   64:	00379793          	slli	x15,x15,0x3
@@ -72,14 +72,14 @@ Disassembly of section .text:
   84:	00001097          	auipc	x1,0x1
   88:	d60080e7          	jalr	x1,-672(x1) # de4 <input_inbuf>
 #     uart_send_str("\r\n");
-  8c:	23498513          	addi	x10,x19,564 # 1234 <delay+0x2f8>
+  8c:	23898513          	addi	x10,x19,568 # 1238 <delay+0x2fc>
   90:	00001097          	auipc	x1,0x1
   94:	e00080e7          	jalr	x1,-512(x1) # e90 <uart_send_str>
 #     handle_inbuf();
   98:	00001097          	auipc	x1,0x1
   9c:	ae8080e7          	jalr	x1,-1304(x1) # b80 <handle_inbuf>
 #     if (active_entity == 1)
-  a0:	5cc4c703          	lbu	x14,1484(x9)
+  a0:	5d04c703          	lbu	x14,1488(x9)
 #       active_entity = 2;
   a4:	00200793          	addi	x15,x0,2
 #     if (active_entity == 1)
@@ -87,7 +87,7 @@ Disassembly of section .text:
 #     else
 #       active_entity = 1;
   ac:	00100793          	addi	x15,x0,1
-  b0:	5cf48623          	sb	x15,1484(x9)
+  b0:	5cf48823          	sb	x15,1488(x9)
   b4:	f9dff06f          	jal	x0,50 <run+0x44>
 
 000000b8 <strings_equal>:
@@ -149,9 +149,9 @@ Disassembly of section .text:
  124:	00001097          	auipc	x1,0x1
  128:	d6c080e7          	jalr	x1,-660(x1) # e90 <uart_send_str>
 #   const location_id current_location = entities[active_entity].location;
- 12c:	5cc9c683          	lbu	x13,1484(x19) # 25cc <active_entity>
+ 12c:	5d09c683          	lbu	x13,1488(x19) # 25d0 <active_entity>
  130:	00002a37          	lui	x20,0x2
- 134:	534a0713          	addi	x14,x20,1332 # 2534 <entities>
+ 134:	538a0713          	addi	x14,x20,1336 # 2538 <entities>
  138:	00269793          	slli	x15,x13,0x2
  13c:	00d787b3          	add	x15,x15,x13
  140:	00379793          	slli	x15,x15,0x3
@@ -159,7 +159,7 @@ Disassembly of section .text:
  148:	0047c783          	lbu	x15,4(x15)
 #   uart_send_str(locations[current_location].name);
  14c:	000024b7          	lui	x9,0x2
- 150:	25048913          	addi	x18,x9,592 # 2250 <locations>
+ 150:	25448913          	addi	x18,x9,596 # 2254 <locations>
  154:	00379413          	slli	x8,x15,0x3
  158:	00f40433          	add	x8,x8,x15
  15c:	00241413          	slli	x8,x8,0x2
@@ -186,8 +186,8 @@ Disassembly of section .text:
 #     const object_id id = objs[i];
  190:	000b4903          	lbu	x18,0(x22)
 #     if (!id)
- 194:	534a0a13          	addi	x20,x20,1332
- 198:	25048493          	addi	x9,x9,592
+ 194:	538a0a13          	addi	x20,x20,1336
+ 198:	25448493          	addi	x9,x9,596
  19c:	18090263          	beq	x18,x0,320 <print_current_location+0x238>
 #     if (add_list_sep) {
 #       uart_send_str(", ");
@@ -199,7 +199,7 @@ Disassembly of section .text:
 #   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
  1a4:	00000a93          	addi	x21,x0,0
 #     uart_send_str(objects[id].name);
- 1a8:	5acb8b93          	addi	x23,x23,1452 # 25ac <objects>
+ 1a8:	5b0b8b93          	addi	x23,x23,1456 # 25b0 <objects>
 #   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
  1ac:	08000c13          	addi	x24,x0,128
 #       uart_send_str(", ");
@@ -226,7 +226,7 @@ Disassembly of section .text:
 #   }
 #   uart_send_str("\r\n");
  1dc:	00001937          	lui	x18,0x1
- 1e0:	23490513          	addi	x10,x18,564 # 1234 <delay+0x2f8>
+ 1e0:	23890513          	addi	x10,x18,568 # 1238 <delay+0x2fc>
  1e4:	00001097          	auipc	x1,0x1
  1e8:	cac080e7          	jalr	x1,-852(x1) # e90 <uart_send_str>
 # 
@@ -254,7 +254,7 @@ Disassembly of section .text:
 #     if (!id)
  20c:	040c8263          	beq	x25,x0,250 <print_current_location+0x168>
 #     if (id == active_entity)
- 210:	5cc9c703          	lbu	x14,1484(x19)
+ 210:	5d09c703          	lbu	x14,1488(x19)
  214:	03970a63          	beq	x14,x25,248 <print_current_location+0x160>
 #     if (add_list_sep) {
  218:	00078863          	beq	x15,x0,228 <print_current_location+0x140>
@@ -297,7 +297,7 @@ Disassembly of section .text:
  274:	00001097          	auipc	x1,0x1
  278:	c1c080e7          	jalr	x1,-996(x1) # e90 <uart_send_str>
 #   for (unsigned i = 0; i < LOCATION_MAX_EXITS; i++) {
- 27c:	23840413          	addi	x8,x8,568 # 2238 <exit_names>
+ 27c:	23c40413          	addi	x8,x8,572 # 223c <exit_names>
  280:	01840993          	addi	x19,x8,24
 #   add_list_sep = 0;
  284:	00000793          	addi	x15,x0,0
@@ -346,7 +346,7 @@ Disassembly of section .text:
  2f4:	00812c03          	lw	x24,8(x2)
  2f8:	00412c83          	lw	x25,4(x2)
 #   uart_send_str("\r\n");
- 2fc:	23490513          	addi	x10,x18,564
+ 2fc:	23890513          	addi	x10,x18,568
 # }
  300:	02012903          	lw	x18,32(x2)
  304:	03010113          	addi	x2,x2,48
@@ -388,13 +388,13 @@ Disassembly of section .text:
 #   bool add_list_sep = FALSE;
 #   const object_id *inv = entities[active_entity].objects;
  364:	000027b7          	lui	x15,0x2
- 368:	5cc7c783          	lbu	x15,1484(x15) # 25cc <active_entity>
+ 368:	5d07c783          	lbu	x15,1488(x15) # 25d0 <active_entity>
  36c:	00279413          	slli	x8,x15,0x2
  370:	00f40433          	add	x8,x8,x15
  374:	00341413          	slli	x8,x8,0x3
  378:	000027b7          	lui	x15,0x2
  37c:	00540413          	addi	x8,x8,5
- 380:	53478793          	addi	x15,x15,1332 # 2534 <entities>
+ 380:	53878793          	addi	x15,x15,1336 # 2538 <entities>
  384:	00f40433          	add	x8,x8,x15
 #   for (unsigned i = 0; i < ENTITY_MAX_OBJECTS; i++) {
 #     const object_id id = inv[i];
@@ -411,7 +411,7 @@ Disassembly of section .text:
 #   for (unsigned i = 0; i < ENTITY_MAX_OBJECTS; i++) {
  394:	00000913          	addi	x18,x0,0
 #     uart_send_str(objects[id].name);
- 398:	5ac98993          	addi	x19,x19,1452 # 25ac <objects>
+ 398:	5b098993          	addi	x19,x19,1456 # 25b0 <objects>
 #   for (unsigned i = 0; i < ENTITY_MAX_OBJECTS; i++) {
  39c:	02000a13          	addi	x20,x0,32
 #       uart_send_str(", ");
@@ -447,7 +447,7 @@ Disassembly of section .text:
  3e4:	00412a83          	lw	x21,4(x2)
 #   uart_send_str("\r\n");
  3e8:	00001537          	lui	x10,0x1
- 3ec:	23450513          	addi	x10,x10,564 # 1234 <delay+0x2f8>
+ 3ec:	23850513          	addi	x10,x10,568 # 1238 <delay+0x2fc>
 # }
  3f0:	02010113          	addi	x2,x2,32
 #   uart_send_str("\r\n");
@@ -651,7 +651,7 @@ Disassembly of section .text:
 # void action_take(const char *object_name) {
  564:	01512a23          	sw	x21,20(x2)
 #   entity *ent = &entities[active_entity];
- 568:	5cc7ca83          	lbu	x21,1484(x15) # 25cc <active_entity>
+ 568:	5d07ca83          	lbu	x21,1488(x15) # 25d0 <active_entity>
 # void action_take(const char *object_name) {
  56c:	02912223          	sw	x9,36(x2)
  570:	01312e23          	sw	x19,28(x2)
@@ -662,7 +662,7 @@ Disassembly of section .text:
 #   object_id *objs = locations[ent->location].objects;
  57c:	01548733          	add	x14,x9,x21
  580:	00002537          	lui	x10,0x2
- 584:	53450793          	addi	x15,x10,1332 # 2534 <entities>
+ 584:	53850793          	addi	x15,x10,1336 # 2538 <entities>
  588:	00371713          	slli	x14,x14,0x3
  58c:	00e787b3          	add	x15,x15,x14
  590:	0047c783          	lbu	x15,4(x15)
@@ -677,7 +677,7 @@ Disassembly of section .text:
  5ac:	00241413          	slli	x8,x8,0x2
  5b0:	000027b7          	lui	x15,0x2
  5b4:	00440413          	addi	x8,x8,4
- 5b8:	25078793          	addi	x15,x15,592 # 2250 <locations>
+ 5b8:	25478793          	addi	x15,x15,596 # 2254 <locations>
 #   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
 #     const object_id id = objs[i];
 #     if (!id)
@@ -692,9 +692,9 @@ Disassembly of section .text:
  5cc:	00f40433          	add	x8,x8,x15
 #   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
  5d0:	00000913          	addi	x18,x0,0
- 5d4:	53450a13          	addi	x20,x10,1332
+ 5d4:	53850a13          	addi	x20,x10,1336
 #     if (!strings_equal(objects[id].name, object_name))
- 5d8:	5acb0b13          	addi	x22,x22,1452 # 25ac <objects>
+ 5d8:	5b0b0b13          	addi	x22,x22,1456 # 25b0 <objects>
 #     const object_id id = objs[i];
  5dc:	012407b3          	add	x15,x8,x18
  5e0:	0007c603          	lbu	x12,0(x15)
@@ -789,7 +789,7 @@ Disassembly of section .text:
 # void action_drop(const char *object_name) {
  6dc:	01512a23          	sw	x21,20(x2)
 #   entity *ent = &entities[active_entity];
- 6e0:	5cc7ca83          	lbu	x21,1484(x15) # 25cc <active_entity>
+ 6e0:	5d07ca83          	lbu	x21,1488(x15) # 25d0 <active_entity>
 # void action_drop(const char *object_name) {
  6e4:	03212023          	sw	x18,32(x2)
  6e8:	02812423          	sw	x8,40(x2)
@@ -802,7 +802,7 @@ Disassembly of section .text:
  6fc:	01612823          	sw	x22,16(x2)
 #   object_id *objs = ent->objects;
  700:	00540413          	addi	x8,x8,5
- 704:	53478713          	addi	x14,x15,1332 # 2534 <entities>
+ 704:	53878713          	addi	x14,x15,1336 # 2538 <entities>
 #   for (unsigned i = 0; i < ENTITY_MAX_OBJECTS; i++) {
 #     const object_id id = objs[i];
 #     if (!id)
@@ -819,9 +819,9 @@ Disassembly of section .text:
  720:	00e40433          	add	x8,x8,x14
 #   for (unsigned i = 0; i < ENTITY_MAX_OBJECTS; i++) {
  724:	00000993          	addi	x19,x0,0
- 728:	53478493          	addi	x9,x15,1332
+ 728:	53878493          	addi	x9,x15,1336
 #     if (!strings_equal(objects[id].name, object_name))
- 72c:	5acb0b13          	addi	x22,x22,1452 # 25ac <objects>
+ 72c:	5b0b0b13          	addi	x22,x22,1456 # 25b0 <objects>
 #     const object_id id = objs[i];
  730:	013407b3          	add	x15,x8,x19
  734:	0007c603          	lbu	x12,0(x15)
@@ -879,7 +879,7 @@ Disassembly of section .text:
  7c4:	012487b3          	add	x15,x9,x18
  7c8:	0047c703          	lbu	x14,4(x15)
  7cc:	00002537          	lui	x10,0x2
- 7d0:	25050513          	addi	x10,x10,592 # 2250 <locations>
+ 7d0:	25450513          	addi	x10,x10,596 # 2254 <locations>
  7d4:	00371793          	slli	x15,x14,0x3
  7d8:	00e787b3          	add	x15,x15,x14
  7dc:	00279793          	slli	x15,x15,0x2
@@ -928,7 +928,7 @@ Disassembly of section .text:
  860:	01412423          	sw	x20,8(x2)
 #   entity *ent = &entities[active_entity];
  864:	00002a37          	lui	x20,0x2
- 868:	5cca4603          	lbu	x12,1484(x20) # 25cc <active_entity>
+ 868:	5d0a4603          	lbu	x12,1488(x20) # 25d0 <active_entity>
 # void action_go(unsigned char dir) {
  86c:	00912a23          	sw	x9,20(x2)
 #   location *loc = &locations[ent->location];
@@ -936,7 +936,7 @@ Disassembly of section .text:
  874:	00261793          	slli	x15,x12,0x2
  878:	00c787b3          	add	x15,x15,x12
  87c:	00379793          	slli	x15,x15,0x3
- 880:	53448493          	addi	x9,x9,1332 # 2534 <entities>
+ 880:	53848493          	addi	x9,x9,1336 # 2538 <entities>
  884:	00f484b3          	add	x9,x9,x15
  888:	0044c783          	lbu	x15,4(x9)
 # void action_go(unsigned char dir) {
@@ -948,7 +948,7 @@ Disassembly of section .text:
  89c:	00241413          	slli	x8,x8,0x2
  8a0:	00f40433          	add	x8,x8,x15
  8a4:	000029b7          	lui	x19,0x2
- 8a8:	25098993          	addi	x19,x19,592 # 2250 <locations>
+ 8a8:	25498993          	addi	x19,x19,596 # 2254 <locations>
  8ac:	00241413          	slli	x8,x8,0x2
  8b0:	008987b3          	add	x15,x19,x8
  8b4:	00a787b3          	add	x15,x15,x10
@@ -993,7 +993,7 @@ Disassembly of section .text:
  918:	b88080e7          	jalr	x1,-1144(x1) # 49c <add_entity_to_list>
  91c:	02050063          	beq	x10,x0,93c <action_go+0xe0>
 #     remove_entity_from_list(loc->entities, LOCATION_MAX_ENTITIES,
- 920:	5cca4603          	lbu	x12,1484(x20)
+ 920:	5d0a4603          	lbu	x12,1488(x20)
  924:	08440513          	addi	x10,x8,132
  928:	00800593          	addi	x11,x0,8
  92c:	00a98533          	add	x10,x19,x10
@@ -1020,7 +1020,7 @@ Disassembly of section .text:
 # void action_give(const char *object_name, const char *entity_name) {
  964:	01812c23          	sw	x24,24(x2)
 #   entity *ent = &entities[active_entity];
- 968:	5cc7cc03          	lbu	x24,1484(x15) # 25cc <active_entity>
+ 968:	5d07cc03          	lbu	x24,1488(x15) # 25d0 <active_entity>
 # void action_give(const char *object_name, const char *entity_name) {
  96c:	02912a23          	sw	x9,52(x2)
  970:	03412423          	sw	x20,40(x2)
@@ -1028,7 +1028,7 @@ Disassembly of section .text:
  974:	002c1493          	slli	x9,x24,0x2
  978:	00002a37          	lui	x20,0x2
  97c:	01848733          	add	x14,x9,x24
- 980:	534a0793          	addi	x15,x20,1332 # 2534 <entities>
+ 980:	538a0793          	addi	x15,x20,1336 # 2538 <entities>
  984:	00371713          	slli	x14,x14,0x3
  988:	00e787b3          	add	x15,x15,x14
  98c:	0047c783          	lbu	x15,4(x15)
@@ -1056,9 +1056,9 @@ Disassembly of section .text:
  9d0:	08440413          	addi	x8,x8,132
 #   for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
  9d4:	00000b93          	addi	x23,x0,0
- 9d8:	534a0a13          	addi	x20,x20,1332
+ 9d8:	538a0a13          	addi	x20,x20,1336
 #     if (!ents[i])
- 9dc:	250c8c93          	addi	x25,x25,592 # 2250 <locations>
+ 9dc:	254c8c93          	addi	x25,x25,596 # 2254 <locations>
  9e0:	017407b3          	add	x15,x8,x23
  9e4:	019787b3          	add	x15,x15,x25
  9e8:	0007cb03          	lbu	x22,0(x15)
@@ -1103,7 +1103,7 @@ Disassembly of section .text:
 #     for (unsigned j = 0; j < ENTITY_MAX_OBJECTS; j++) {
  a4c:	00000493          	addi	x9,x0,0
 #       if (!strings_equal(objects[oid].name, object_name))
- a50:	5aca8a93          	addi	x21,x21,1452 # 25ac <objects>
+ a50:	5b0a8a93          	addi	x21,x21,1456 # 25b0 <objects>
 #       const object_id oid = objs[j];
  a54:	009407b3          	add	x15,x8,x9
  a58:	0007c603          	lbu	x12,0(x15)
@@ -1219,7 +1219,7 @@ Disassembly of section .text:
 #   unsigned nwords = 0;
  b98:	00000493          	addi	x9,x0,0
 #   char *ptr = inbuf.line;
- b9c:	5d078793          	addi	x15,x15,1488 # 25d0 <inbuf>
+ b9c:	5d478793          	addi	x15,x15,1492 # 25d4 <inbuf>
 #   while (1) {
 #     words[nwords++] = ptr;
 #     while (*ptr && *ptr != ' ') {
@@ -1292,7 +1292,7 @@ Disassembly of section .text:
  c30:	708080e7          	jalr	x1,1800(x1) # 334 <print_inventory>
 #     uart_send_str("\r\n");
  c34:	00001537          	lui	x10,0x1
- c38:	23450513          	addi	x10,x10,564 # 1234 <delay+0x2f8>
+ c38:	23850513          	addi	x10,x10,568 # 1238 <delay+0x2fc>
 # }
  c3c:	02812403          	lw	x8,40(x2)
  c40:	02c12083          	lw	x1,44(x2)
@@ -1415,7 +1415,7 @@ Disassembly of section .text:
 #     if (nwords < 3) {
  da4:	00200793          	addi	x15,x0,2
  da8:	00f49863          	bne	x9,x15,db8 <handle_inbuf+0x238>
-#       uart_send_str("give to who\r\n\r\n");
+#       uart_send_str("give to whom\r\n\r\n");
  dac:	00001537          	lui	x10,0x1
  db0:	21450513          	addi	x10,x10,532 # 1214 <delay+0x2d8>
  db4:	e89ff06f          	jal	x0,c3c <handle_inbuf+0xbc>
@@ -1433,7 +1433,7 @@ Disassembly of section .text:
  dd4:	b8c30067          	jalr	x0,-1140(x6) # 95c <action_give>
 #     uart_send_str("not understood\r\n\r\n");
  dd8:	00001537          	lui	x10,0x1
- ddc:	22450513          	addi	x10,x10,548 # 1224 <delay+0x2e8>
+ ddc:	22850513          	addi	x10,x10,552 # 1228 <delay+0x2ec>
  de0:	e5dff06f          	jal	x0,c3c <handle_inbuf+0xbc>
 
 00000de4 <input_inbuf>:
@@ -1453,7 +1453,7 @@ Disassembly of section .text:
  dfc:	01412423          	sw	x20,8(x2)
  e00:	00112e23          	sw	x1,28(x2)
 #       if (inbuf.ix > 0) {
- e04:	5d040413          	addi	x8,x8,1488 # 25d0 <inbuf>
+ e04:	5d440413          	addi	x8,x8,1492 # 25d4 <inbuf>
 #     if (ch == CHAR_BACKSPACE) {
  e08:	07f00913          	addi	x18,x0,127
 #         inbuf.ix--;
@@ -1486,7 +1486,7 @@ Disassembly of section .text:
  e34:	00000097          	auipc	x1,0x0
  e38:	0d8080e7          	jalr	x1,216(x1) # f0c <uart_send_char>
 #     *leds = inbuf.ix;
- e3c:	5bc4a783          	lw	x15,1468(x9) # 25bc <leds>
+ e3c:	5c04a783          	lw	x15,1472(x9) # 25c0 <leds>
  e40:	05044703          	lbu	x14,80(x8)
  e44:	00e78023          	sb	x14,0(x15)
 #   while (1) {
@@ -1531,7 +1531,7 @@ Disassembly of section .text:
 # }
  e9c:	00008067          	jalr	x0,0(x1)
 #     while (*uart_out)
- ea0:	5c06a703          	lw	x14,1472(x13) # 25c0 <uart_out>
+ ea0:	5c46a703          	lw	x14,1476(x13) # 25c4 <uart_out>
  ea4:	00074603          	lbu	x12,0(x14)
  ea8:	fe061ee3          	bne	x12,x0,ea4 <uart_send_str+0x14>
 #     *uart_out = *str++;
@@ -1585,7 +1585,7 @@ Disassembly of section .text:
 # void uart_send_char(char ch) {
 #   while (*uart_out)
  f0c:	000027b7          	lui	x15,0x2
- f10:	5c07a783          	lw	x15,1472(x15) # 25c0 <uart_out>
+ f10:	5c47a783          	lw	x15,1476(x15) # 25c4 <uart_out>
  f14:	0007c703          	lbu	x14,0(x15)
  f18:	fe071ee3          	bne	x14,x0,f14 <uart_send_char+0x8>
 #     ;
@@ -1600,7 +1600,7 @@ Disassembly of section .text:
 #   char ch;
 #   while ((ch = *uart_in) == 0)
  f24:	000027b7          	lui	x15,0x2
- f28:	5c47a703          	lw	x14,1476(x15) # 25c4 <uart_in>
+ f28:	5c87a703          	lw	x14,1480(x15) # 25c8 <uart_in>
  f2c:	00074783          	lbu	x15,0(x14)
  f30:	0ff7f513          	andi	x10,x15,255
  f34:	fe078ce3          	beq	x15,x0,f2c <uart_read_char+0x8>
