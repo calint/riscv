@@ -17,6 +17,7 @@ typedef unsigned char object_id;
 typedef unsigned char entity_id;
 typedef const char *entity_name;
 typedef const char *object_name;
+typedef const char *location_name;
 typedef unsigned char direction;
 
 volatile unsigned char *leds = (unsigned char *)TOP_OF_RAM;
@@ -40,13 +41,13 @@ typedef struct input_buffer {
 static input_buffer inbuf;
 
 typedef struct object {
-  const char *name;
+  object_name name;
 } object;
 
 static object objects[] = {{""}, {"notebook"}, {"mirror"}, {"lighter"}};
 
 typedef struct entity {
-  const char *name;
+  entity_name name;
   location_id location;
   object_id objects[ENTITY_MAX_OBJECTS];
 } entity;
@@ -54,7 +55,7 @@ typedef struct entity {
 static entity entities[] = {{"", 0, {0}}, {"me", 1, {2}}, {"u", 2, {0}}};
 
 typedef struct location {
-  const char *name;
+  location_name name;
   object_id objects[LOCATION_MAX_OBJECTS];
   entity_id entities[LOCATION_MAX_ENTITIES];
   location_id exits[LOCATION_MAX_EXITS];
