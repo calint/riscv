@@ -47,9 +47,10 @@ static const char *exit_names[] = {"north", "east", "south",
                                    "west",  "up",   "down"};
 
 static location locations[] = {{"", {0}, {0}, {0}},
-                               {"roome", {0}, {1}, {2, 3}},
+                               {"roome", {0}, {1}, {2, 3, 0, 4}},
                                {"office", {1, 3}, {2}, {0, 0, 1}},
-                               {"bathroom", {0}, {0}, {0}}};
+                               {"bathroom", {0}, {0}, {0}},
+                               {"kitchen", {0}, {0}, {0, 1}}};
 
 typedef struct entity {
   const char *name;
@@ -110,23 +111,9 @@ void describe_current_location() {
   const location_id current_location = entities[active_entity].location;
   uart_send_str(locations[current_location].name);
   uart_send_str("\r\nu c: ");
-  // print entities in current location
-  unsigned char add_list_sep = 0;
-  const entity_id *ents = locations[current_location].entities;
-  for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
-    const entity_id id = ents[i];
-    if (!id)
-      break;
-    if (id != active_entity) {
-      if (add_list_sep) {
-        uart_send_str(", ");
-      } else {
-        add_list_sep = 1;
-      }
-      uart_send_str(entities[id].name);
-    }
-  }
+
   // print objects in current location
+  unsigned char add_list_sep = 0;
   const object_id *objs = locations[current_location].objects;
   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
     const object_id id = objs[i];
@@ -140,11 +127,33 @@ void describe_current_location() {
     uart_send_str(objects[id].name);
   }
   if (!add_list_sep) {
-    uart_send_str("no one");
+    uart_send_str("nothing");
   }
+  uart_send_str("\r\n");
+
+  // print entities in current location
+  add_list_sep = 0;
+  const entity_id *ents = locations[current_location].entities;
+  for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
+    const entity_id id = ents[i];
+    if (!id)
+      break;
+    if (id == active_entity)
+      continue;
+    if (add_list_sep) {
+      uart_send_str(", ");
+    } else {
+      add_list_sep = 1;
+    }
+    uart_send_str(entities[id].name);
+  }
+  if (add_list_sep) {
+    uart_send_str(" is here\r\n");
+  }
+
   // print exits from current location
   add_list_sep = 0;
-  uart_send_str("\r\nexits: ");
+  uart_send_str("exits: ");
   for (unsigned i = 0; i < LOCATION_MAX_EXITS; i++) {
     if (locations[current_location].exits[i]) {
       if (add_list_sep) {
@@ -290,10 +299,10 @@ void handle_inbuf() {
       break;
     }
   }
-//  for (unsigned i = 0; i < nwords; i++) {
-//    uart_send_str(words[i]);
-//    uart_send_str("\r\n");
-//  }
+  //  for (unsigned i = 0; i < nwords; i++) {
+  //    uart_send_str(words[i]);
+  //    uart_send_str("\r\n");
+  //  }
   if (strings_equal(words[0], "i")) {
     describe_inventory();
     uart_send_str("\r\n");
