@@ -490,9 +490,8 @@ Disassembly of section .text:
 
 00000428 <add_object_to_list>:
 # 
-# bool add_object_to_list(object_id list[], unsigned list_max_size,
-#                         object_id oid) {
-#   for (unsigned i = 0; i < list_max_size - 1; i++) {
+# bool add_object_to_list(object_id list[], unsigned list_len, object_id oid) {
+#   for (unsigned i = 0; i < list_len - 1; i++) {
  428:	00000793          	addi	x15,x0,0
  42c:	fff58593          	addi	x11,x11,-1
  430:	02b7e663          	bltu	x15,x11,45c <add_object_to_list+0x34>
@@ -503,11 +502,11 @@ Disassembly of section .text:
 #   }
 #   uart_send_str("space full\r\n");
  434:	00001537          	lui	x10,0x1
-#                         object_id oid) {
+# bool add_object_to_list(object_id list[], unsigned list_len, object_id oid) {
  438:	ff010113          	addi	x2,x2,-16
 #   uart_send_str("space full\r\n");
  43c:	04050513          	addi	x10,x10,64 # 1040 <delay+0x10c>
-#                         object_id oid) {
+# bool add_object_to_list(object_id list[], unsigned list_len, object_id oid) {
  440:	00112623          	sw	x1,12(x2)
 #   uart_send_str("space full\r\n");
  444:	00001097          	auipc	x1,0x1
@@ -520,7 +519,7 @@ Disassembly of section .text:
 # }
  454:	01010113          	addi	x2,x2,16
  458:	00008067          	jalr	x0,0(x1)
-#   for (unsigned i = 0; i < list_max_size - 1; i++) {
+#   for (unsigned i = 0; i < list_len - 1; i++) {
  45c:	00178713          	addi	x14,x15,1
 #     if (list[i])
  460:	00f507b3          	add	x15,x10,x15
@@ -536,15 +535,14 @@ Disassembly of section .text:
  478:	00100513          	addi	x10,x0,1
 # }
  47c:	00008067          	jalr	x0,0(x1)
-#   for (unsigned i = 0; i < list_max_size - 1; i++) {
+#   for (unsigned i = 0; i < list_len - 1; i++) {
  480:	00070793          	addi	x15,x14,0
  484:	fadff06f          	jal	x0,430 <add_object_to_list+0x8>
 
 00000488 <add_entity_to_list>:
 # 
-# bool add_entity_to_list(entity_id list[], unsigned list_max_size,
-#                         entity_id eid) {
-#   for (unsigned i = 0; i < list_max_size - 1; i++) {
+# bool add_entity_to_list(entity_id list[], unsigned list_len, entity_id eid) {
+#   for (unsigned i = 0; i < list_len - 1; i++) {
  488:	00000793          	addi	x15,x0,0
  48c:	fff58593          	addi	x11,x11,-1
  490:	02b7e663          	bltu	x15,x11,4bc <add_entity_to_list+0x34>
@@ -555,11 +553,11 @@ Disassembly of section .text:
 #   }
 #   uart_send_str("location full\r\n");
  494:	00001537          	lui	x10,0x1
-#                         entity_id eid) {
+# bool add_entity_to_list(entity_id list[], unsigned list_len, entity_id eid) {
  498:	ff010113          	addi	x2,x2,-16
 #   uart_send_str("location full\r\n");
  49c:	05050513          	addi	x10,x10,80 # 1050 <delay+0x11c>
-#                         entity_id eid) {
+# bool add_entity_to_list(entity_id list[], unsigned list_len, entity_id eid) {
  4a0:	00112623          	sw	x1,12(x2)
 #   uart_send_str("location full\r\n");
  4a4:	00001097          	auipc	x1,0x1
@@ -572,7 +570,7 @@ Disassembly of section .text:
 # }
  4b4:	01010113          	addi	x2,x2,16
  4b8:	00008067          	jalr	x0,0(x1)
-#   for (unsigned i = 0; i < list_max_size - 1; i++) {
+#   for (unsigned i = 0; i < list_len - 1; i++) {
  4bc:	00178713          	addi	x14,x15,1
 #     if (list[i])
  4c0:	00f507b3          	add	x15,x10,x15
@@ -588,15 +586,15 @@ Disassembly of section .text:
  4d8:	00100513          	addi	x10,x0,1
 # }
  4dc:	00008067          	jalr	x0,0(x1)
-#   for (unsigned i = 0; i < list_max_size - 1; i++) {
+#   for (unsigned i = 0; i < list_len - 1; i++) {
  4e0:	00070793          	addi	x15,x14,0
  4e4:	fadff06f          	jal	x0,490 <add_entity_to_list+0x8>
 
 000004e8 <remove_entity_from_list>:
 # 
-# void remove_entity_from_list(entity_id list[], unsigned list_max_size,
+# void remove_entity_from_list(entity_id list[], unsigned list_len,
 #                              entity_id eid) {
-#   for (unsigned i = 0; i < list_max_size - 1; i++) {
+#   for (unsigned i = 0; i < list_len - 1; i++) {
  4e8:	fff58813          	addi	x16,x11,-1
  4ec:	00a585b3          	add	x11,x11,x10
  4f0:	00000713          	addi	x14,x0,0
@@ -616,7 +614,7 @@ Disassembly of section .text:
  50c:	00e507b3          	add	x15,x10,x14
  510:	0007c683          	lbu	x13,0(x15)
  514:	00c68e63          	beq	x13,x12,530 <remove_entity_from_list+0x48>
-#   for (unsigned i = 0; i < list_max_size - 1; i++) {
+#   for (unsigned i = 0; i < list_len - 1; i++) {
  518:	00170713          	addi	x14,x14,1
  51c:	fddff06f          	jal	x0,4f8 <remove_entity_from_list+0x10>
 #       list[j] = list[j + 1];
@@ -627,7 +625,7 @@ Disassembly of section .text:
  528:	fed78fa3          	sb	x13,-1(x15)
 #       if (!list[j])
  52c:	00068663          	beq	x13,x0,538 <remove_entity_from_list+0x50>
-#     for (unsigned j = i; j < list_max_size - 1; j++) {
+#     for (unsigned j = i; j < list_len - 1; j++) {
  530:	feb798e3          	bne	x15,x11,520 <remove_entity_from_list+0x38>
  534:	fe5ff06f          	jal	x0,518 <remove_entity_from_list+0x30>
 # }
@@ -916,12 +914,12 @@ Disassembly of section .text:
 
 0000083c <action_go>:
 # 
-# void action_go(entity_id eid, unsigned char dir) {
+# void action_go(entity_id eid, direction dir) {
  83c:	fe010113          	addi	x2,x2,-32
 #   entity *ent = &entities[eid];
 #   location *loc = &locations[ent->location];
  840:	00251793          	slli	x15,x10,0x2
-# void action_go(entity_id eid, unsigned char dir) {
+# void action_go(entity_id eid, direction dir) {
  844:	00912a23          	sw	x9,20(x2)
 #   location *loc = &locations[ent->location];
  848:	00a787b3          	add	x15,x15,x10
@@ -930,7 +928,7 @@ Disassembly of section .text:
  854:	54448493          	addi	x9,x9,1348 # 2544 <entities>
  858:	00f484b3          	add	x9,x9,x15
  85c:	0044c783          	lbu	x15,4(x9)
-# void action_go(entity_id eid, unsigned char dir) {
+# void action_go(entity_id eid, direction dir) {
  860:	00812c23          	sw	x8,24(x2)
  864:	01312623          	sw	x19,12(x2)
 #   location_id to = loc->exits[dir];
@@ -943,11 +941,11 @@ Disassembly of section .text:
  880:	00241413          	slli	x8,x8,0x2
  884:	008987b3          	add	x15,x19,x8
  888:	00b787b3          	add	x15,x15,x11
-# void action_go(entity_id eid, unsigned char dir) {
+# void action_go(entity_id eid, direction dir) {
  88c:	01212823          	sw	x18,16(x2)
 #   location_id to = loc->exits[dir];
  890:	08c7c903          	lbu	x18,140(x15)
-# void action_go(entity_id eid, unsigned char dir) {
+# void action_go(entity_id eid, direction dir) {
  894:	00112e23          	sw	x1,28(x2)
  898:	01412423          	sw	x20,8(x2)
 #   if (!to) {
