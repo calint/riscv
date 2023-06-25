@@ -27,7 +27,7 @@ char uart_read_char();
 void uart_send_hex_byte(char ch);
 void uart_send_hex_nibble(char nibble);
 
-static char *hello = "welcome to adventure #3\r\n\r\n";
+static char *hello = "welcome to adventure #3\r\n    type 'help'\r\n\r\n";
 
 typedef struct input_buffer {
   char line[80];
