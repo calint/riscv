@@ -89,6 +89,10 @@ void run() {
     input_inbuf();
     uart_send_str("\r\n");
     handle_inbuf();
+    if (active_entity == 1)
+      active_entity = 2;
+    else
+      active_entity = 1;
   }
 }
 
@@ -281,6 +285,41 @@ void action_go(unsigned char dir) {
   ent->location = to;
 }
 
+void action_give(const char *entity_name, const char *object_name) {
+  entity *ent = &entities[active_entity];
+  location *loc = &locations[ent->location];
+  entity_id *ents = loc->entities;
+  for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
+    if (!ents[i])
+      break;
+    entity *to = &entities[ents[i]];
+    if (!strings_equal(to->name, entity_name))
+      continue;
+    object_id *objs = ent->inventory;
+    for (unsigned j = 0; j < ENTITY_MAX_OBJECTS; j++) {
+      const object_id oid = objs[j];
+      if (!oid)
+        break;
+
+      //      uart_send_str(objects[oid].name);
+      //      uart_send_str(" ? ");
+      //      uart_send_str(object_name);
+      //      uart_send_str("\r\n");
+
+      if (!strings_equal(objects[oid].name, object_name))
+        continue;
+      remove_object_from_list_by_index(objs, j);
+      add_object_to_list(to->inventory, ENTITY_MAX_OBJECTS, oid);
+      return;
+    }
+    uart_send_str(object_name);
+    uart_send_str(" not in inventory\r\n\r\n");
+    return;
+  }
+  uart_send_str(entity_name);
+  uart_send_str(" is not here\r\n\r\n");
+}
+
 void handle_inbuf() {
   const char *words[8];
   char *ptr = inbuf.line;
@@ -326,6 +365,16 @@ void handle_inbuf() {
     action_go(2);
   } else if (strings_equal(words[0], "w")) {
     action_go(3);
+  } else if (strings_equal(words[0], "g")) {
+    if (nwords < 2) {
+      uart_send_str("give to who\r\n\r\n");
+      return;
+    }
+    if (nwords < 3) {
+      uart_send_str("give what\r\n\r\n");
+      return;
+    }
+    action_give(words[1], words[2]);
   } else {
     uart_send_str("not understood\r\n\r\n");
   }
@@ -355,10 +404,10 @@ void describe_inventory() {
 void input_inbuf() {
   while (1) {
     const char ch = uart_read_char();
-    uart_send_char(ch);
     if (ch == CHAR_BACKSPACE) {
       if (inbuf.ix > 0) {
         inbuf.ix--;
+        uart_send_char(ch);
       }
     } else if (ch == CHAR_CARRIAGE_RETURN ||
                inbuf.ix == sizeof(inbuf.line) - 1) {
@@ -368,6 +417,7 @@ void input_inbuf() {
     } else {
       inbuf.line[inbuf.ix] = ch;
       inbuf.ix++;
+      uart_send_char(ch);
     }
     *leds = inbuf.ix;
   }
