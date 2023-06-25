@@ -72,7 +72,7 @@ void remove_object_from_list_by_index(object_id list[], unsigned ix);
 bool add_entity_to_list(entity_id list[], unsigned list_max_size, entity_id id);
 void remove_entity_from_list_by_index(entity_id list[], unsigned ix);
 void remove_entity_from_list(entity_id list[], unsigned list_max_size,
-                             entity_id ix);
+                             entity_id id);
 void action_give(const char *entity_name, const char *object_name);
 void action_go(unsigned char dir);
 void action_drop(const char *object_name);
