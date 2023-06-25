@@ -171,7 +171,7 @@ Disassembly of section .text:
 #   uart_send_str("\r\nu c: ");
 # 
 #   // print objects in current location
-#   unsigned char add_list_sep = 0;
+#   bool add_list_sep = FALSE;
 #   const object_id *objs = loc->objects;
  158:	00440a13          	addi	x20,x8,4
  15c:	013a0a33          	add	x20,x20,x19
@@ -192,7 +192,7 @@ Disassembly of section .text:
 #     if (add_list_sep) {
 #       uart_send_str(", ");
 #     } else {
-#       add_list_sep = 1;
+#       add_list_sep = TRUE;
 #     }
 #     uart_send_str(objects[oid].name);
  184:	00002ab7          	lui	x21,0x2
@@ -232,14 +232,14 @@ Disassembly of section .text:
 #     if (add_list_sep) {
 #       uart_send_str(", ");
 #     } else {
-#       add_list_sep = 1;
+#       add_list_sep = TRUE;
 #     }
 #     uart_send_str(entities[eid].name);
  1d0:	00002937          	lui	x18,0x2
  1d4:	08440a93          	addi	x21,x8,132
 #   for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
  1d8:	00000c13          	addi	x24,x0,0
-#   add_list_sep = 0;
+#   add_list_sep = FALSE;
  1dc:	00000793          	addi	x15,x0,0
 #     if (eid == active_entity)
  1e0:	00002b37          	lui	x22,0x2
@@ -287,7 +287,7 @@ Disassembly of section .text:
 #   }
 # 
 #   // print exits from current location
-#   add_list_sep = 0;
+#   add_list_sep = FALSE;
 #   uart_send_str("exits: ");
  254:	00001537          	lui	x10,0x1
  258:	02050513          	addi	x10,x10,32 # 1020 <delay+0xe8>
@@ -298,7 +298,7 @@ Disassembly of section .text:
 #   for (unsigned i = 0; i < LOCATION_MAX_EXITS; i++) {
  26c:	24c40413          	addi	x8,x8,588 # 224c <exit_names>
  270:	01840913          	addi	x18,x8,24
-#   add_list_sep = 0;
+#   add_list_sep = FALSE;
  274:	00000793          	addi	x15,x0,0
 #     if (!loc->exits[i])
 #       continue;
@@ -315,7 +315,7 @@ Disassembly of section .text:
  28c:	00001097          	auipc	x1,0x1
  290:	c00080e7          	jalr	x1,-1024(x1) # e8c <uart_send_str>
 #     } else {
-#       add_list_sep = 1;
+#       add_list_sep = TRUE;
 #     }
 #     uart_send_str(exit_names[i]);
  294:	00042503          	lw	x10,0(x8)

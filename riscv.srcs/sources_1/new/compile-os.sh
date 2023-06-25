@@ -21,9 +21,13 @@ riscv32-unknown-elf-gcc \
 	-mstrict-align \
 	-Wfatal-errors \
 	-Wall -Wextra -pedantic \
+	-Wconversion \
+	-Wshadow \
 	-Wl,-Ttext=0x0 \
 	-Wl,--no-relax \
 	os_start.S $SRC -o $BIN
+
+#	-Wpadded \
 
 riscv32-unknown-elf-objcopy $BIN -O binary $BIN.bin
 riscv32-unknown-elf-objdump -Mnumeric,no-aliases --source-comment -Sr $BIN > $BIN.lst
