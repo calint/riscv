@@ -85,7 +85,8 @@ void run() {
   uart_send_str(hello);
   while (1) {
     describe_current_location();
-    uart_send_str("> ");
+    uart_send_str(entities[active_entity].name);
+    uart_send_str(" > ");
     input_inbuf();
     uart_send_str("\r\n");
     handle_inbuf();
@@ -278,7 +279,6 @@ void action_go(unsigned char dir) {
     uart_send_str("cannot go there\r\n\r\n");
     return;
   }
-
   remove_entity_from_list(loc->entities, LOCATION_MAX_ENTITIES, active_entity);
   add_entity_to_list(locations[to].entities, LOCATION_MAX_ENTITIES,
                      active_entity);
@@ -300,12 +300,6 @@ void action_give(const char *entity_name, const char *object_name) {
       const object_id oid = objs[j];
       if (!oid)
         break;
-
-      //      uart_send_str(objects[oid].name);
-      //      uart_send_str(" ? ");
-      //      uart_send_str(object_name);
-      //      uart_send_str("\r\n");
-
       if (!strings_equal(objects[oid].name, object_name))
         continue;
       remove_object_from_list_by_index(objs, j);
