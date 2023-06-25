@@ -98,12 +98,12 @@ Disassembly of section .text:
 #   }
 # }
 # 
-# void handle_inbuf() {
+# void handle_inbuf() { // ? inbuf as argument
   c0:	fd010113          	addi	x2,x2,-48
 #   const char *words[8];
 #   char *ptr = inbuf.line;
   c4:	000027b7          	lui	x15,0x2
-# void handle_inbuf() {
+# void handle_inbuf() { // ? inbuf as argument
   c8:	02912223          	sw	x9,36(x2)
   cc:	02112623          	sw	x1,44(x2)
   d0:	02812423          	sw	x8,40(x2)

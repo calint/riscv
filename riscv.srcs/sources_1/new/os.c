@@ -106,7 +106,7 @@ void run() {
   }
 }
 
-void handle_inbuf() {
+void handle_inbuf() { // ? inbuf as argument
   const char *words[8];
   char *ptr = inbuf.line;
   unsigned nwords = 0;
