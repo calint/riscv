@@ -7,7 +7,7 @@
 module RAM #(
     parameter NUM_COL = 4,
     parameter COL_WIDTH = 8,
-    parameter ADDR_WIDTH = 10, // 2**10 = RAM depth
+    parameter ADDR_WIDTH = 12, // 2**12 = RAM depth
     parameter DATA_WIDTH = NUM_COL*COL_WIDTH, // data width in bits
     parameter DATA_FILE = "RAM.mem"
 )(
