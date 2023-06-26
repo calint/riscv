@@ -83,8 +83,8 @@ void action_give(entity_id eid, object_name obj, entity_name to);
 void action_go(entity_id eid, direction dir);
 void action_drop(entity_id eid, object_name obj);
 void action_take(entity_id eid, object_name obj);
-void input(input_buffer *inbuf);
-void handle_input(input_buffer *inbuf);
+void input(input_buffer *buf);
+void handle_input(input_buffer *buf);
 bool strings_equal(const char *s1, const char *s2);
 
 unsigned char active_entity = 1;
