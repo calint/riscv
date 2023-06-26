@@ -92,7 +92,7 @@ unsigned char active_entity = 1;
 void run() {
   uart_send_str(hello);
   while (1) {
-    entity *ent = &entities[active_entity];
+    const entity *ent = &entities[active_entity];
     print_location(ent->location, active_entity);
     uart_send_str(ent->name);
     uart_send_str(" > ");
@@ -353,7 +353,7 @@ void action_drop(entity_id eid, object_name obj) {
 void action_go(entity_id eid, direction dir) {
   entity *ent = &entities[eid];
   location *loc = &locations[ent->location];
-  location_id to = loc->exits[dir];
+  const location_id to = loc->exits[dir];
   if (!to) {
     uart_send_str("cannot go there\r\n\r\n");
     return;
@@ -366,8 +366,8 @@ void action_go(entity_id eid, direction dir) {
 
 void action_give(entity_id eid, object_name obj, entity_name to_ent) {
   entity *ent = &entities[eid];
-  location *loc = &locations[ent->location];
-  entity_id *lse = loc->entities;
+  const location *loc = &locations[ent->location];
+  const entity_id *lse = loc->entities;
   for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
     if (!lse[i])
       break;

@@ -28,7 +28,7 @@ Disassembly of section .text:
   14:	fe010113          	addi	x2,x2,-32
   18:	01212823          	sw	x18,16(x2)
 #   while (1) {
-#     entity *ent = &entities[active_entity];
+#     const entity *ent = &entities[active_entity];
 #     print_location(ent->location, active_entity);
   1c:	00002937          	lui	x18,0x2
 # void run() {
@@ -38,7 +38,7 @@ Disassembly of section .text:
   2c:	01512223          	sw	x21,4(x2)
   30:	00112e23          	sw	x1,28(x2)
   34:	00812c23          	sw	x8,24(x2)
-#     entity *ent = &entities[active_entity];
+#     const entity *ent = &entities[active_entity];
   38:	000024b7          	lui	x9,0x2
 #   uart_send_str(hello);
   3c:	00001097          	auipc	x1,0x1
@@ -54,7 +54,7 @@ Disassembly of section .text:
 #     handle_inbuf();
 #     if (active_entity == 1)
   50:	00100a93          	addi	x21,x0,1
-#     entity *ent = &entities[active_entity];
+#     const entity *ent = &entities[active_entity];
   54:	5cc4c583          	lbu	x11,1484(x9) # 25cc <active_entity>
 #     print_location(ent->location, active_entity);
   58:	00259413          	slli	x8,x11,0x2
@@ -1153,7 +1153,7 @@ Disassembly of section .text:
 # void action_go(entity_id eid, direction dir) {
  aac:	02812423          	sw	x8,40(x2)
  ab0:	01312e23          	sw	x19,28(x2)
-#   location_id to = loc->exits[dir];
+#   const location_id to = loc->exits[dir];
  ab4:	00379413          	slli	x8,x15,0x3
  ab8:	00f40433          	add	x8,x8,x15
  abc:	00241413          	slli	x8,x8,0x2
@@ -1165,7 +1165,7 @@ Disassembly of section .text:
  ad4:	00b787b3          	add	x15,x15,x11
 # void action_go(entity_id eid, direction dir) {
  ad8:	03212023          	sw	x18,32(x2)
-#   location_id to = loc->exits[dir];
+#   const location_id to = loc->exits[dir];
  adc:	08c7c903          	lbu	x18,140(x15)
 # void action_go(entity_id eid, direction dir) {
  ae0:	02112623          	sw	x1,44(x2)
@@ -1228,11 +1228,11 @@ Disassembly of section .text:
  b7c:	fc010113          	addi	x2,x2,-64
  b80:	02912a23          	sw	x9,52(x2)
 #   entity *ent = &entities[eid];
-#   location *loc = &locations[ent->location];
+#   const location *loc = &locations[ent->location];
  b84:	00251493          	slli	x9,x10,0x2
 # void action_give(entity_id eid, object_name obj, entity_name to_ent) {
  b88:	03412423          	sw	x20,40(x2)
-#   location *loc = &locations[ent->location];
+#   const location *loc = &locations[ent->location];
  b8c:	00a48733          	add	x14,x9,x10
  b90:	00002a37          	lui	x20,0x2
  b94:	248a0793          	addi	x15,x20,584 # 2248 <entities>
@@ -1247,7 +1247,7 @@ Disassembly of section .text:
  bb4:	00241413          	slli	x8,x8,0x2
  bb8:	00f40433          	add	x8,x8,x15
  bbc:	00241413          	slli	x8,x8,0x2
-#   entity_id *lse = loc->entities;
+#   const entity_id *lse = loc->entities;
 #   for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
 #     if (!lse[i])
  bc0:	00002cb7          	lui	x25,0x2
