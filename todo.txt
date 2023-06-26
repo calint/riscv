@@ -1,6 +1,9 @@
 [ ] review RAM_Interface handling of Uart interface
 [ ] SoC: alu op with mux of register and immediate instead of cases
 [ ] SoC: pc module with selectable next value from mux of branch, increment etc
+[ ] sim_1: RAM.S: leds assumed to be at 0xffff_ffff
+[ ] sim_3: RAM.S: address of uart send data hardcoded in code. make .equ
+[ ] sim_4: RAM.S: address of uart receive data hardcoded in code. make .equ
 [ ] UartTx operates on negative clock edge 
 [ ] implement
 [ ]     ECALL
