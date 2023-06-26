@@ -1,5 +1,4 @@
 [ ] review RAM_Interface handling of Uart interface
-[ ] RAM depth to use all block memory (currently 32 out of 45)
 [ ] SoC: alu op with mux of register and immediate instead of cases
 [ ] SoC: pc module with selectable next value from mux of branch, increment etc
 [ ] UartTx operates on negative clock edge 
@@ -7,6 +6,8 @@
 [ ]     ECALL
 [ ]     EBREAK
 ----------------------------------------------------------------------------------
+[x] RAM depth to use all block memory (currently 32 out of 45)
+    => cannot synthesize more than 32768 4 byte words
 [-] Uart cannot send or receive 0 => ok since meant for use with terminal and text
 [x] UartTx and UartRx mapped to upper memory,
 [x]   e.g. byte at 0xffff_fffe for UartTx. UartTx writes zero after transmission of a byte.
