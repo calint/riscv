@@ -38,8 +38,6 @@ typedef struct input_buffer {
   unsigned char ix;
 } input_buffer;
 
-static input_buffer inbuf;
-
 typedef struct object {
   object_name name;
 } object;
@@ -84,13 +82,16 @@ void action_go(entity_id eid, direction dir);
 void action_drop(entity_id eid, object_name obj);
 void action_take(entity_id eid, object_name obj);
 void input(input_buffer *buf);
-void handle_input(input_buffer *buf);
+void handle_input(entity_id eid, input_buffer *buf);
 bool strings_equal(const char *s1, const char *s2);
 
-unsigned char active_entity = 1;
-
 void run() {
+  unsigned char active_entity = 1;
+  input_buffer inbuf;
+  inbuf.ix = 0;
+
   uart_send_str(hello);
+
   while (1) {
     const entity *ent = &entities[active_entity];
     print_location(ent->location, active_entity);
@@ -98,7 +99,7 @@ void run() {
     uart_send_str(" > ");
     input(&inbuf);
     uart_send_str("\r\n");
-    handle_input(&inbuf);
+    handle_input(active_entity, &inbuf);
     if (active_entity == 1)
       active_entity = 2;
     else
@@ -106,7 +107,7 @@ void run() {
   }
 }
 
-void handle_input(input_buffer *buf) {
+void handle_input(entity_id eid, input_buffer *buf) {
   const char *words[8];
   char *ptr = buf->line;
   unsigned nwords = 0;
@@ -131,28 +132,28 @@ void handle_input(input_buffer *buf) {
   if (strings_equal(words[0], "help")) {
     print_help();
   } else if (strings_equal(words[0], "i")) {
-    action_inventory(active_entity);
+    action_inventory(eid);
     uart_send_str("\r\n");
   } else if (strings_equal(words[0], "t")) {
     if (nwords < 2) {
       uart_send_str("take what\r\n\r\n");
       return;
     }
-    action_take(active_entity, words[1]);
+    action_take(eid, words[1]);
   } else if (strings_equal(words[0], "d")) {
     if (nwords < 2) {
       uart_send_str("drop what\r\n\r\n");
       return;
     }
-    action_drop(active_entity, words[1]);
+    action_drop(eid, words[1]);
   } else if (strings_equal(words[0], "n")) {
-    action_go(active_entity, 0);
+    action_go(eid, 0);
   } else if (strings_equal(words[0], "e")) {
-    action_go(active_entity, 1);
+    action_go(eid, 1);
   } else if (strings_equal(words[0], "s")) {
-    action_go(active_entity, 2);
+    action_go(eid, 2);
   } else if (strings_equal(words[0], "w")) {
-    action_go(active_entity, 3);
+    action_go(eid, 3);
   } else if (strings_equal(words[0], "g")) {
     if (nwords < 2) {
       uart_send_str("give what\r\n\r\n");
@@ -162,7 +163,7 @@ void handle_input(input_buffer *buf) {
       uart_send_str("give to whom\r\n\r\n");
       return;
     }
-    action_give(active_entity, words[1], words[2]);
+    action_give(eid, words[1], words[2]);
   } else {
     uart_send_str("not understood\r\n\r\n");
   }
@@ -425,7 +426,7 @@ void input(input_buffer *buf) {
       buf->ix++;
       uart_send_char(ch);
     }
-    *leds = buf->ix;
+    *leds = buf->ix | 0x70;
   }
 }
 
