@@ -83,8 +83,8 @@ void action_give(entity_id eid, object_name obj, entity_name to);
 void action_go(entity_id eid, direction dir);
 void action_drop(entity_id eid, object_name obj);
 void action_take(entity_id eid, object_name obj);
-void input_inbuf();
-void handle_inbuf();
+void input(input_buffer *inbuf);
+void handle_input(input_buffer *inbuf);
 bool strings_equal(const char *s1, const char *s2);
 
 unsigned char active_entity = 1;
@@ -96,9 +96,9 @@ void run() {
     print_location(ent->location, active_entity);
     uart_send_str(ent->name);
     uart_send_str(" > ");
-    input_inbuf();
+    input(&inbuf);
     uart_send_str("\r\n");
-    handle_inbuf();
+    handle_input(&inbuf);
     if (active_entity == 1)
       active_entity = 2;
     else
@@ -106,9 +106,9 @@ void run() {
   }
 }
 
-void handle_inbuf() { // ? inbuf as argument
+void handle_input(input_buffer *buf) {
   const char *words[8];
-  char *ptr = inbuf.line;
+  char *ptr = buf->line;
   unsigned nwords = 0;
   while (1) {
     words[nwords++] = ptr;
@@ -264,6 +264,7 @@ void remove_object_from_list_by_index(object_id list[], unsigned ix) {
 }
 
 bool add_object_to_list(object_id list[], unsigned list_len, object_id oid) {
+  // list_len - 1 since last element has to be 0
   for (unsigned i = 0; i < list_len - 1; i++) {
     if (list[i])
       continue;
@@ -276,6 +277,7 @@ bool add_object_to_list(object_id list[], unsigned list_len, object_id oid) {
 }
 
 bool add_entity_to_list(entity_id list[], unsigned list_len, entity_id eid) {
+  // list_len - 1 since last element has to be 0
   for (unsigned i = 0; i < list_len - 1; i++) {
     if (list[i])
       continue;
@@ -289,10 +291,11 @@ bool add_entity_to_list(entity_id list[], unsigned list_len, entity_id eid) {
 
 void remove_entity_from_list(entity_id list[], unsigned list_len,
                              entity_id eid) {
-  // list_len - 1 since last element is 0
+  // list_len - 1 since last element has to be 0
   for (unsigned i = 0; i < list_len - 1; i++) {
     if (list[i] != eid)
       continue;
+    // list_len - 1 since last element has to be 0
     for (unsigned j = i; j < list_len - 1; j++) {
       list[j] = list[j + 1];
       if (!list[j])
@@ -398,30 +401,31 @@ void print_help() {
   uart_send_str(
       "\r\ncommand:\r\n  n: go north\r\n  e: go east\r\n  s: go south\r\n  w: "
       "go west\r\n  i: "
-      "inventory\r\n  t <object>: take object\r\n  d <object>: drop "
+      "display inventory\r\n  t <object>: take object\r\n  d <object>: drop "
       "object\r\n  g <object> <entity>: give object to entity\r\n  help: this "
       "message\r\n\r\n");
 }
 
-void input_inbuf() { // ? infbuf as argument
+void input(input_buffer *buf) {
   while (1) {
     const char ch = uart_read_char();
     if (ch == CHAR_BACKSPACE) {
-      if (inbuf.ix > 0) {
-        inbuf.ix--;
+      if (buf->ix > 0) {
+        buf->ix--;
         uart_send_char(ch);
       }
     } else if (ch == CHAR_CARRIAGE_RETURN ||
-               inbuf.ix == sizeof(inbuf.line) - 1) {
-      inbuf.line[inbuf.ix] = 0;
-      inbuf.ix = 0;
+               buf->ix ==
+                   sizeof(buf->line) - 1) { // -1 since last char must be 0
+      buf->line[buf->ix] = 0;
+      buf->ix = 0;
       return;
     } else {
-      inbuf.line[inbuf.ix] = ch;
-      inbuf.ix++;
+      buf->line[buf->ix] = ch;
+      buf->ix++;
       uart_send_char(ch);
     }
-    *leds = inbuf.ix;
+    *leds = buf->ix;
   }
 }
 

@@ -1,4 +1,8 @@
 [ ] review RAM_Interface handling of Uart interface
+[ ] os.c: upload executable hex data through terminal by specifying destination and size
+[ ] os.c: executable functions attached to objects, locations and entities
+[ ] os.c: create objects and locations
+[ ] os.c: memory management of dynamic lists
 [ ] SoC: alu op with mux of register and immediate instead of cases
 [ ] SoC: pc module with selectable next value from mux of branch, increment etc
 [ ] sim_1: RAM.S: leds assumed to be at 0xffff_ffff
