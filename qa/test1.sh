@@ -5,6 +5,8 @@ set -x
 TTY=/dev/ttyUSB1
 SLP=1
 
+stty -F $TTY 9600 cs8 -cstopb -parenb
+
 cat $TTY > test1.out &
 
 read -p "program FPGA then press Enter to continue..."
