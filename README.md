@@ -11,8 +11,9 @@ intended for cmod s7 from digilent.com
 
 implements uart send and receive (see ["notes/os.c"](https://github.com/calint/riscv/blob/main/notes/os.c) for example)
 
-runs at 50 MHz with most instructions executing in one cycle except branches and jumps which use two cycles due to creating a 'bubble' in the pipeline
+128 KB byte addressable block ram for instructions and data
 
+clocked at 50 MHz with most instructions executing in one cycle except branches and jumps which use two cycles due to creating 'bubble' in the pipeline
 
 how-to with vivado v2023.1:
 * to program device edit path to ram file in ["riscv.srcs/sources_1/new/Top.v"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/Top.v) if other than the default
