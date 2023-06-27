@@ -9,9 +9,9 @@ module RAM_Interface #(
     parameter CLK_FREQ = 50_000_000,
     parameter BAUD_RATE = 9600,
     parameter TOP_ADDR = {(ADDR_WIDTH+2){1'b1}},
-    parameter ADDR_LEDS = TOP_ADDR,
-    parameter ADDR_UART_TX = TOP_ADDR-1,
-    parameter ADDR_UART_RX = TOP_ADDR-2
+    parameter ADDR_LEDS = TOP_ADDR, // address of leds, 7 bits
+    parameter ADDR_UART_TX = TOP_ADDR-1, // send byte
+    parameter ADDR_UART_RX = TOP_ADDR-2 // received byte
 )(
     input wire rst,
 
