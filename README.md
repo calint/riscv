@@ -7,9 +7,9 @@ implements the rv32i instructions with the exception for: FENCE, ECALL, EBREAK
 
 ad-hoc 2-stage pipeline where new instruction is fetched while previous executes
 
-implements UART send and receive (see ["riscv.srcs/sources_1/new/os.c"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/os.c) for example)
-
 intended for Cmod S7 from digilent.com
+
+implements UART send and receive (see ["riscv.srcs/sources_1/new/os.c"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/os.c) for example)
 
 runs at 50 MHz with most instructions executing in one cycle except branches and jumps which use two cycles due to creating a 'bubble' in the pipeline
 
