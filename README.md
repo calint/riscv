@@ -1,15 +1,15 @@
 # riscv
-experiments implementing a simple riscv cpu to gain experience with verilog and minimalistic cpu design
+experiments implementing a risc-v cpu to gain experience with verilog and minimalistic cpu design
 
 most of the implementation in an "always @*" block for the sake of simplicity and overview
 
-implements the rv32i instructions with the exception for: FENCE, ECALL, EBREAK
+implements the rv32i instructions with the exception for: fence, ecall, ebreak
 
-ad-hoc 2-stage pipeline where new instruction is fetched while previous executes
+ad-hoc 2-stage pipeline where a new instruction is fetched while previous executes
 
-intended for Cmod S7 from digilent.com
+intended for cmod s7 from digilent.com
 
-implements UART send and receive (see ["riscv.srcs/sources_1/new/os.c"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/os.c) for example)
+implements uart send and receive (see ["riscv.srcs/sources_1/new/os.c"](https://github.com/calint/riscv/blob/main/notes/os.c) for example)
 
 runs at 50 MHz with most instructions executing in one cycle except branches and jumps which use two cycles due to creating a 'bubble' in the pipeline
 
