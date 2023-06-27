@@ -9,7 +9,7 @@ ad-hoc 2-stage pipeline where a new instruction is fetched while previous execut
 
 intended for cmod s7 from digilent.com
 
-implements uart send and receive (see ["riscv.srcs/sources_1/new/os.c"](https://github.com/calint/riscv/blob/main/notes/os.c) for example)
+implements uart send and receive (see ["notes/os.c"](https://github.com/calint/riscv/blob/main/notes/os.c) for example)
 
 runs at 50 MHz with most instructions executing in one cycle except branches and jumps which use two cycles due to creating a 'bubble' in the pipeline
 
