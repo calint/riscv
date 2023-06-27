@@ -7,7 +7,11 @@ module RAM_Interface #(
     parameter DATA_WIDTH = 32,
     parameter DATA_FILE = "RAM.mem",
     parameter CLK_FREQ = 50_000_000,
-    parameter BAUD_RATE = 9600
+    parameter BAUD_RATE = 9600,
+    parameter TOP_ADDR = {(ADDR_WIDTH+2){1'b1}},
+    parameter ADDR_LEDS = TOP_ADDR,
+    parameter ADDR_UART_TX = TOP_ADDR-1,
+    parameter ADDR_UART_RX = TOP_ADDR-2
 )(
     input wire rst,
 
@@ -30,11 +34,6 @@ module RAM_Interface #(
     output wire uart_tx,
     input wire uart_rx
 );
-
-localparam TOP_ADDR = {(ADDR_WIDTH+2){1'b1}};
-localparam ADDR_LEDS = TOP_ADDR;
-localparam ADDR_UART_TX = TOP_ADDR - 1;
-localparam ADDR_UART_RX = TOP_ADDR - 2;
 
 reg [ADDR_WIDTH-1:0] ram_addrA;
 reg [DATA_WIDTH-1:0] ram_dinA;

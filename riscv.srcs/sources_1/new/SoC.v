@@ -259,7 +259,10 @@ Registers regs (
 );
 
 RAM_Interface #(
-    .ADDR_WIDTH(15), // 2**15 = RAM depth in words
+    .ADDR_WIDTH(15), // 2**15 = RAM depth in 4 byte words
+    .ADDR_LEDS(17'h1_ffff),
+    .ADDR_UART_TX(17'h1_fffe),
+    .ADDR_UART_RX(17'h1_fffd),
     .DATA_FILE(RAM_FILE),
     .CLK_FREQ(CLK_FREQ),
     .BAUD_RATE(BAUD_RATE)
