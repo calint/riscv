@@ -19,5 +19,5 @@ how-to with Vivado v2023.1:
 * connect fpga board, run synthesis, run implementation, generate bitstream, program device
 * find out which tty is on the usb connected to the card (e.g. /dev/ttyUSB1)
 * connect with terminal at 9600 baud, 8 bits, 1 stop bit, no parity 
-* button 0 is reset, click it to restart and display the prompt (does not reset ram)
+* button 0 is reset, click it to restart and display the prompt (does not reset RAM)
 * "welcome to adventure #3" is the prompt
