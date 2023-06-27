@@ -10,8 +10,8 @@ module RAM_Interface #(
     parameter BAUD_RATE = 9600,
     parameter TOP_ADDR = {(ADDR_WIDTH+2){1'b1}},
     parameter ADDR_LEDS = TOP_ADDR, // address of leds, 7 bits
-    parameter ADDR_UART_TX = TOP_ADDR-1, // send byte
-    parameter ADDR_UART_RX = TOP_ADDR-2 // received byte
+    parameter ADDR_UART_TX = TOP_ADDR-1, // send byte address
+    parameter ADDR_UART_RX = TOP_ADDR-2 // received byte address, must be read with 'lbu'
 )(
     input wire rst,
 
