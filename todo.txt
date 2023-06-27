@@ -1,7 +1,10 @@
 [ ] review RAM_Interface handling of Uart interface
+[ ] os.c: name_t instead of location_name, entity_name and object_name
 [ ] os.c: upload executable hex data through terminal by specifying destination and size
 [ ] os.c: executable functions attached to objects, locations and entities
 [ ] os.c: create objects and locations
+[ ] os.c: rename objects, locations and entities
+[ ] os.c: id in objects, locations and entities
 [ ] os.c: memory management of dynamic lists
 [ ] SoC: alu op with mux of register and immediate instead of cases
 [ ] SoC: pc module with selectable next value from mux of branch, increment etc
