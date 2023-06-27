@@ -12,12 +12,11 @@
 [ ] sim_3: RAM.S: address of uart send data hardcoded in code. make .equ
 [ ] sim_4: RAM.S: address of uart receive data hardcoded in code. make .equ
 [ ] UartTx operates on negative clock edge 
-[ ] implement
-[ ]     ECALL
-[ ]     EBREAK
 ----------------------------------------------------------------------------------
+[-] implement ECALL => no system calls in intended code
+[-] implement EBREAK => no support for debugger
 [x] RAM depth to use all block memory (currently 32 out of 45)
-    => cannot synthesize more than 32768 4 byte words
+    => cannot synthesize more than 32768 4 byte words without using more than 45 blocks
 [-] Uart cannot send or receive 0 => ok since meant for use with terminal and text
 [x] UartTx and UartRx mapped to upper memory,
 [x]   e.g. byte at 0xffff_fffe for UartTx. UartTx writes zero after transmission of a byte.
