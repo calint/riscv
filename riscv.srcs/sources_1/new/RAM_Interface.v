@@ -31,6 +31,11 @@ module RAM_Interface #(
     input wire uart_rx
 );
 
+localparam TOP_ADDR = {(ADDR_WIDTH+2){1'b1}};
+localparam ADDR_LEDS = TOP_ADDR;
+localparam ADDR_UART_TX = TOP_ADDR - 1;
+localparam ADDR_UART_RX = TOP_ADDR - 2;
+
 reg [ADDR_WIDTH-1:0] ram_addrA;
 reg [DATA_WIDTH-1:0] ram_dinA;
 wire [DATA_WIDTH-1:0] ram_doutA;
@@ -113,7 +118,7 @@ always @(posedge clk) begin
         reA_prev <= reA;
         addrA_prev <= addrA;
         // if previous command was a read from uart then reset the read data
-        if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 2 && reA_prev == 3'b001) begin
+        if (addrA_prev == ADDR_UART_RX && reA_prev == 3'b001) begin
             uartrx_data_read <= 0;
         end
         // if uart has data ready then copy the data from uart and acknowledge (uartrx_go = 0)
@@ -131,10 +136,10 @@ always @(posedge clk) begin
             uarttx_go <= 0;
         end
         // if writing to leds
-        if (addrA == {(ADDR_WIDTH+2){1'b1}} && weA == 2'b01) begin
+        if (addrA == ADDR_LEDS && weA == 2'b01) begin
             leds <= dinA[6:0];
         // if writing to uart
-        end else if (addrA == {(ADDR_WIDTH+2){1'b1}} - 1 && weA == 2'b01) begin
+        end else if (addrA == ADDR_UART_TX && weA == 2'b01) begin
             uarttx_out <= dinA[7:0];
             uarttx_go <= 1;
         end
@@ -144,11 +149,11 @@ end
 always @* begin
 //    doutA = 0; // ? note. uncommenting this creates infinite loop when simulating with iverilog
     // create the 'doutA' based on the 'addrA' in previous cycle (one cycle delay for data ready)
-    if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 1 && reA_prev == 3'b001) begin
+    if (addrA_prev == ADDR_UART_TX && reA_prev == 3'b001) begin
         // read unsigned byte from 0x1_fffe
         // uart_tx
         doutA = {{24{1'b0}}, uarttx_out};
-    end else if (addrA_prev == {(ADDR_WIDTH+2){1'b1}} - 2 && reA_prev == 3'b001) begin
+    end else if (addrA_prev == ADDR_UART_RX && reA_prev == 3'b001) begin
         // read unsigned byte from 0x1_fffd
         // uart_rx
         doutA = {{24{1'b0}}, uartrx_data_read};
