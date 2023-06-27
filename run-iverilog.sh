@@ -11,7 +11,7 @@ SRCPTH=../../sources_1/new
 cd $SIMPTH
 pwd
 
-iverilog -Wall -Winfloop -pfileline=1 -o iverilog.out \
+iverilog -Wall -Winfloop -pfileline=1 -o iverilog.vvp \
     $TB \
     $SRCPTH/RAM.v \
     $SRCPTH/UartTx.v \
@@ -20,5 +20,5 @@ iverilog -Wall -Winfloop -pfileline=1 -o iverilog.out \
     $SRCPTH/Registers.v \
     $SRCPTH/SoC.v
 
-vvp iverilog.out
-rm iverilog.out
+vvp iverilog.vvp
+rm iverilog.vvp
