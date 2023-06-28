@@ -1,5 +1,4 @@
 #define TOP_OF_RAM 0x1ffff
-#define TOP_OF_STACK 0x1fff0 // note. update 'os_start.S' when changed
 
 volatile unsigned char *leds = (unsigned char *)TOP_OF_RAM;
 volatile unsigned char *uart_out = (unsigned char *)TOP_OF_RAM - 1;
