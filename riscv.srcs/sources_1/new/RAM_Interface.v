@@ -113,12 +113,10 @@ always @* begin
 //    doutA = 0; // ? note. uncommenting this creates infinite loop when simulating with iverilog
     // create the 'doutA' based on the 'addrA' in previous cycle (one cycle delay for data ready)
     if (addrA_prev == ADDR_UART_OUT && reA_prev == 3'b001) begin
-        // read unsigned byte from 0x1_fffe
-        // uart_tx
+        // read unsigned byte from uart_tx
         doutA = {{24{1'b0}}, uarttx_data};
     end else if (addrA_prev == ADDR_UART_IN && reA_prev == 3'b001) begin
-        // read unsigned byte from 0x1_fffd
-        // uart_rx
+        // read unsigned byte from uart_rx
         doutA = {{24{1'b0}}, uartrx_data_read};
     end else begin
         casex(reA_prev) // read size
