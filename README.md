@@ -7,7 +7,7 @@ implements the rv32i instructions with the exception for: fence, fence.i, ecall,
 
 ad-hoc 2-stage pipeline where a new instruction is fetched while previous executes
 
-intended for cmod s7 from digilent.com
+implemented on cmod s7 from digilent.com
 
 128 KB dual port block ram for instructions and data
 
