@@ -1,4 +1,6 @@
 # riscv
+next step from ["zen-one"](https://github.com/calint/zen-one)
+
 experiments implementing a risc-v cpu to gain experience with verilog and minimalistic cpu design
 
 most of the implementation is in an "always @*" block for the sake of simplicity and overview
