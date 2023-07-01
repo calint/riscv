@@ -3,7 +3,7 @@ next step from ["zen-one"](https://github.com/calint/zen-one)
 
 experiments implementing a risc-v cpu to gain experience with verilog and minimalistic cpu design
 
-most of the implementation is in an "always @*" block for the sake of simplicity and overview
+most of the implementation is in an "always @*" block for the sake of simplicity and overview (["Soc.v"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/SoC.v))
 
 implements the rv32i instructions with the exception for: fence, fence.i, ecall, ebreak and counters which are irrelevant for the intended use
 
