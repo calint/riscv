@@ -1,11 +1,11 @@
 # riscv
-continuing after ["zen-one"](https://github.com/calint/zen-one)
+next experiment after ["zen-one"](https://github.com/calint/zen-one)
 
-experiments implementing a risc-v cpu to gain experience with verilog and minimalistic cpu design
-
-most of the implementation is in an "always @*" block for the sake of simplicity and overview (["SoC.v"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/SoC.v))
+a risc-v cpu to gain experience with minimalistic cpu design
 
 implements the rv32i instructions with the exception for: fence, fence.i, ecall, ebreak and counters which are irrelevant for the intended use
+
+most of the implementation is in an "always @*" block for the sake of simplicity and overview (["SoC.v"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/SoC.v))
 
 ad-hoc 2-stage pipeline where a new instruction is fetched while previous executes
 
