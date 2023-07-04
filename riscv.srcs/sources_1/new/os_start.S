@@ -2,6 +2,5 @@
 
 # sets up the stack before calling c function 'run' in 'os.c'
 _start:
-    lui sp, 0x2         # set stack at # 0x1fff0
-    addi sp, sp, -16    #
+    li sp, 0x1fff0
     jal ra, run         # run program

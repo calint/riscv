@@ -30,7 +30,8 @@ riscv32-unknown-elf-gcc \
 #	-Wpadded \
 
 riscv32-unknown-elf-objcopy $BIN -O binary $BIN.bin
-riscv32-unknown-elf-objdump -Mnumeric,no-aliases --source-comment -Sr $BIN > $BIN.lst
+#riscv32-unknown-elf-objdump -Mnumeric,no-aliases --source-comment -Sr $BIN > $BIN.lst
+riscv32-unknown-elf-objdump --source-comment -Sr $BIN > $BIN.lst
 xxd -p -c 4 -e $BIN.bin | awk '{print $2}' > $BIN.mem
 rm $BIN
 ls -l $BIN.bin
