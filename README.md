@@ -1,5 +1,5 @@
 # riscv
-after ["zen-one"](https://github.com/calint/zen-one)
+continuing experiments after ["zen-one"](https://github.com/calint/zen-one)
 
 experiments implementing a risc-v cpu to gain experience with verilog and minimalistic cpu design
 
