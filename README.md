@@ -3,7 +3,7 @@ next experiment after ["zen-one"](https://github.com/calint/zen-one)
 
 a risc-v cpu to gain experience with minimalistic cpu design
 
-implements the rv32i instructions with the exception for: fence, fence.i, ecall, ebreak and counters which are irrelevant for the intended use
+implements the rv32i instructions with the exception for: fence, ecall, ebreak and counters which are irrelevant for the intended use
 
 most of the implementation is in an "always @*" block for the sake of simplicity and overview (["SoC.v"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/SoC.v))
 
