@@ -13,7 +13,7 @@ implemented on cmod s7 from digilent.com
 
 128 KB dual port block ram for instructions and data
 
-50 MHz with most instructions executing in one cycle except branches which use two cycles due to creating 'bubble' in the pipeline
+50 MHz with most instructions executing in one cycle except branches which use two cycles due to creating "bubble" in the pipeline
 
 implements uart to send and receive text (see ["notes/os.c"](https://github.com/calint/riscv/blob/main/notes/os.c) for example)
 
