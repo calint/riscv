@@ -1,7 +1,7 @@
 # riscv
 next experiment after ["zen-one"](https://github.com/calint/zen-one)
 
-a risc-v cpu to gain experience with minimalistic cpu design
+a risc-v cpu to gain experience with verilog and minimalistic cpu design
 
 implements the rv32i instructions with the exception for: fence, ecall, ebreak and counters which are irrelevant for the intended use
 
