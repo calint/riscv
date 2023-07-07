@@ -5,11 +5,12 @@ set -x
 TTY=/dev/ttyUSB1
 SLP=1
 
-stty -F $TTY 9600 cs8 -cstopb -parenb
+#stty -F $TTY 9600 cs8 -cstopb -parenb # -ixon -ixoff
+stty -F $TTY 9600 cs8 -cstopb -parenb -crtscts -ixon -ixoff ignbrk -brkint -icrnl -opost -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke
 
 cat $TTY > test1.out &
 
-read -p "program FPGA then press Enter to continue..."
+read -p "program fpga then press enter to continue"
 
 printf "i\r" > $TTY
 sleep $SLP
