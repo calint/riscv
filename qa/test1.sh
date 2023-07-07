@@ -5,8 +5,14 @@ set -x
 TTY=/dev/ttyUSB1
 SLP=1
 
-#stty -F $TTY 9600 cs8 -cstopb -parenb # -ixon -ixoff
-stty -F $TTY 9600 cs8 -cstopb -parenb -crtscts -ixon -ixoff ignbrk -brkint -icrnl -opost -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke
+stty -F $TTY 9600 cs8 -cstopb -parenb -crtscts -ixon -ixoff -ignbrk -brkint -icrnl -opost -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke
+#    -crtscts disables hardware flow control.
+#    -ixon -ixoff disables software flow control.
+#    -ignbrk -brkint ignores break conditions.
+#    -icrnl ensures that carriage return characters are not translated to newlines.
+#    -opost disables output processing (output will be sent as-is).
+#    -isig -icanon -iexten disables terminal signal handling and canonical input processing.
+#    -echo -echoe -echok -echoctl -echoke disables terminal echoing.
 
 cat $TTY > test1.out &
 
