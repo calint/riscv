@@ -1,4 +1,3 @@
-[ ] os.c: name_t instead of location_name, entity_name and object_name
 [ ] os.c: upload executable hex data through terminal by specifying destination and size
 [ ] os.c: executable functions attached to objects, locations and entities
 [ ] os.c: create objects, locations and entities
@@ -14,6 +13,8 @@
 [ ] sim_4: RAM.S: address of uart receive data hardcoded in code. make .equ
 [ ] UartTx operates on negative clock edge 
 ----------------------------------------------------------------------------------
+[x] os.c: name_t instead of location_name, entity_name and object_name
+    => 'name_t' to 'name' although it the same as struct field names
 [x] review RAM_Interface handling of Uart interface
 [-] implement ECALL => no system calls in intended code
 [-] implement EBREAK => no support for debugger

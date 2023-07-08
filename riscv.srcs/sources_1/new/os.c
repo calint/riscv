@@ -15,9 +15,7 @@ typedef unsigned char bool;
 typedef unsigned char location_id;
 typedef unsigned char object_id;
 typedef unsigned char entity_id;
-typedef const char *entity_name;
-typedef const char *object_name;
-typedef const char *location_name;
+typedef const char *name;
 typedef unsigned char direction;
 
 // I/O addresses mapped to RAM
@@ -41,13 +39,13 @@ typedef struct input_buffer {
 } input_buffer;
 
 typedef struct object {
-  object_name name;
+  name name;
 } object;
 
 static object objects[] = {{""}, {"notebook"}, {"mirror"}, {"lighter"}};
 
 typedef struct entity {
-  entity_name name;
+  name name;
   location_id location;
   object_id objects[ENTITY_MAX_OBJECTS];
 } entity;
@@ -55,7 +53,7 @@ typedef struct entity {
 static entity entities[] = {{"", 0, {0}}, {"me", 1, {2}}, {"u", 2, {0}}};
 
 typedef struct location {
-  location_name name;
+  name name;
   object_id objects[LOCATION_MAX_OBJECTS];
   entity_id entities[LOCATION_MAX_ENTITIES];
   location_id exits[LOCATION_MAX_EXITS];
@@ -79,10 +77,10 @@ void remove_entity_from_list_by_index(entity_id list[], unsigned ix);
 void remove_entity_from_list(entity_id list[], unsigned list_len,
                              entity_id eid);
 void action_inventory(entity_id eid);
-void action_give(entity_id eid, object_name obj, entity_name to);
+void action_give(entity_id eid, name obj, name to_ent);
 void action_go(entity_id eid, direction dir);
-void action_drop(entity_id eid, object_name obj);
-void action_take(entity_id eid, object_name obj);
+void action_drop(entity_id eid, name obj);
+void action_take(entity_id eid, name obj);
 void input(input_buffer *buf);
 void handle_input(entity_id eid, input_buffer *buf);
 bool strings_equal(const char *s1, const char *s2);
@@ -318,7 +316,7 @@ void remove_entity_from_list_by_index(entity_id list[], unsigned ix) {
   }
 }
 
-void action_take(entity_id eid, object_name obj) {
+void action_take(entity_id eid, name obj) {
   entity *ent = &entities[eid];
   object_id *lso = locations[ent->location].objects;
   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
@@ -336,7 +334,7 @@ void action_take(entity_id eid, object_name obj) {
   uart_send_str(" not here\r\n\r\n");
 }
 
-void action_drop(entity_id eid, object_name obj) {
+void action_drop(entity_id eid, name obj) {
   entity *ent = &entities[eid];
   object_id *lso = ent->objects;
   for (unsigned i = 0; i < ENTITY_MAX_OBJECTS; i++) {
@@ -370,7 +368,7 @@ void action_go(entity_id eid, direction dir) {
   }
 }
 
-void action_give(entity_id eid, object_name obj, entity_name to_ent) {
+void action_give(entity_id eid, name obj, name to_ent) {
   entity *ent = &entities[eid];
   const location *loc = &locations[ent->location];
   const entity_id *lse = loc->entities;

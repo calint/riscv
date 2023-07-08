@@ -856,7 +856,7 @@ Disassembly of section .text:
 #   }
 # }
 # 
-# void action_take(entity_id eid, object_name obj) {
+# void action_take(entity_id eid, name obj) {
  798:	fd010113          	add	sp,sp,-48
  79c:	01312e23          	sw	s3,28(sp)
  7a0:	00050993          	mv	s3,a0
@@ -870,7 +870,7 @@ Disassembly of section .text:
  7b8:	00371713          	sll	a4,a4,0x3
  7bc:	00e787b3          	add	a5,a5,a4
  7c0:	0047c783          	lbu	a5,4(a5)
-# void action_take(entity_id eid, object_name obj) {
+# void action_take(entity_id eid, name obj) {
  7c4:	02812423          	sw	s0,40(sp)
  7c8:	01612823          	sw	s6,16(sp)
 #   object_id *lso = locations[ent->location].objects;
@@ -888,7 +888,7 @@ Disassembly of section .text:
 #       break;
 #     if (!strings_equal(objects[oid].name, obj))
  7ec:	00002b37          	lui	s6,0x2
-# void action_take(entity_id eid, object_name obj) {
+# void action_take(entity_id eid, name obj) {
  7f0:	03212023          	sw	s2,32(sp)
  7f4:	01412c23          	sw	s4,24(sp)
  7f8:	01512a23          	sw	s5,20(sp)
@@ -988,19 +988,19 @@ Disassembly of section .text:
 
 0000090c <action_drop>:
 # 
-# void action_drop(entity_id eid, object_name obj) {
+# void action_drop(entity_id eid, name obj) {
  90c:	fd010113          	add	sp,sp,-48
  910:	03212023          	sw	s2,32(sp)
 #   entity *ent = &entities[eid];
 #   object_id *lso = ent->objects;
  914:	00251913          	sll	s2,a0,0x2
-# void action_drop(entity_id eid, object_name obj) {
+# void action_drop(entity_id eid, name obj) {
  918:	02812423          	sw	s0,40(sp)
 #   object_id *lso = ent->objects;
  91c:	00a90433          	add	s0,s2,a0
  920:	000027b7          	lui	a5,0x2
  924:	00341413          	sll	s0,s0,0x3
-# void action_drop(entity_id eid, object_name obj) {
+# void action_drop(entity_id eid, name obj) {
  928:	01612823          	sw	s6,16(sp)
 #   object_id *lso = ent->objects;
  92c:	00540413          	add	s0,s0,5
@@ -1011,7 +1011,7 @@ Disassembly of section .text:
 #       break;
 #     if (!strings_equal(objects[oid].name, obj))
  934:	00002b37          	lui	s6,0x2
-# void action_drop(entity_id eid, object_name obj) {
+# void action_drop(entity_id eid, name obj) {
  938:	02912223          	sw	s1,36(sp)
  93c:	01312e23          	sw	s3,28(sp)
  940:	01412c23          	sw	s4,24(sp)
@@ -1215,13 +1215,13 @@ Disassembly of section .text:
 
 00000b84 <action_give>:
 # 
-# void action_give(entity_id eid, object_name obj, entity_name to_ent) {
+# void action_give(entity_id eid, name obj, name to_ent) {
  b84:	fc010113          	add	sp,sp,-64
  b88:	02912a23          	sw	s1,52(sp)
 #   entity *ent = &entities[eid];
 #   const location *loc = &locations[ent->location];
  b8c:	00251493          	sll	s1,a0,0x2
-# void action_give(entity_id eid, object_name obj, entity_name to_ent) {
+# void action_give(entity_id eid, name obj, name to_ent) {
  b90:	03412423          	sw	s4,40(sp)
 #   const location *loc = &locations[ent->location];
  b94:	00a48733          	add	a4,s1,a0
@@ -1230,7 +1230,7 @@ Disassembly of section .text:
  ba0:	00371713          	sll	a4,a4,0x3
  ba4:	00e787b3          	add	a5,a5,a4
  ba8:	0047c783          	lbu	a5,4(a5)
-# void action_give(entity_id eid, object_name obj, entity_name to_ent) {
+# void action_give(entity_id eid, name obj, name to_ent) {
  bac:	02812c23          	sw	s0,56(sp)
  bb0:	01912a23          	sw	s9,20(sp)
  bb4:	00379413          	sll	s0,a5,0x3
@@ -1242,7 +1242,7 @@ Disassembly of section .text:
 #   for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
 #     if (!lse[i])
  bc8:	00002cb7          	lui	s9,0x2
-# void action_give(entity_id eid, object_name obj, entity_name to_ent) {
+# void action_give(entity_id eid, name obj, name to_ent) {
  bcc:	03212823          	sw	s2,48(sp)
  bd0:	03512223          	sw	s5,36(sp)
  bd4:	03612023          	sw	s6,32(sp)
