@@ -170,7 +170,7 @@ void print_location(location_id lid, entity_id eid_exclude_from_output) {
   uart_send_str(loc->name);
   uart_send_str("\r\nu c: ");
 
-  // print objects in current location
+  // print objects in location
   bool add_list_sep = FALSE;
   const object_id *lso = loc->objects;
   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
@@ -189,7 +189,7 @@ void print_location(location_id lid, entity_id eid_exclude_from_output) {
   }
   uart_send_str("\r\n");
 
-  // print entities in current location
+  // print entities in location
   add_list_sep = FALSE;
   const entity_id *lse = loc->entities;
   for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
@@ -209,7 +209,7 @@ void print_location(location_id lid, entity_id eid_exclude_from_output) {
     uart_send_str(" is here\r\n");
   }
 
-  // print exits from current location
+  // print exits from location
   add_list_sep = FALSE;
   uart_send_str("exits: ");
   for (unsigned i = 0; i < LOCATION_MAX_EXITS; i++) {
