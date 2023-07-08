@@ -427,13 +427,10 @@ void input(input_buffer *buf) {
 
 bool strings_equal(const char *s1, const char *s2) {
   while (1) {
-    char diff = *s1 - *s2;
-    if (diff)
+    if (*s1 - *s2)
       return FALSE;
     if (!*s1 && !*s2)
       return TRUE;
-    if (!*s1 || !*s2)
-      return FALSE;
     s1++;
     s2++;
   }
