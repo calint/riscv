@@ -421,7 +421,7 @@ void input(input_buffer *buf) {
       buf->ix++;
       uart_send_char(ch);
     }
-    *leds = buf->ix | 0x70;
+    *leds = buf->ix | 0x70; // rgb bits enabled to turn off led
   }
 }
 
