@@ -1,7 +1,3 @@
-#define CPU_FREQ_HZ 50000000
-#define TICKS_PER_SEC CPU_FREQ_HZ / 60
-#define TOP_OF_RAM 0x1ffff // note. defined in 'SoC.v'
-#define TOP_OF_STACK 0x1fff0 // note. update 'os_start.S' when changed
 #define CHAR_BACKSPACE 0x7f
 #define CHAR_CARRIAGE_RETURN 0x0d
 #define LOCATION_MAX_OBJECTS 128
@@ -11,25 +7,24 @@
 #define TRUE 1
 #define FALSE 0
 
-typedef unsigned char bool;
-typedef unsigned char location_id;
-typedef unsigned char object_id;
-typedef unsigned char entity_id;
-typedef const char *name;
-typedef unsigned char direction;
-
 // I/O addresses mapped to RAM
-//  note. specified in 'SoC.v' at instantiation of RAM_Interface
-volatile unsigned char *leds = (unsigned char *)TOP_OF_RAM;
-volatile unsigned char *uart_out = (unsigned char *)TOP_OF_RAM - 1;
-volatile unsigned char *uart_in = (unsigned char *)TOP_OF_RAM - 2;
+//  note. specified in 'SoC.v' at instantiation of 'RAM_Interface'
+volatile unsigned char *leds = (unsigned char *)0x1ffff;
+volatile unsigned char *uart_out = (unsigned char *)0x1fffe;
+volatile unsigned char *uart_in = (unsigned char *)0x1fffd;
 
-void delay(unsigned int ticks);
 void uart_send_str(const char *str);
 void uart_send_char(char ch);
 char uart_read_char();
 void uart_send_hex_byte(char ch);
 void uart_send_hex_nibble(char nibble);
+
+typedef unsigned char bool;
+typedef const char *name;
+typedef unsigned char location_id;
+typedef unsigned char object_id;
+typedef unsigned char entity_id;
+typedef unsigned char direction;
 
 static char *hello = "welcome to adventure #3\r\n    type 'help'\r\n\r\n";
 
@@ -476,9 +471,4 @@ char uart_read_char() {
   while ((ch = *uart_in) == 0)
     ;
   return ch;
-}
-
-inline void delay(volatile unsigned int ticks) {
-  while (ticks--)
-    ;
 }
