@@ -1,6 +1,6 @@
 #define CPU_FREQ_HZ 50000000
 #define TICKS_PER_SEC CPU_FREQ_HZ / 60
-#define TOP_OF_RAM 0x1ffff
+#define TOP_OF_RAM 0x1ffff // note. defined in 'SoC.v'
 #define TOP_OF_STACK 0x1fff0 // note. update 'os_start.S' when changed
 #define CHAR_BACKSPACE 0x7f
 #define CHAR_CARRIAGE_RETURN 0x0d
@@ -20,6 +20,8 @@ typedef const char *object_name;
 typedef const char *location_name;
 typedef unsigned char direction;
 
+// I/O addresses mapped to RAM
+//  note. specified in 'SoC.v' at instantiation of RAM_Interface
 volatile unsigned char *leds = (unsigned char *)TOP_OF_RAM;
 volatile unsigned char *uart_out = (unsigned char *)TOP_OF_RAM - 1;
 volatile unsigned char *uart_in = (unsigned char *)TOP_OF_RAM - 2;
