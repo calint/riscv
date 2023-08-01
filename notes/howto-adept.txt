@@ -1,4 +1,5 @@
 # https://digilent.com/shop/software/digilent-adept/
+# https://digilent.com/reference/test-and-measurement/analog-discovery-pro-3x50/programming-an-fpga
 
 # enumerate devices
 djtgcfg enum
