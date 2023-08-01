@@ -18,7 +18,8 @@ endmodule
 (* rom_style = "block" *)
 (* ram_style = "block" *)
 -------------------------------------------------------------
-write_cfgmem -format mcs -size 4 -interface SPIx4 -loadbit {up 0x00000000 "/home/c/w/zen-x/zen-x.runs/impl_1/Sys.bit" } -file "/home/c/w/zen-x/zen-x.runs/impl_1/zenx"
+in tcl console
+    write_cfgmem -format mcs -size 4 -interface SPIx4 -loadbit {up 0x00000000 "/home/c/w/riscv/riscv.runs/impl_1/Top.bit" } -file "/home/c/w/riscv/riscv.runs/impl_1/riscv"
 -------------------------------------------------------------
 cat w/zen-x/todo.txt | socat - /dev/ttyUSB1,cs8,b4800,raw
 -------------------------------------------------------------
@@ -27,7 +28,7 @@ stty -F /dev/ttyUSB1 9600 cs8 -cstopb -parenb
 java -jar ~/Downloads/google-java-format-1.17.0-all-deps.jar -i zasm.java
 -------------------------------------------------------------
 vivado install cable drivers:
-    ./Vivado/2022.2/data/xicom/cable_drivers/lin64/install_script/install_drivers/install_drivers
+    ./Vivado/2023.2/data/xicom/cable_drivers/lin64/install_script/install_drivers/install_drivers
 -------------------------------------------------------------
 hexdump -C /dev/ttyUSB1
 -------------------------------------------------------------
