@@ -1,3 +1,13 @@
+# https://github.com/trabucayre/openFPGALoader
+
+# program device
+openFPGALoader -b cmod_s7 riscv.runs/impl_1/Top.bit
+
+# install on flash
+openFPGALoader -b cmod_s7 -f riscv.runs/impl_1/Top.bit
+
+
+
 # https://digilent.com/shop/software/digilent-adept/
 
 # enumerate devices
@@ -8,13 +18,3 @@ djtgcfg init -d CmodS7
 # program device
 djtgcfg prog -d CmodS7 -i 0 -f riscv.runs/impl_1/Top.bit
 
-
-
-
-# https://github.com/trabucayre/openFPGALoader
-
-# program device
-openFPGALoader -b cmod_s7 riscv.runs/impl_1/Top.bit
-
-# install on flash flash
-openFPGALoader -b cmod_s7 -f riscv.runs/impl_1/Top.bit
