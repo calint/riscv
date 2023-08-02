@@ -1,10 +1,10 @@
 # https://github.com/trabucayre/openFPGALoader
 
-# program device
-openFPGALoader -b cmod_s7 riscv.runs/impl_1/Top.bit
-
 # install on flash
 openFPGALoader -b cmod_s7 -f riscv.runs/impl_1/Top.bit
+
+# program device
+openFPGALoader -b cmod_s7 riscv.runs/impl_1/Top.bit
 
 
 
