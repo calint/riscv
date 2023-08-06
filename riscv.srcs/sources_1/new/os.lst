@@ -384,7 +384,7 @@ Disassembly of section .text:
  3b0:	0007a503          	lw	a0,0(a5)
 #   uart_send_str("\r\nu c: ");
 # 
-#   // print objects in current location
+#   // print objects in location
 #   bool add_list_sep = FALSE;
 #   const object_id *lso = loc->objects;
  3b4:	00440a93          	add	s5,s0,4
@@ -497,7 +497,7 @@ Disassembly of section .text:
  4a4:	9d8080e7          	jalr	-1576(ra) # e78 <uart_send_str>
 #   }
 # 
-#   // print exits from current location
+#   // print exits from location
 #   add_list_sep = FALSE;
 #   uart_send_str("exits: ");
  4a8:	00001537          	lui	a0,0x1
