@@ -1,0 +1,3 @@
+https://github.com/riscv-collab/riscv-gnu-toolchain
+
+./configure --prefix=$INSTALL_DIR --with-arch=rv32i --with-abi=ilp32
