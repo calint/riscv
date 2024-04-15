@@ -1,18 +1,21 @@
-[ ] os.c: upload executable hex data through terminal by specifying destination and size
-[ ] os.c: executable functions attached to objects, locations and entities
-[ ] os.c: create objects, locations and entities
-[ ] os.c: rename objects, locations and entities
-[ ] os.c: 'examine' command displays more info
-[ ] os.c: 'use' command to combine objects
-[ ] os.c: ? id in objects, locations and entities
-[ ] os.c: memory management of dynamic lists (128-4 entries in a slice, linked slices)
-[ ] SoC: alu op with mux of register and immediate instead of cases
-[ ] SoC: pc module with selectable next value from mux of branch, increment etc
 [ ] sim_1: RAM.S: leds assumed to be at 0xffff_ffff
 [ ] sim_3: RAM.S: address of uart send data hardcoded in code. make .equ
 [ ] sim_4: RAM.S: address of uart receive data hardcoded in code. make .equ
-[ ] UartTx operates on negative clock edge 
 ----------------------------------------------------------------------------------
+[-] os.c: upload executable hex data through terminal by specifying destination and size
+[-] os.c: executable functions attached to objects, locations and entities
+[-] os.c: create objects, locations and entities
+[-] os.c: rename objects, locations and entities
+[-] os.c: 'examine' command displays more info
+[-] os.c: 'use' command to combine objects
+[-] os.c: ? id in objects, locations and entities
+[-] os.c: memory management of dynamic lists (128-4 entries in a slice, linked slices)
+[-] UartTx operates on negative clock edge
+    => ok. can operate at maximum baud rate
+[-] SoC: alu op with mux of register and immediate instead of cases
+    => keep current simplicity
+[-] SoC: pc module with selectable next value from mux of branch, increment etc
+    => keep current simplicity
 [x] os.c: name_t instead of location_name, entity_name and object_name
     => 'name_t' to 'name' although it the same as struct field names
 [x] review RAM_Interface handling of Uart interface
