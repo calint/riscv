@@ -17,15 +17,15 @@ module RAM_Interface #(
 
     // port A: data memory, read / write byte addressable ram
     input wire clk,
-    input wire [1:0] weA, // b01 - byte, b10 - half word, b11 - word
-    input wire [2:0] reA, // reA[2] sign extended, b01: byte, b10: half word, b11: word
-    input wire [ADDR_WIDTH+1:0] addrA, // byte addressable
-    input wire [DATA_WIDTH-1:0] dinA, // sign extended byte, half word, word
-    output reg [DATA_WIDTH-1:0] doutA, // data at 'addrA' according to 'reA'
+    input wire [1:0] weA, // write enable port A (b01 - byte, b10 - half word, b11 - word)
+    input wire [2:0] reA, // read enable port A (reA[2] sign extended, b01: byte, b10: half word, b11: word)
+    input wire [ADDR_WIDTH+1:0] addrA, // address on port A, byte addressable
+    input wire [DATA_WIDTH-1:0] dinA, // data to ram port A, sign extended byte, half word, word
+    output reg [DATA_WIDTH-1:0] doutA, // data from ram port A at 'addrA' according to 'reA'
 
     // port B: instruction memory, byte addressed, bottom 2 bits ignored, word aligned
-    input wire [ADDR_WIDTH+1:0] addrB,
-    output wire [DATA_WIDTH-1:0] doutB,
+    input wire [ADDR_WIDTH+1:0] addrB, // address on ram port B
+    output wire [DATA_WIDTH-1:0] doutB, // data from ram port B
 
     // I/O mapping of leds
     output reg [6:0] leds,
@@ -36,10 +36,10 @@ module RAM_Interface #(
 );
 
 // RAM
-reg [ADDR_WIDTH-1:0] ram_addrA;
-reg [DATA_WIDTH-1:0] ram_dinA;
-wire [DATA_WIDTH-1:0] ram_doutA;
-reg [3:0] ram_weA;
+reg [ADDR_WIDTH-1:0] ram_addrA; // address of ram port A
+reg [DATA_WIDTH-1:0] ram_dinA; // data from ram port A
+wire [DATA_WIDTH-1:0] ram_doutA; // data to ram port A
+reg [3:0] ram_weA; // which bytes of the 'dinA' is written to ram port A
 
 // write
 reg [1:0] addr_lower_w;
@@ -49,7 +49,7 @@ always @* begin
     ram_weA = 0;
     ram_dinA = 0;
     case(weA)
-    2'b00: begin
+    2'b00: begin // none
         ram_weA = 4'b0000;
     end
     2'b01: begin // byte
@@ -96,18 +96,18 @@ end
 
 // read
 reg [ADDR_WIDTH+1:0] addrA_prev; // address used in previous cycle
-reg [2:0] reA_prev; // reA from previous cycle used in this cycle (due to one cycle delay of data ready)
+reg [2:0] reA_prev; // 'reA' from previous cycle used in this cycle (due to one cycle delay of data ready)
 
 // uarttx
-reg [7:0] uarttx_data;
-reg uarttx_go;
-wire uarttx_bsy;
+reg [7:0] uarttx_data; // data being written
+reg uarttx_go; // enabled to start sending and disabled to acknowledge that data has been sent
+wire uarttx_bsy; // enabled if uart is sending data
 
 // uartrx
 wire uartrx_dr; // data ready
-wire [7:0] uartrx_data; // data being read
+wire [7:0] uartrx_data; // data that was read
 reg uartrx_go; // enabled to start receiving and disabled to acknowledge that data has been read
-reg [7:0] uartrx_data_read; // data from 'uartrx_data' when 'uartrx_dr' (data ready) enabled
+reg [7:0] uartrx_data_read; // complete data from 'uartrx_data' when 'uartrx_dr' (data ready) enabled
 
 always @* begin
 //    doutA = 0; // ? note. uncommenting this creates infinite loop when simulating with iverilog
@@ -188,8 +188,9 @@ always @(posedge clk) begin
         // if writing to leds
         if (addrA == ADDR_LEDS && weA == 2'b01) begin
             leds <= dinA[6:0];
+        end
         // if writing to uart
-        end else if (addrA == ADDR_UART_OUT && weA == 2'b01) begin
+        if (addrA == ADDR_UART_OUT && weA == 2'b01) begin
             uarttx_data <= dinA[7:0];
             uarttx_go <= 1;
         end
@@ -232,9 +233,9 @@ UartRx #(
 ) uartrx (
     .rst(rst),
     .clk(clk),
-    .rx(uart_rx),
-    .go(uartrx_go),
-    .data(uartrx_data),
+    .rx(uart_rx), // uart rx wire
+    .go(uartrx_go), // enable to start receiving, disable to acknowledge 'dr'
+    .data(uartrx_data), // current data being received, is incomplete until 'dr' is enabled
     .dr(uartrx_dr) // enabled when data is ready
 );
 
