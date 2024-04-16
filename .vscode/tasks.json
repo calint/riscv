@@ -5,7 +5,7 @@
             "type": "shell",
             "command": "sh",
             "args": [
-                "run-iverilog-all.sh"
+                "qa/run-iverilog-all.sh"
             ],
             "group": "build"
         }
