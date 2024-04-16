@@ -170,7 +170,7 @@ void print_location(location_id lid, entity_id eid_exclude_from_output) {
   uart_send_str(loc->name);
   uart_send_str("\r\nu c: ");
 
-  // print objects in current location
+  // print objects in location
   bool add_list_sep = FALSE;
   const object_id *lso = loc->objects;
   for (unsigned i = 0; i < LOCATION_MAX_OBJECTS; i++) {
@@ -189,7 +189,7 @@ void print_location(location_id lid, entity_id eid_exclude_from_output) {
   }
   uart_send_str("\r\n");
 
-  // print entities in current location
+  // print entities in location
   add_list_sep = FALSE;
   const entity_id *lse = loc->entities;
   for (unsigned i = 0; i < LOCATION_MAX_ENTITIES; i++) {
@@ -209,7 +209,7 @@ void print_location(location_id lid, entity_id eid_exclude_from_output) {
     uart_send_str(" is here\r\n");
   }
 
-  // print exits from current location
+  // print exits from location
   add_list_sep = FALSE;
   uart_send_str("exits: ");
   for (unsigned i = 0; i < LOCATION_MAX_EXITS; i++) {
@@ -421,19 +421,16 @@ void input(input_buffer *buf) {
       buf->ix++;
       uart_send_char(ch);
     }
-    *leds = buf->ix | 0x70;
+    *leds = buf->ix | 0x70; // rgb bits enabled to turn off led
   }
 }
 
 bool strings_equal(const char *s1, const char *s2) {
   while (1) {
-    char diff = *s1 - *s2;
-    if (diff)
+    if (*s1 - *s2)
       return FALSE;
     if (!*s1 && !*s2)
       return TRUE;
-    if (!*s1 || !*s2)
-      return FALSE;
     s1++;
     s2++;
   }
