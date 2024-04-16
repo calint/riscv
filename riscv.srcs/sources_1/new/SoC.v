@@ -20,6 +20,7 @@ module SoC #(
 
 reg [31:0] pc; // program counter, byte addressed
 reg [31:0] pc_nxt; // next value of program counter
+
 wire [31:0] ir; // instruction register
 wire [6:0] opcode = ir[6:0];
 wire [4:0] rd = ir[11:7]; // destination register
@@ -33,7 +34,7 @@ wire signed [31:0] S_imm12 = {{20{ir[31]}}, ir[31:25], ir[11:7]};
 wire signed [31:0] B_imm12 = {{20{ir[31]}}, ir[31], ir[7], ir[30:25], ir[11:8], 1'b0};
 wire signed [31:0] J_imm20 = {{20{ir[31]}}, ir[31], ir[19:12], ir[20], ir[30:21], 1'b0};
 
-reg [31:0] regs_rd_wd; // data to be written to register 'rd' if 'regs_rd_we' is enabled
+reg [31:0] regs_rd_wd; // data for write to register 'rd' if 'regs_rd_we' is enabled
 reg regs_rd_we;
 wire signed [31:0] regs_rd1; // register value of 'rs1'
 wire signed [31:0] regs_rd2; // register value of 'rs2'
@@ -48,8 +49,8 @@ reg [4:0] ld_rd; // previous instruction 'rd'
 reg regs_we3; // enabled when previous instruction was 'load'
               // will write 'ram_doutA' to register 'ld_rd'
 
-reg signed [31:0] rs1_dat; // resolved rs1 value
-reg signed [31:0] rs2_dat; // resolved rs2 value
+reg signed [31:0] rs1_dat; // resolved rs1 value considering pipeline
+reg signed [31:0] rs2_dat; // resolved rs2 value considering pipeline
 
 reg bubble; // signals that next instruction is a bubble
 reg is_bubble; // signals that current instruction is a bubble
@@ -66,8 +67,9 @@ always @* begin
     pc_nxt = pc + 4;
 
     if (!is_bubble) begin
-        // if last instruction was a load to a register
-        // then use the output of ram since it is not in the register yet 
+        // if last instruction was a load to a register and the same register
+        // is used in this instruction then use the output of ram since it is
+        // not in the register yet 
         rs1_dat = regs_we3 && rs1 == ld_rd ? ram_doutA : regs_rd1;
         rs2_dat = regs_we3 && rs2 == ld_rd ? ram_doutA : regs_rd2;
         
@@ -109,7 +111,7 @@ always @* begin
             regs_rd_we = 1;
             case (funct3)
             3'b000: begin // ADD and SUB
-                regs_rd_wd = ir[30] ? rs1_dat - rs2_dat : rs1_dat + rs2_dat;        
+                regs_rd_wd = ir[30] ? rs1_dat - rs2_dat : rs1_dat + rs2_dat;
             end
             3'b001: begin // SLL
                 regs_rd_wd = rs1_dat << (rs2_dat & 5'b11111);
@@ -195,7 +197,7 @@ always @* begin
             3'b000: begin // BEQ
                 if (rs1_dat == rs2_dat) begin
                     pc_nxt = pc + B_imm12 - 4;
-                    bubble = 1;                    
+                    bubble = 1;
                 end
             end
             3'b001: begin // BNE
@@ -239,48 +241,51 @@ always @(posedge clk) begin
         pc <= 0;
         is_bubble <= 0;
     end else begin
-        regs_we3 <= is_ld; // if this is a 'load' from ram enable write to register 'ld_rd' during next cycle (one cycle delay for data ready from ram)
+        regs_we3 <= is_ld; // if this is a 'load' from ram enable write to
+                           // register 'ld_rd' during next cycle due to one
+                           // cycle delay for data ready from ram
         ld_rd <= rd; // save the destination register for next cycle write
-        is_bubble <= bubble; // if instruction generates bubble of next instruction (branch, jumps instructions)
+        is_bubble <= bubble; // if instruction generates bubble of next
+                             // instruction (branch, jumps instructions)
         pc <= pc_nxt;
     end
 end
 
 Registers regs (
     .clk(clk),
-    .rs1(rs1),
-    .rs2(rs2),
-    .rd(rd),
-    .rd_wd(regs_rd_wd),
-    .rd_we(regs_rd_we),
-    .rd1(regs_rd1), // value of register 'rs1'
-    .rd2(regs_rd2), // value of register 'rs2'
+    .rs1(rs1), // register source 1
+    .rs2(rs2), // register source 2
+    .rd(rd), // destination register
+    .rd_wd(regs_rd_wd), // write data to destination register
+    .rd_we(regs_rd_we), // write enable to destionation register
+    .rd1(regs_rd1), // data out of register 'rs1'
+    .rd2(regs_rd2), // data out of register 'rs2'
     .ra3(ld_rd), // register to write from ram out (load instructions)
-    .wd3(ram_doutA), // data to write to register 'ra3' when 'we3' is enabled
-    .we3(regs_we3)
+    .wd3(ram_doutA), // data for write to register 'ra3' when 'we3' is enabled
+    .we3(regs_we3) // write enable port 3
 );
 
 RAM_Interface #(
     .ADDR_WIDTH(15), // 2**15 = RAM depth in 4 byte words
-    .ADDR_LEDS(17'h1_ffff),
-    .ADDR_UART_OUT(17'h1_fffe),
-    .ADDR_UART_IN(17'h1_fffd),
-    .DATA_FILE(RAM_FILE),
+    .ADDR_LEDS(17'h1_ffff), // leds address
+    .ADDR_UART_OUT(17'h1_fffe), // byte from uart address
+    .ADDR_UART_IN(17'h1_fffd), // byte to uart address
+    .DATA_FILE(RAM_FILE), // initial memory content
     .CLK_FREQ(CLK_FREQ),
     .BAUD_RATE(BAUD_RATE)
 ) ram (
     .rst(rst),
     // port A: data memory, read / write byte addressable ram
     .clk(clk),
-    .weA(ram_weA), // b01 - byte, b10 - half word, b11 - word
-    .reA(ram_reA), // reA[2] sign extended, b01 - byte, b10 - half word, b11 - word
+    .weA(ram_weA), // write: b01 - byte, b10 - half word, b11 - word
+    .reA(ram_reA), // read: reA[2] sign extended, b01 - byte, b10 - half word, b11 - word
     .addrA(ram_addrA), // byte addressable
-    .dinA(ram_dinA), // data to write depending on 'weA'
-    .doutA(ram_doutA), // data out depending on 'reA' one cycle later
+    .dinA(ram_dinA), // data to write to 'ram_addrA' depending on 'ram_weA'
+    .doutA(ram_doutA), // data out from 'ram_addrA' depending on 'ram_reA' one cycle later
     
     // port B: instruction memory, byte addressed, bottom 2 bits ignored, word aligned
-    .addrB(pc),
-    .doutB(ir),
+    .addrB(pc), // program counter
+    .doutB(ir), // instruction register
 
     .leds({led0_b, led0_g, led0_r, led[3:0]}),
     .uart_tx(uart_tx),
