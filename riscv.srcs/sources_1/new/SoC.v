@@ -22,10 +22,10 @@ reg [31:0] pc; // program counter, byte addressed
 reg [31:0] pc_nxt; // next value of program counter
 wire [31:0] ir; // instruction register
 wire [6:0] opcode = ir[6:0];
-wire [4:0] rd = ir[11:7];
+wire [4:0] rd = ir[11:7]; // destination register
 wire [2:0] funct3 = ir[14:12];
-wire [4:0] rs1 = ir[19:15];
-wire [4:0] rs2 = ir[24:20];
+wire [4:0] rs1 = ir[19:15]; // source register 1
+wire [4:0] rs2 = ir[24:20]; // source register 2
 wire [6:0] funct7 = ir[31:25];
 wire signed [31:0] I_imm12 = {{20{ir[31]}}, ir[31:20]};
 wire [31:0] U_imm20 = {ir[31:12], {12{1'b0}}};
@@ -37,15 +37,16 @@ reg [31:0] regs_rd_wd; // data to be written to register 'rd' if 'regs_rd_we' is
 reg regs_rd_we;
 wire signed [31:0] regs_rd1; // register value of 'rs1'
 wire signed [31:0] regs_rd2; // register value of 'rs2'
-reg [1:0] ram_weA;
-reg [2:0] ram_reA;
-reg [31:0] ram_addrA;
-reg [31:0] ram_dinA;
-wire [31:0] ram_doutA;
+reg [1:0] ram_weA; // ram port A write enable
+reg [2:0] ram_reA; // ram port A read enable
+reg [31:0] ram_addrA; // ram port A address
+reg [31:0] ram_dinA; // data to ram port A
+wire [31:0] ram_doutA; // data from ram port A
 
-reg is_ld; // instruction is 'load'
+reg is_ld; // current instruction is 'load'
 reg [4:0] ld_rd; // previous instruction 'rd'
-reg regs_we3; // enabled when previous instruction was 'load' to write 'ram_doutA' to register 'ld_rd'
+reg regs_we3; // enabled when previous instruction was 'load'
+              // will write 'ram_doutA' to register 'ld_rd'
 
 reg signed [31:0] rs1_dat; // resolved rs1 value
 reg signed [31:0] rs2_dat; // resolved rs2 value
@@ -65,7 +66,8 @@ always @* begin
     pc_nxt = pc + 4;
 
     if (!is_bubble) begin
-        // if last instruction was a load to a register that is used in this instruction 
+        // if last instruction was a load to a register
+        // then use the output of ram since it is not in the register yet 
         rs1_dat = regs_we3 && rs1 == ld_rd ? ram_doutA : regs_rd1;
         rs2_dat = regs_we3 && rs2 == ld_rd ? ram_doutA : regs_rd2;
         
