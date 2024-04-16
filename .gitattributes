@@ -1,0 +1,3 @@
+# directories considered in "Languages"
+*             -linguist-detectable
+/riscv.src/**  linguist-detectable
