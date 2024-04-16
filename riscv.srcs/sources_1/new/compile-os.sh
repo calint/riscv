@@ -1,16 +1,22 @@
 #!/bin/sh
 #
-# installing toolchain
+# tools used:
+#       riscv32-unknown-elf-gcc: (g2ee5e430018) 12.2.0
+#   riscv32-unknown-elf-objcopy: GNU objcopy (GNU Binutils) 2.40.0.20230214
+#   riscv32-unknown-elf-objdump: GNU objdump (GNU Binutils) 2.40.0.2023021
+#                           xxd: 2022-01-14 by Juergen Weigert et al.
+#                           awk: GNU Awk 5.2.1, API 3.2, PMA Avon 8-g1, (GNU MPFR 4.2.1, GNU MP 6.3.0)
+#
+# installing toolchain:
+#   RISC-V GNU Compiler Toolchain
+#   https://github.com/riscv-collab/riscv-gnu-toolchain
+#   ./configure --prefix=~/riscv/install --with-arch=rv32i --with-abi=ilp32
+#
 #   Compiling Freestanding RISC-V Programs
 #   https://www.youtube.com/watch?v=ODn7vnWOptM
 #
 #   RISC-V Assembly Language Programming: A.1 The GNU Toolchain
 #   https://github.com/johnwinans/rvalp/releases/download/v0.14/rvalp.pdf
-#
-# tools used:
-#       riscv32-unknown-elf-gcc: (g2ee5e430018) 12.2.0
-#   riscv32-unknown-elf-objcopy: GNU objcopy (GNU Binutils) 2.40.0.20230214
-#   riscv32-unknown-elf-objdump: GNU objdump (GNU Binutils) 2.40.0.2023021
 #
 set -e
 
