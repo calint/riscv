@@ -189,6 +189,7 @@ always @(posedge clk) begin
         if (addrA == ADDR_LEDS && weA == 2'b01) begin
             leds <= dinA[6:0];
         end
+        // note: with 'else' uses 5 less LUTs and 1 extra F7 Mux 
         // if writing to uart
         if (addrA == ADDR_UART_OUT && weA == 2'b01) begin
             uarttx_data <= dinA[7:0];
