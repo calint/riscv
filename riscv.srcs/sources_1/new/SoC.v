@@ -106,7 +106,7 @@ always @* begin
             3'b101: begin // SRLI and SRAI
                 regs_rd_wd = ir[30] ? rs1_dat >>> rs2 : rs1_dat >> rs2;
             end
-            endcase
+            endcase // case (funct3)
         end
         7'b0110011: begin // logical ops
             regs_rd_we = 1;
@@ -135,7 +135,7 @@ always @* begin
             3'b111: begin // AND
                 regs_rd_wd = rs1_dat & rs2_dat;
             end
-            endcase
+            endcase // case (funct3)
         end
         7'b0100011: begin // store
             ram_addrA = rs1_dat + S_imm12;
@@ -150,7 +150,7 @@ always @* begin
             3'b010: begin // SW
                 ram_weA = 2'b11; // write word
             end
-            endcase
+            endcase // case (funct3)
         end
         7'b0000011: begin // load
             ram_addrA = rs1_dat + I_imm12;
@@ -171,7 +171,7 @@ always @* begin
             3'b101: begin // LHU
                 ram_reA = 3'b010; // read unsigned half word
             end
-            endcase
+            endcase // case (funct3)
         end
         7'b0010111: begin // AUIPC
             regs_rd_wd = pc_ir + U_imm20;
@@ -227,7 +227,7 @@ always @* begin
                     bubble = 1;
                 end
             end
-            endcase
+            endcase // case (funct3)
         end
         endcase // case (opcode)
     end
