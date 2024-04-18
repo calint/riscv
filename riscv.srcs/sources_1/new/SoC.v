@@ -18,10 +18,11 @@ module SoC #(
     input wire btn
 );
 
-reg [31:0] pc; // program counter, byte addressed
+reg [31:0] pc; // program counter, byte addressed, next instruction to fetch
 reg [31:0] pc_nxt; // next value of program counter
+reg [31:0] pc_ir; // program counter for current instruction
 
-wire [31:0] ir; // instruction register
+wire [31:0] ir; // instruction register (one cycle delay due to ram access)
 wire [6:0] opcode = ir[6:0];
 wire [4:0] rd = ir[11:7]; // destination register
 wire [2:0] funct3 = ir[14:12];
@@ -177,13 +178,13 @@ always @* begin
         //       thus -4 when branching
         //       and no +4 to return address
         7'b0010111: begin // AUIPC
-            regs_rd_wd = pc + U_imm20 - 4;
+            regs_rd_wd = pc_ir + U_imm20;
             regs_rd_we = 1;
         end
         7'b1101111: begin // JAL
             regs_rd_wd = pc; 
             regs_rd_we = 1;
-            pc_nxt = pc + J_imm20 - 4;
+            pc_nxt = pc_ir + J_imm20;
             bubble = 1;
         end
         7'b1100111: begin // JALR
@@ -196,37 +197,37 @@ always @* begin
             case (funct3)
             3'b000: begin // BEQ
                 if (rs1_dat == rs2_dat) begin
-                    pc_nxt = pc + B_imm12 - 4;
+                    pc_nxt = pc_ir + B_imm12;
                     bubble = 1;
                 end
             end
             3'b001: begin // BNE
                 if (rs1_dat != rs2_dat) begin
-                    pc_nxt = pc + B_imm12 - 4;
+                    pc_nxt = pc_ir + B_imm12;
                     bubble = 1;
                 end
             end
             3'b100: begin // BLT
                 if (rs1_dat < rs2_dat) begin
-                    pc_nxt = pc + B_imm12 - 4;
+                    pc_nxt = pc_ir + B_imm12;
                     bubble = 1;
                 end
             end
             3'b101: begin // BGE
                 if (rs1_dat >= rs2_dat) begin
-                    pc_nxt = pc + B_imm12 - 4;
+                    pc_nxt = pc_ir + B_imm12;
                     bubble = 1;
                 end
             end
             3'b110: begin // BLTU
                 if ($unsigned(rs1_dat) < $unsigned(rs2_dat)) begin
-                    pc_nxt = pc + B_imm12 - 4;
+                    pc_nxt = pc_ir + B_imm12;
                     bubble = 1;
                 end
             end
             3'b111: begin // BGEU
                 if ($unsigned(rs1_dat) >= $unsigned(rs2_dat)) begin
-                    pc_nxt = pc + B_imm12 - 4;
+                    pc_nxt = pc_ir + B_imm12;
                     bubble = 1;
                 end
             end
@@ -239,6 +240,7 @@ end
 always @(posedge clk) begin
     if (rst) begin
         pc <= 0;
+        pc_ir <= 0;
         is_bubble <= 0;
     end else begin
         regs_we3 <= is_ld; // if this is a 'load' from ram enable write to
@@ -248,6 +250,9 @@ always @(posedge clk) begin
         is_bubble <= bubble; // if instruction generates bubble of next
                              // instruction (branch, jumps instructions)
         pc <= pc_nxt;
+        pc_ir <= pc_nxt - 4; // -4 because 'pc' contains the next instruction
+                             // to be fetched. when branching there is a bubble
+                             // and 'pc' is incremented by 4 during that
     end
 end
 

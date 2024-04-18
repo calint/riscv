@@ -40,3 +40,5 @@ overwrites HEAD with current workspace
 -------------------------------------------------------------
 # configure toolchain build
 ./configure --prefix=$INS_DIR --with-arch=rv32i --with-abi=ilp32
+-------------------------------------------------------------
+/home/c/w/riscv/riscv.runs/impl_1/Top.bit
