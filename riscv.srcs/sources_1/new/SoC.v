@@ -258,7 +258,7 @@ Registers regs (
     .rs2(rs2), // register source 2
     .rd(rd), // destination register
     .rd_wd(regs_rd_wd), // write data to destination register
-    .rd_we(regs_rd_we), // write enable to destionation register
+    .rd_we(regs_rd_we), // write enable to destination register
     .rd1(regs_rd1), // data out of register 'rs1'
     .rd2(regs_rd2), // data out of register 'rs2'
     .ra3(ld_rd), // register to write from ram out (load instructions)
