@@ -178,13 +178,13 @@ always @* begin
             regs_rd_we = 1;
         end
         7'b1101111: begin // JAL
-            regs_rd_wd = pc; // pc is ahead on instruction. i.e. +4s
+            regs_rd_wd = pc; // note. 'pc' is ahead on instruction (+4)
             regs_rd_we = 1;
             pc_nxt = pc_ir + J_imm20;
             bubble = 1;
         end
         7'b1100111: begin // JALR
-            regs_rd_wd = pc;
+            regs_rd_wd = pc; // note. 'pc' is ahead on instruction (+4)
             regs_rd_we = 1;
             pc_nxt = rs1_dat + I_imm12;
             bubble = 1;
