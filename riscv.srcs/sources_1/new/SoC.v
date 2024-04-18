@@ -20,7 +20,7 @@ module SoC #(
 
 reg [31:0] pc; // program counter, byte addressed, next instruction to fetch
 reg [31:0] pc_nxt; // next value of program counter
-reg [31:0] pc_ir; // program counter for current instruction
+reg [31:0] pc_ir; // program counter of current instruction
 
 wire [31:0] ir; // instruction register (one cycle delay due to ram access)
 wire [6:0] opcode = ir[6:0];
@@ -250,9 +250,9 @@ always @(posedge clk) begin
         is_bubble <= bubble; // if instruction generates bubble of next
                              // instruction (branch, jumps instructions)
         pc <= pc_nxt;
-        pc_ir <= pc_nxt - 4; // -4 because 'pc' contains the next instruction
-                             // to be fetched. when branching there is a bubble
-                             // and 'pc' is incremented by 4 during that
+        pc_ir <= pc_nxt - 4; // -4 because 'pc' is the next instruction to be
+                             // fetched. when branching there is a bubble and
+                             // 'pc' is incremented by 4 during that
     end
 end
 
