@@ -40,8 +40,9 @@ always @(posedge clk) begin
     // write first the 'wd3' which is from a 'load'
     // then the 'wd2' which might overwrite the 'wd3'
     //   example: lw x1, 0(x2) ; addi x1, x1, 1
-    if (we3 && ra3 != 0) mem[ra3] <= wd3;
-    if (rd_we && rd != 0) mem[rd] <= rd_wd;
+    // note: ok to write to register 'zero' since reading it yields 0
+    if (we3) mem[ra3] <= wd3;
+    if (rd_we) mem[rd] <= rd_wd;
 end
 
 endmodule
