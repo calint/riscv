@@ -115,7 +115,7 @@ always @* begin
                 regs_rd_wd = ir[30] ? rs1_dat - rs2_dat : rs1_dat + rs2_dat;
             end
             3'b001: begin // SLL
-                regs_rd_wd = rs1_dat << (rs2_dat & 5'b11111);
+                regs_rd_wd = rs1_dat << rs2_dat[4:0];
             end
             3'b010: begin // SLT
                 regs_rd_wd = rs1_dat < rs2_dat;
@@ -127,7 +127,7 @@ always @* begin
                 regs_rd_wd = rs1_dat ^ rs2_dat;
             end
             3'b101: begin // SRL and SRA
-                regs_rd_wd = ir[30] ? rs1_dat >>> (rs2_dat & 5'b11111) : rs1_dat >> (rs2_dat & 5'b11111);
+                regs_rd_wd = ir[30] ? rs1_dat >>> rs2_dat[4:0] : rs1_dat >> rs2_dat[4:0];
             end
             3'b110: begin // OR
                 regs_rd_wd = rs1_dat | rs2_dat;

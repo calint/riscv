@@ -71,6 +71,7 @@ lbl6:
 	sw x21, (x20)			# ram[0x1000] = 0x1_0000
 	lw x25, (x20)			# x25 = ram[0x1000] == 0x1_0000
 	addi x26, x25, 1		# x26 = 0x1_0000 + 1 == 0x1_0001
+	addi x26, x26,-1		# x26 = 0x1_0001 - 1 == 0x1_0000
 
 lbl_done:
 	jal x0, lbl_done

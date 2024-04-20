@@ -345,6 +345,10 @@ initial begin
     // check that pipeline resolution of x25 is correct
     if (dut.regs.mem[26]==32'h1_0001) $display("test 64 passed"); else $display("test 64 FAILED"); 
 
+    // ec: fffd0d13 addi x26,x26,-1
+    #clk_tk
+    if (dut.regs.mem[26]==32'h1_0000) $display("test 65 passed"); else $display("test 65 FAILED"); 
+    
     $finish;
 end
 
