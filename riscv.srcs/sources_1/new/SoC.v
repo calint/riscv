@@ -86,10 +86,10 @@ always @* begin
                 regs_rd_wd = rs1_dat + I_imm12;
             end
             3'b010: begin // SLTI
-                regs_rd_wd = rs1_dat < I_imm12 ? 1 : 0;
+                regs_rd_wd = rs1_dat < I_imm12;
             end
             3'b011: begin // SLTIU
-                regs_rd_wd = $unsigned(rs1_dat) < $unsigned(I_imm12) ? 1 : 0;
+                regs_rd_wd = $unsigned(rs1_dat) < $unsigned(I_imm12);
             end
             3'b100: begin // XORI
                 regs_rd_wd = rs1_dat ^ I_imm12;
@@ -118,10 +118,10 @@ always @* begin
                 regs_rd_wd = rs1_dat << (rs2_dat & 5'b11111);
             end
             3'b010: begin // SLT
-                regs_rd_wd = rs1_dat < rs2_dat ? 1 : 0;
+                regs_rd_wd = rs1_dat < rs2_dat;
             end
             3'b011: begin // SLTU
-                regs_rd_wd = $unsigned(rs1_dat) < $unsigned(rs2_dat) ? 1 : 0;
+                regs_rd_wd = $unsigned(rs1_dat) < $unsigned(rs2_dat);
             end
             3'b100: begin // XOR
                 regs_rd_wd = rs1_dat ^ rs2_dat;
