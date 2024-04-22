@@ -1,5 +1,8 @@
 #!/bin/sh
 #
+# * compiles specified source to risc-v binary
+# * extracts 'mem' file from binary to be included by vivado
+#
 # tools used:
 #       riscv32-unknown-elf-gcc: (g2ee5e430018) 12.2.0
 #   riscv32-unknown-elf-objcopy: GNU objcopy (GNU Binutils) 2.40.0.20230214
