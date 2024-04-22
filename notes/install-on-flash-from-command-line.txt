@@ -1,4 +1,4 @@
-# https://github.com/trabucayre/openFPGALoader
+# from https://github.com/trabucayre/openFPGALoader
 
 # install on flash
 openFPGALoader -b cmod_s7 -f riscv.runs/impl_1/Top.bit
@@ -8,7 +8,10 @@ openFPGALoader -b cmod_s7 riscv.runs/impl_1/Top.bit
 
 
 
-# https://digilent.com/shop/software/digilent-adept/
+# the tool below does not install on flash
+# it only programs the device
+
+# from https://digilent.com/shop/software/digilent-adept/
 
 # enumerate devices
 djtgcfg enum
