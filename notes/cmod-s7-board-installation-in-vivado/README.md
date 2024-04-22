@@ -4,3 +4,4 @@ from https://digilent.com/reference/programmable-logic/guides/install-board-file
 
 * copy folder 'cmod-s7-25' to 'Vivado/2023.2/data/boards/board_files'
 * create directories if necessary
+* board is now available for selection in project summary
