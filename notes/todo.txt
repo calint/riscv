@@ -1,3 +1,4 @@
+[ ] study what happens at first instruction before pipeline is initiated
 [ ] sim_1: RAM.S: leds assumed to be at 0xffff_ffff
 [ ] sim_3: RAM.S: address of uart send data hardcoded in code. make .equ
 [ ] sim_4: RAM.S: address of uart receive data hardcoded in code. make .equ
