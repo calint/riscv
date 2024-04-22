@@ -1,3 +1,4 @@
 https://digilent.com/shop/cmod-s7-breadboardable-spartan-7-fpga-module/
 https://digilent.com/reference/programmable-logic/cmod-s7/reference-manual
 https://github.com/Digilent/digilent-xdc/blob/master/Cmod-S7-25-Master.xdc
+https://digilent.com/reference/programmable-logic/guides/install-board-files
