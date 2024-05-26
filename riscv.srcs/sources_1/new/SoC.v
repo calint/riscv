@@ -32,8 +32,8 @@ wire [6:0] funct7 = ir[31:25];
 wire signed [31:0] I_imm12 = {{20{ir[31]}}, ir[31:20]};
 wire [31:0] U_imm20 = {ir[31:12], {12{1'b0}}};
 wire signed [31:0] S_imm12 = {{20{ir[31]}}, ir[31:25], ir[11:7]};
-wire signed [31:0] B_imm12 = {{20{ir[31]}}, ir[31], ir[7], ir[30:25], ir[11:8], 1'b0};
-wire signed [31:0] J_imm20 = {{20{ir[31]}}, ir[31], ir[19:12], ir[20], ir[30:21], 1'b0};
+wire signed [31:0] B_imm12 = {{20{ir[31]}}, ir[7], ir[30:25], ir[11:8], 1'b0};
+wire signed [31:0] J_imm20 = {{12{ir[31]}}, ir[19:12], ir[20], ir[30:21], 1'b0};
 
 reg [31:0] regs_rd_wd; // data for write to register 'rd' if 'regs_rd_we' is enabled
 reg regs_rd_we;
@@ -65,6 +65,8 @@ always @* begin
     ram_reA = 0;
     is_ld = 0;
     bubble = 0;
+    rs1_dat = 0;
+    rs2_dat = 0;
     pc_nxt = pc + 4;
 
     if (!is_bubble) begin
