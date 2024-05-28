@@ -56,7 +56,7 @@ reg signed [31:0] rs2_dat; // resolved rs2 value considering pipeline
 reg bubble; // signals that next instruction is a bubble
 reg is_bubble; // signals that current instruction is a bubble
 
-always @* begin
+always @(*) begin
     regs_rd_we = 0;
     regs_rd_wd = 0;
     ram_addrA = 0;

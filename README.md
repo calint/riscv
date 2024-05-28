@@ -5,7 +5,7 @@ a risc-v cpu to gain experience with verilog and minimalistic cpu design
 
 implements the rv32i instructions with the exception for: fence, ecall, ebreak and counters which are irrelevant for the intended use
 
-most of the implementation is in an `always @*` block for the sake of simplicity and overview (["SoC.v"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/SoC.v))
+most of the implementation is in an `always @(*)` block for the sake of simplicity and overview (["SoC.v"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/SoC.v))
 
 ad-hoc 2-stage pipeline where a new instruction is fetched while previous executes
 
