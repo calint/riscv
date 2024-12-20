@@ -21,12 +21,12 @@ riscv64-elf-gcc \
 	-march=rv32i \
 	-mabi=ilp32 \
 	-O2 \
-	-nostartfiles \
 	-ffreestanding \
+	-nostartfiles \
 	-nostdlib \
 	-fno-pic \
 	-Wfatal-errors \
-	-Wall -Wextra -pedantic \
+	-Wall -Wextra -Wpedantic \
 	-Wl,-Ttext=0x0 \
 	-Wl,--no-relax \
 	-fno-toplevel-reorder \
