@@ -3,7 +3,7 @@
   "ip_inst": {
     "xci_name": "Clocking",
     "component_reference": "xilinx.com:ip:clk_wiz:6.0",
-    "ip_revision": "13",
+    "ip_revision": "15",
     "gen_directory": "../../../../riscv.gen/sources_1/ip/Clocking",
     "parameters": {
       "component_parameters": {
@@ -142,7 +142,7 @@
         "USE_INCLK_STOPPED": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
         "USE_CLKFB_STOPPED": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
         "RESET_PORT": [ { "value": "reset", "resolve_type": "user", "usage": "all" } ],
-        "LOCKED_PORT": [ { "value": "clk_locked", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "LOCKED_PORT": [ { "value": "locked", "resolve_type": "user", "usage": "all" } ],
         "POWER_DOWN_PORT": [ { "value": "power_down", "resolve_type": "user", "usage": "all" } ],
         "CLK_VALID_PORT": [ { "value": "CLK_VALID", "resolve_type": "user", "usage": "all" } ],
         "STATUS_PORT": [ { "value": "STATUS", "resolve_type": "user", "usage": "all" } ],
@@ -234,12 +234,12 @@
         "CLKOUT6_SEQUENCE_NUMBER": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "CLKOUT7_SEQUENCE_NUMBER": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "USE_BOARD_FLOW": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
-        "CLK_IN1_BOARD_INTERFACE": [ { "value": "sys_clock", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "CLK_IN1_BOARD_INTERFACE": [ { "value": "Custom", "resolve_type": "user", "usage": "all" } ],
         "CLK_IN2_BOARD_INTERFACE": [ { "value": "Custom", "resolve_type": "user", "usage": "all" } ],
         "DIFF_CLK_IN1_BOARD_INTERFACE": [ { "value": "Custom", "resolve_type": "user", "usage": "all" } ],
         "DIFF_CLK_IN2_BOARD_INTERFACE": [ { "value": "Custom", "resolve_type": "user", "usage": "all" } ],
         "AUTO_PRIMITIVE": [ { "value": "MMCM", "resolve_type": "user", "usage": "all" } ],
-        "RESET_BOARD_INTERFACE": [ { "value": "reset", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "RESET_BOARD_INTERFACE": [ { "value": "Custom", "resolve_type": "user", "usage": "all" } ],
         "ENABLE_CDDC": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
         "CDDCDONE_PORT": [ { "value": "cddcdone", "resolve_type": "user", "usage": "all" } ],
         "CDDCREQ_PORT": [ { "value": "cddcreq", "resolve_type": "user", "usage": "all" } ],
@@ -478,7 +478,7 @@
         "C_CLK_OUT6_PORT": [ { "value": "clk_out6", "resolve_type": "generated", "usage": "all" } ],
         "C_CLK_OUT7_PORT": [ { "value": "clk_out7", "resolve_type": "generated", "usage": "all" } ],
         "C_RESET_PORT": [ { "value": "reset", "resolve_type": "generated", "usage": "all" } ],
-        "C_LOCKED_PORT": [ { "value": "clk_locked", "resolve_type": "generated", "usage": "all" } ],
+        "C_LOCKED_PORT": [ { "value": "locked", "resolve_type": "generated", "usage": "all" } ],
         "C_CLKFB_IN_PORT": [ { "value": "clkfb_in", "resolve_type": "generated", "usage": "all" } ],
         "C_CLKFB_IN_P_PORT": [ { "value": "clkfb_in_p", "resolve_type": "generated", "usage": "all" } ],
         "C_CLKFB_IN_N_PORT": [ { "value": "clkfb_in_n", "resolve_type": "generated", "usage": "all" } ],
@@ -584,7 +584,7 @@
       },
       "project_parameters": {
         "ARCHITECTURE": [ { "value": "spartan7" } ],
-        "BASE_BOARD_PART": [ { "value": "digilentinc.com:cmod-s7-25:part0:1.0" } ],
+        "BASE_BOARD_PART": [ { "value": "" } ],
         "BOARD_CONNECTIONS": [ { "value": "" } ],
         "DEVICE": [ { "value": "xc7s25" } ],
         "PACKAGE": [ { "value": "csga225" } ],
@@ -597,12 +597,12 @@
       },
       "runtime_parameters": {
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
-        "IPREVISION": [ { "value": "13" } ],
+        "IPREVISION": [ { "value": "15" } ],
         "MANAGED": [ { "value": "TRUE" } ],
         "OUTPUTDIR": [ { "value": "../../../../riscv.gen/sources_1/ip/Clocking" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
-        "SWVERSION": [ { "value": "2023.2" } ],
+        "SWVERSION": [ { "value": "2024.2" } ],
         "SYNTHESISFLOW": [ { "value": "GLOBAL" } ]
       }
     },
@@ -611,7 +611,7 @@
         "reset": [ { "direction": "in", "driver_value": "0" } ],
         "clk_in1": [ { "direction": "in" } ],
         "clk_out1": [ { "direction": "out" } ],
-        "clk_locked": [ { "direction": "out" } ]
+        "locked": [ { "direction": "out" } ]
       },
       "interfaces": {
         "reset": {

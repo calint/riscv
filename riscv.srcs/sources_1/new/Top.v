@@ -3,7 +3,7 @@
 //`define DBG
 
 module Top (
-    input wire clk_in1,
+    input wire clk_in1, // 12 MHz system clock
     input wire reset,
     output wire [3:0] led,
     output wire led0_b,
@@ -21,7 +21,7 @@ Clocking clocking(
     .reset(reset),
     .clk_in1(clk_in1),
     .clk_out1(clk_50MHz),
-    .clk_locked(clk_locked)
+    .locked(clk_locked)
 );
 
 SoC #(

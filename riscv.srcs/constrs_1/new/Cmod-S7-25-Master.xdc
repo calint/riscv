@@ -4,38 +4,38 @@ set_property CONFIG_VOLTAGE 3.3 [current_design]
 set_property CFGBVS VCCO [current_design]
 
 ## connect 4 LEDs
-set_property -dict {PACKAGE_PIN E2 IOSTANDARD LVCMOS33} [get_ports {led[0]}]
-set_property -dict {PACKAGE_PIN K1 IOSTANDARD LVCMOS33} [get_ports {led[1]}]
-set_property -dict {PACKAGE_PIN J1 IOSTANDARD LVCMOS33} [get_ports {led[2]}]
-set_property -dict {PACKAGE_PIN E1 IOSTANDARD LVCMOS33} [get_ports {led[3]}]
+set_property -dict {PACKAGE_PIN E2 IOSTANDARD LVCMOS33} [get_ports { led[0] }]
+set_property -dict {PACKAGE_PIN K1 IOSTANDARD LVCMOS33} [get_ports { led[1] }]
+set_property -dict {PACKAGE_PIN J1 IOSTANDARD LVCMOS33} [get_ports { led[2] }]
+set_property -dict {PACKAGE_PIN E1 IOSTANDARD LVCMOS33} [get_ports { led[3] }]
 
 # Push Buttons
 # btn[0]: reset
-#set_property -dict { PACKAGE_PIN D2    IOSTANDARD LVCMOS33 } [get_ports { rst }]; #IO_L6P_T0_34 Sch=btn[0]
+set_property -dict { PACKAGE_PIN D2 IOSTANDARD LVCMOS33 } [get_ports { reset }]; #IO_L6P_T0_34 Sch=btn[0]
 # btn[1]
-set_property -dict { PACKAGE_PIN D1    IOSTANDARD LVCMOS33 } [get_ports { btn }]; #IO_L6N_T0_VREF_34 Sch=btn[1]
+set_property -dict { PACKAGE_PIN D1 IOSTANDARD LVCMOS33 } [get_ports { btn }]; #IO_L6N_T0_VREF_34 Sch=btn[1]
 
 # RGB LEDs (turn off the LED by driving the corresponding pins high)
-set_property -dict { PACKAGE_PIN F1    IOSTANDARD LVCMOS33 } [get_ports { led0_b }]; #IO_L10N_T1_34 Sch=led0_b
-set_property -dict { PACKAGE_PIN D3    IOSTANDARD LVCMOS33 } [get_ports { led0_g }]; #IO_L9N_T1_DQS_34 Sch=led0_g
-set_property -dict { PACKAGE_PIN F2    IOSTANDARD LVCMOS33 } [get_ports { led0_r }]; #IO_L10P_T1_34 Sch=led0_r
+set_property -dict { PACKAGE_PIN F1 IOSTANDARD LVCMOS33 } [get_ports { led0_b }]; #IO_L10N_T1_34 Sch=led0_b
+set_property -dict { PACKAGE_PIN D3 IOSTANDARD LVCMOS33 } [get_ports { led0_g }]; #IO_L9N_T1_DQS_34 Sch=led0_g
+set_property -dict { PACKAGE_PIN F2 IOSTANDARD LVCMOS33 } [get_ports { led0_r }]; #IO_L10P_T1_34 Sch=led0_r
 
 # USB UART
 # Note: Port names are from the perspective of the FPGA.
-set_property -dict { PACKAGE_PIN L12   IOSTANDARD LVCMOS33 } [get_ports { uart_tx }]; #IO_L6N_T0_D08_VREF_14 Sch=uart_rxd_out
-set_property -dict { PACKAGE_PIN K15   IOSTANDARD LVCMOS33 } [get_ports { uart_rx }]; #IO_L5N_T0_D07_14 Sch=uart_txd_in
+set_property -dict { PACKAGE_PIN L12 IOSTANDARD LVCMOS33 } [get_ports { uart_tx }]; #IO_L6N_T0_D08_VREF_14 Sch=uart_rxd_out
+set_property -dict { PACKAGE_PIN K15 IOSTANDARD LVCMOS33 } [get_ports { uart_rx }]; #IO_L5N_T0_D07_14 Sch=uart_txd_in
 
 ## 12 MHz System Clock
-#set_property -dict { PACKAGE_PIN M9    IOSTANDARD LVCMOS33 } [get_ports { clk }]; #IO_L13P_T2_MRCC_14 Sch=gclk
-#create_clock -add -name sys_clk_pin -period 83.33 -waveform {0 41.66} [get_ports { clk }];
-
-
+set_property -dict { PACKAGE_PIN M9 IOSTANDARD LVCMOS33 } [get_ports { clk_in1 }]; #IO_L13P_T2_MRCC_14 Sch=gclk
+#create_clock -add -name sys_clk_pin -period 83.33 -waveform {0 41.66} [get_ports { clk_in1 }];
 
 
 
 #####################################################################################
 # below downloaded from https://github.com/Digilent/digilent-xdc/blob/master/Cmod-S7-25-Master.xdc
 #####################################################################################
+
+
 ## This file is a general .xdc for the Cmod S7-25 Rev. B
 ## To use it in a project:
 ## - uncomment the lines corresponding to used pins
