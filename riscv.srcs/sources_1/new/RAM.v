@@ -1,4 +1,5 @@
 `timescale 1ns / 1ps
+//
 `default_nettype none
 //`define DBG
 
@@ -7,10 +8,10 @@
 module RAM #(
     parameter NUM_COL = 4,
     parameter COL_WIDTH = 8,
-    parameter ADDR_WIDTH = 12, // 2**12 = RAM depth
-    parameter DATA_WIDTH = NUM_COL*COL_WIDTH, // data width in bits
+    parameter ADDR_WIDTH = 12,  // 2**12 = RAM depth
+    parameter DATA_WIDTH = NUM_COL * COL_WIDTH,  // data width in bits
     parameter DATA_FILE = "RAM.mem"
-)(
+) (
     input wire clkA,
     input wire enaA,
     input wire [NUM_COL-1:0] weA,
@@ -25,37 +26,37 @@ module RAM #(
     output reg [DATA_WIDTH-1:0] doutB
 );
 
-reg [DATA_WIDTH-1:0] ram_block[(2**ADDR_WIDTH)-1:0];
+  reg [DATA_WIDTH-1:0] ram_block[(2**ADDR_WIDTH)-1:0];
 
-initial begin
+  initial begin
     $readmemh(DATA_FILE, ram_block);
-end
+  end
 
-integer i;
+  integer i;
 
-// Port-A Operation
-always @(posedge clkA) begin
-    if(enaA) begin
-        for(i=0;i<NUM_COL;i=i+1) begin
-            if(weA[i]) begin
-                ram_block[addrA][i*COL_WIDTH +: COL_WIDTH] <= dinA[i*COL_WIDTH +: COL_WIDTH];
-            end
+  // Port-A Operation
+  always @(posedge clkA) begin
+    if (enaA) begin
+      for (i = 0; i < NUM_COL; i = i + 1) begin
+        if (weA[i]) begin
+          ram_block[addrA][i*COL_WIDTH+:COL_WIDTH] <= dinA[i*COL_WIDTH+:COL_WIDTH];
         end
-        doutA <= ram_block[addrA];
+      end
+      doutA <= ram_block[addrA];
     end
-end
+  end
 
-// Port-B Operation:
-always @(posedge clkB) begin
-    if(enaB) begin
-        for(i=0;i<NUM_COL;i=i+1) begin
-            if(weB[i]) begin
-                ram_block[addrB][i*COL_WIDTH +: COL_WIDTH] <= dinB[i*COL_WIDTH +: COL_WIDTH];
-            end
+  // Port-B Operation:
+  always @(posedge clkB) begin
+    if (enaB) begin
+      for (i = 0; i < NUM_COL; i = i + 1) begin
+        if (weB[i]) begin
+          ram_block[addrB][i*COL_WIDTH+:COL_WIDTH] <= dinB[i*COL_WIDTH+:COL_WIDTH];
         end
-        doutB <= ram_block[addrB];
+      end
+      doutB <= ram_block[addrB];
     end
-end
+  end
 
 endmodule
 
