@@ -1,5 +1,7 @@
 #!/bin/sh
-# run from project root. i.e. qa/run-iverilog-all.sh
+#
+# note: run from project root. i.e. qa/run-iverilog-all.sh
+#
 
 echo sim_4
 qa/run-iverilog.sh sim_4 TB_SoC 2>&1 | grep FAILED

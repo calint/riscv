@@ -1,8 +1,10 @@
 #!/bin/sh
+#
 # run from project root. i.e. qa/run-iverilog.sh
-# tools:
-#   iverilog: Icarus Verilog version 12.0 (stable)
-#        vvp: Icarus Verilog runtime version 12.0 (stable)
+# tools used:
+#   iverilog: 12.0
+#        vvp: 12.0
+#
 set -e
 
 SIMPTH=riscv.srcs/$1/new
