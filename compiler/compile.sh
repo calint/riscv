@@ -30,7 +30,7 @@ riscv64-elf-gcc \
 	-Wl,-Ttext=0x0 \
 	-Wl,--no-relax \
 	-fno-toplevel-reorder \
-	$SRC -o $BIN
+	-o $BIN $SRC
 
 riscv64-elf-objcopy $BIN -O binary $BIN.bin
 riscv64-elf-objdump -Mnumeric,no-aliases -dr $BIN > $BIN.lst
