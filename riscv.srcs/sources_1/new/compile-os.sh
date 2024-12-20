@@ -31,7 +31,7 @@ riscv64-elf-gcc \
 	-Wshadow \
 	-Wl,-Ttext=0x0 \
 	-Wl,--no-relax \
-	os_start.S os.c -o $BIN
+	-o $BIN os_start.S os.c
 
 #	-Wpadded \
 
