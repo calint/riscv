@@ -3,7 +3,6 @@
 
 module TB_RAM_Interface;
 
-
   localparam clk_tk = 10;
   reg clk = 0;
   always #(clk_tk / 2) clk = ~clk;
