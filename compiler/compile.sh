@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# compiles specified source to risc-v binary
+# compiles specified source to risc-v rv32i binary
 # extracts 'mem' file from binary to be included by vivado
 # note: assumes riscv64-elf-gcc toolchain installed
 #
