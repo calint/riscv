@@ -1,0 +1,4 @@
+vivado needed packages to run:
+inetutils
+libxcrypt-compat
+ncurses5-compat-libs
