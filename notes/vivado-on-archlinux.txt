@@ -1,6 +1,6 @@
 Arch Linux base installation 2024.12.01
 
 Vivado needed packages to run:
-* libxcrypt-compat provides libcrypt.so.1
-* ncurses5-compat-libs provides libtinfo.so.5
-* inetutils provides hostname
+* `libxcrypt-compat` provides `libcrypt.so.1`
+* `ncurses5-compat-libs` provides `libtinfo.so.5`
+* `inetutils` provides `hostname`
