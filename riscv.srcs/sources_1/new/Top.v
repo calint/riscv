@@ -18,7 +18,7 @@ module Top (
 wire clk_50MHz;
 wire clk_locked;
 
-clocking clocking(
+Clocking clocking(
     .reset(reset),
     .clk_in1(clk),
     .clk_out1(clk_50MHz),
