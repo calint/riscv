@@ -444,12 +444,12 @@ void uart_send_str(const char *str) {
   }
 }
 
-void uart_send_hex_byte(char ch) {
+void uart_send_hex_byte(const char ch) {
   uart_send_hex_nibble((ch & 0xf0) >> 4);
   uart_send_hex_nibble(ch & 0x0f);
 }
 
-void uart_send_hex_nibble(char nibble) {
+void uart_send_hex_nibble(const char nibble) {
   if (nibble < 10) {
     uart_send_char('0' + nibble);
   } else {
@@ -457,7 +457,7 @@ void uart_send_hex_nibble(char nibble) {
   }
 }
 
-void uart_send_char(char ch) {
+void uart_send_char(const char ch) {
   while (*uart_out)
     ;
   *uart_out = ch;

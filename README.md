@@ -17,7 +17,8 @@ implemented on cmod s7 from digilent.com
 
 implements uart to send and receive text (see ["notes/os.c"](https://github.com/calint/riscv/blob/main/notes/os.c) for example)
 
-how-to with vivado v2024.2:
+how-to with vivado v2025.1:
+* install "cmod-s7-25" board info in vivado. see "/notes/cmod-s7-board-installation-in-vivado"
 * (optional) edit path to ram file in ["riscv.srcs/sources_1/new/Top.v"](https://github.com/calint/riscv/blob/main/riscv.srcs/sources_1/new/Top.v)
 * connect fpga board, run synthesis, run implementation, generate bitstream, program device
 * find out which tty is on the usb connected to the card (e.g. /dev/ttyUSB1)

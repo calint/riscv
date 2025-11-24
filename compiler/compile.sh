@@ -5,11 +5,11 @@
 # note: assumes riscv64-elf-gcc toolchain installed
 #
 # tools used:
-#       riscv64-elf-g++: 14.1.0
+#       riscv64-elf-gcc: 14.1.0
 #   riscv64-elf-objcopy: 2.42
 #   riscv64-elf-objdump: 2.42
 #                   xxd: tinyxxd 1.3.7
-#                   awk: 5.3.1
+#                   awk: 5.3.2
 #
 set -e
 

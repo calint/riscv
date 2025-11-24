@@ -1,6 +1,5 @@
 Arch Linux base installation 2024.12.01
 
-Vivado needed packages to run:
-* `libxcrypt-compat` provides `libcrypt.so.1`
-* `ncurses5-compat-libs` provides `libtinfo.so.5`
+Vivado 2025.1 needed packages to run:
+* `ncurses5-compat-libs` provides `libtinfo.so.5` that loads `libxv_commontasks.so`
 * `inetutils` provides `hostname` (optional)
